@@ -1,2 +1,2 @@
-# Arcane Cards Online Card Game
-The Arcane Cards project is a game using the Unity engine.
+# ArcaneCardsTCG
+The Arcane Cards TCG adapted to Unity.
