@@ -1,2 +1,2 @@
-# ArcaneCards
-The Arcane Cards Online Trading Card Game
+# Arcane Cards Online Card Game
+The Arcane Cards project is a game using the Unity engine.
