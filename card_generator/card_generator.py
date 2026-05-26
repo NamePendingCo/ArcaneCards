@@ -1,6 +1,11 @@
 from PIL import Image, ImageDraw, ImageFont
 import os
 import csv
+import zipfile
+
+cardlist_file = "cardlist.csv"
+outpath = "current_cards/"
+zipped_fn = "current_cards"
 
 # color files
 red_card_fpath = "card_bases/red_base_card.png"
@@ -17,9 +22,6 @@ enchantment_fpath = "icons/enchantment.png"
 curse_fpath = "icons/curse.png"
 ward_fpath = "icons/ward.png"
 component_fpath = "icons/knife.png"
-
-cardlist_file = "cardlist_apr_30_26.csv"
-outpath = "output/"
 
 font_fpath = "fonts/Verdana.ttf"
 bold_font_fpath = "fonts/Verdana-Bold.ttf"
@@ -41,6 +43,14 @@ overview_pos = (105, 63)
 overview_font = ImageFont.truetype(bold_font_fpath, 9)
 effect_pos = (12, 185)
 desc_font = ImageFont.truetype(font_fpath, 9)
+
+def zipdir(path, ziph):
+    # ziph is zipfile handle
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            ziph.write(os.path.join(root, file), 
+                       os.path.relpath(os.path.join(root, file), 
+                                       os.path.join(path, '..')))
 
 def wrap_text(text, font, max_width, draw):
     """
@@ -103,6 +113,13 @@ if __name__ == "__main__":
 
         if not os.path.exists(outpath):
             os.makedirs(outpath)
+        else:
+            #delete all old cards from the outpath
+            for filename in os.listdir(outpath):
+                file_path = os.path.join(outpath, filename)
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+
 
         for card in cards:
             name = card[0]
@@ -178,5 +195,8 @@ if __name__ == "__main__":
             out_img.paste(icon, bound_box, icon)
 
             out_img.save(outpath + fn_name + ".png")
+
+        with zipfile.ZipFile(zipped_fn + ".zip", 'w', zipfile.ZIP_DEFLATED) as zipf:
+            zipdir(outpath, zipf)
 
         print("Card Creation Complete")
