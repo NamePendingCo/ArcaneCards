@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://5lmiygl27ndb"]
 
 [ext_resource type="Texture2D" uid="uid://duig5but855j2" path="res://assets/Blank Card.png" id="1_6u4wf"]
-[ext_resource type="Texture2D" uid="uid://cbbp3f4fbfnuv" path="res://assets/yugioh_cardback.png" id="2_ktuci"]
+[ext_resource type="Texture2D" uid="uid://cbbp3f4fbfnuv" path="res://assets/TEMP_yugioh_cardback.png" id="2_ktuci"]
 
 [node name="Card" type="Node3D" unique_id=484358041]
 

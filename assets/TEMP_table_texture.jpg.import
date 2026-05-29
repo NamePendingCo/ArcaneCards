@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cbbp3f4fbfnuv"
-path.s3tc="res://.godot/imported/yugioh_cardback.png-e76d8813c28eb01bcd8af2590bbd51ff.s3tc.ctex"
+uid="uid://f54njeqyrcy5"
+path.s3tc="res://.godot/imported/TEMP_table_texture.jpg-2cac6f886206db035390b0086a67927b.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/yugioh_cardback.png"
-dest_files=["res://.godot/imported/yugioh_cardback.png-e76d8813c28eb01bcd8af2590bbd51ff.s3tc.ctex"]
+source_file="res://assets/TEMP_table_texture.jpg"
+dest_files=["res://.godot/imported/TEMP_table_texture.jpg-2cac6f886206db035390b0086a67927b.s3tc.ctex"]
 
 [params]
 
