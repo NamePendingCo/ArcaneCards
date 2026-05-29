@@ -44,6 +44,21 @@ overview_font = ImageFont.truetype(bold_font_fpath, 9)
 effect_pos = (12, 185)
 desc_font = ImageFont.truetype(font_fpath, 9)
 
+#Declare all the image variables without using them
+red_img: Image.Image = None
+orange_img: Image.Image = None
+yellow_img: Image.Image = None
+green_img: Image.Image = None
+blue_img: Image.Image = None
+purple_img: Image.Image = None
+gray_img: Image.Image = None
+
+instant_img: Image.Image = None
+enchantment_img: Image.Image = None
+curse_img: Image.Image = None
+ward_img: Image.Image = None
+component_img: Image.Image = None
+
 def zipdir(path, ziph):
     # ziph is zipfile handle
     for root, dirs, files in os.walk(path):
@@ -77,62 +92,17 @@ def wrap_text(text, font, max_width, draw):
 
     return lines
 
-def line_wrap(text: str, font, max_width, draw):
-    lines = text.splitlines()
+#generates a card based on a set of given variables
+def generate_card(name, color, subdomain, spell_type, tier, activation_cost, upkeep, keywords, effect):
+    # Handling subdomainless cards
+            if subdomain == '':
+                subdomain = 'N/A'
 
-    output = ""
+            spell_overview = '-- ' + color + ' (' + subdomain + ') -- ' + spell_type + ' --'
 
-    for line in lines:
-        output+= wrap_text(line, font, max_width, draw) + '\n'
-
-    return output
-    
-
-if __name__ == "__main__":
-
-    with open(cardlist_file, newline='') as f:
-        cards = csv.reader(f)
-        next(cards, None)
-
-        #load color images
-        red_img: Image.Image = Image.open(red_card_fpath)
-        orange_img: Image.Image = Image.open(orange_card_fpath)
-        yellow_img: Image.Image = Image.open(yellow_card_fpath)
-        green_img: Image.Image = Image.open(green_card_fpath)
-        blue_img: Image.Image = Image.open(blue_card_fpath)
-        purple_img: Image.Image = Image.open(purple_card_fpath)
-        gray_img: Image.Image = Image.open(gray_card_fpath)
-
-        icon_size = (80,80)
-        #load icon images
-        instant_img: Image.Image = Image.open(instant_fpath).resize(icon_size)
-        enchantment_img: Image.Image = Image.open(enchantment_fpath).resize(icon_size)
-        curse_img: Image.Image = Image.open(curse_fpath).resize(icon_size)
-        ward_img: Image.Image = Image.open(ward_fpath).resize(icon_size)
-        component_img: Image.Image = Image.open(component_fpath).resize(icon_size)
-
-        if not os.path.exists(outpath):
-            os.makedirs(outpath)
-        else:
-            #delete all old cards from the outpath
-            for filename in os.listdir(outpath):
-                file_path = os.path.join(outpath, filename)
-                if os.path.isfile(file_path):
-                    os.remove(file_path)
-
-
-        for card in cards:
-            name = card[0]
-            color = card[1]
-            field = card[2]
-            spell_type = card[3]
-            tier = card[4]
-            activation_cost = card[5]
-            upkeep = card[6]
-            keywords = card[7]
-            effect = card[8]
-
-            spell_overview = '-- ' + color + ' (' + field + ') -- ' + spell_type + ' --'
+            # Currently for handling components. Probably remove for something better eventually
+            if color == '':
+                spell_overview = '-- ' + spell_type + ' --'
 
             fn_name = name.replace(" ", "_").lower()
 
@@ -195,6 +165,61 @@ if __name__ == "__main__":
             out_img.paste(icon, bound_box, icon)
 
             out_img.save(outpath + fn_name + ".png")
+
+def line_wrap(text: str, font, max_width, draw):
+    lines = text.splitlines()
+
+    output = ""
+
+    for line in lines:
+        output+= wrap_text(line, font, max_width, draw) + '\n'
+
+    return output
+
+if __name__ == "__main__":
+
+    #load color images
+    red_img = Image.open(red_card_fpath)
+    orange_img = Image.open(orange_card_fpath)
+    yellow_img = Image.open(yellow_card_fpath)
+    green_img = Image.open(green_card_fpath)
+    blue_img = Image.open(blue_card_fpath)
+    purple_img = Image.open(purple_card_fpath)
+    gray_img = Image.open(gray_card_fpath)
+
+    icon_size = (80,80)
+    #load icon images
+    instant_img = Image.open(instant_fpath).resize(icon_size)
+    enchantment_img = Image.open(enchantment_fpath).resize(icon_size)
+    curse_img = Image.open(curse_fpath).resize(icon_size)
+    ward_img = Image.open(ward_fpath).resize(icon_size)
+    component_img = Image.open(component_fpath).resize(icon_size)
+
+    if not os.path.exists(outpath):
+        os.makedirs(outpath)
+    else:
+        #delete all old cards from the outpath
+        for filename in os.listdir(outpath):
+            file_path = os.path.join(outpath, filename)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+
+    with open(cardlist_file, newline='') as f:
+        cards = csv.reader(f)
+        next(cards, None)
+
+        for card in cards:
+            name = card[0]
+            color = card[1]
+            subdomain = card[2]
+            spell_type = card[3]
+            tier = card[4]
+            activation_cost = card[5]
+            upkeep = card[6]
+            keywords = card[7]
+            effect = card[8]
+
+            generate_card(name, color, subdomain, spell_type, tier, activation_cost, upkeep, keywords, effect)
 
         with zipfile.ZipFile(zipped_fn + ".zip", 'w', zipfile.ZIP_DEFLATED) as zipf:
             zipdir(outpath, zipf)
