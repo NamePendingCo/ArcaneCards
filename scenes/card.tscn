@@ -3,6 +3,9 @@
 [ext_resource type="Texture2D" uid="uid://duig5but855j2" path="res://assets/Blank Card.png" id="1_6u4wf"]
 [ext_resource type="Texture2D" uid="uid://cbbp3f4fbfnuv" path="res://assets/TEMP_yugioh_cardback.png" id="2_ktuci"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_6u4wf"]
+size = Vector3(2.0881653, 2.9725227, 0.04144287)
+
 [node name="Card" type="Node3D" unique_id=484358041]
 
 [node name="Cardfront" type="Sprite3D" parent="." unique_id=1134800600]
@@ -13,3 +16,9 @@ texture = ExtResource("1_6u4wf")
 transform = Transform3D(-1, 0, 8.940697e-08, 0, 1, 0, -8.940697e-08, 0, -1, 0, 0, 0)
 double_sided = false
 texture = ExtResource("2_ktuci")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1817019247]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=2084291285]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.008865356, -2.4795532e-05, -0.0032653809)
+shape = SubResource("BoxShape3D_6u4wf")
