@@ -4,6 +4,7 @@ import csv
 import zipfile
 
 cardlist_file = "cardlist.csv"
+components_file = "component_list.csv"
 outpath = "current_cards/"
 zipped_fn = "current_cards"
 
@@ -221,7 +222,25 @@ if __name__ == "__main__":
 
             generate_card(name, color, subdomain, spell_type, tier, activation_cost, upkeep, keywords, effect)
 
-        with zipfile.ZipFile(zipped_fn + ".zip", 'w', zipfile.ZIP_DEFLATED) as zipf:
-            zipdir(outpath, zipf)
+    with open(components_file, newline='') as f:
+        cards = csv.reader(f)
+        next(cards, None)
 
-        print("Card Creation Complete")
+        for card in cards:
+            name = card[0]
+            color = ''
+            subdomain = ''
+            spell_type = card[1]
+            tier = ''
+            activation_cost = ''
+            upkeep = ''
+            keywords = card[2]
+            effect = card[3]
+
+            generate_card(name, color, subdomain, spell_type, tier, activation_cost, upkeep, keywords, effect)
+
+
+    with zipfile.ZipFile(zipped_fn + ".zip", 'w', zipfile.ZIP_DEFLATED) as zipf:
+        zipdir(outpath, zipf)
+
+    print("Card Creation Complete")
