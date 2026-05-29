@@ -162,7 +162,7 @@ Chilly Breeze,Red,Freeze,Instant,1,2,N/A,Empower,"Deal 1 damage to a target and 
 Empower 1: Deal 1 more damage.",,,No Data,0 / 0,Noah,4/13/26,
 Life Pool,Green,Growth,Enchantment,3,2/2/2,1,"Bank, Heal","Bank Green
 
-During End phase, Heal equal to the number of tokens in this bank. Then, remove a token.",,,No Data,0 / 2,Noah,4/13/26,
+During End phase, Heal 1 for every 2 tokens in this bank. Then, remove 2 tokens.",,,No Data,0 / 2,Noah,4/13/26,
 Multitasker,Blue,Domination,Enchantment,3,2/3/4,2,,"While this card is in play, your casting well can hold an extra card.",,,No Data,1 / 2,Ali,4/13/26,4/22/2026
 Regressing Vine,Green,Animation,Ward,2,3/3,2,"Bank, Return","Bank Green
 
@@ -228,7 +228,7 @@ Concussion,Yellow,Impact,Instant,2,2/4,N/A,Empower,"Deal 3 damage to a target.
 Empower 2: Deal 2 more damage.",,,No Data,1 / 2,Daniel,4/13/26,
 Scare,Purple,Channeling,Ward,1,2,2,Hidden,"Hidden
 
-After someone damages you, deal 1 damage to them. ",,,No Data,1 / 1,Daniel,4/13/26,
+After another caster's card damages you, deal 1 damage to them. ",,,No Data,1 / 1,Daniel,4/13/26,
 Chalice,Green,Animation,Enchantment,2,2/2,2,"Heal, Single","Single
 
 When a different card Heals you, increase the healing by 1.",,,No Data,0 / 1,Daniel,4/13/26,
@@ -277,26 +277,26 @@ Synergize Harnessed Energy x2: If you have 3 Harnessed Energy cards in play, eac
 Conjure Cauldron,Orange,Conjuration,Enchantment,1,2,0,Resonance,"During End Phase, gain 1 mana.
 
 Resonance Chemical: The activated card deals 2 extra damage.",,Concept Demo,No Data,0 / 0,Daniel,4/20/26,
-Throat Spray,Yellow,Vibration,Enchantment,1,3,0,Resonance,Resonance Yellow: Gain 2 mana.,,Concept Demo,No Data,2 / 2,Daniel,4/27/26,
+Vocal Training,Yellow,Vibration,Enchantment,1,3,0,Resonance,Resonance Yellow: Gain 2 mana.,,Concept Demo,No Data,2 / 2,Daniel,4/27/26,
 Compact Correction,Yellow,Grip,Ward,2,2/1,2,"Resonance, Suppress","When a card in your concentration circle is the target of a Suppress, permanently Suppress this card instead.
 
 Resonance Yellow: If this card is suppressed, unsuppress it. This effect can be invoked even if this card is suppressed.",,Concept Demo,No Data,1 / 1,Noah,4/27/26,
 Nerve Shock,Red,Lightning,Instant,2,2/2,N/A,"Forced-Discard, Chain","Deal 3 damage to a target.
 
 Chain Lightning: The target Discards 1.",,Concept Demo,No Data,1 / 1,Noah,4/29/26,
-Blood Transfuser,Green,Draining,Instant,2,0/1,N/A,"Heal, Catalyst","Deal 2 damage to a target and Heal 1.
+Blood Transfuser,Green,Draining,Instant,2,0/1,N/A,"Heal, Augment","Deal 2 damage to a target and Heal 1.
 
 Draining Augment: Instead, Heal the caster equal to the damage dealt.",,Concept Demo,No Data,2 / 2,Ali,4/29/26,
 Potential Energy,Yellow,Grip,Enchantment,2,2/2,1,Quicken,"While this card is in play, reduce your casting well slots by 1. At the beginning of Adjudication Phase, all cards in your casting well are Quickened.",,,No Data,1 / 1,Ali,4/29/26,
 Tithe,Purple,Channeling,Instant,2,2/2,N/A,Forced-Discard,"A target Discards 2. 
 
 Material Diamond: Discard 4 instead.",,Concept Demo,No Data,0 / 0,Noah,4/29/26,
-Black Pearl,Purple,Channeling,Instant,3,0/1/2,N/A,"Upcast, Exert, Heighten, Empower, Catalyst","Deal 5 damage to a target and gain 4 mana.
+Black Pearl,Purple,Channeling,Instant,3,0/1/2,N/A,"Upcast, Exert, Empower, Heighten, Augment","Deal 5 damage to a target and gain 4 mana.
 
 Channeling Augment: Instead, invoke one of the attached card's Upcast, Exert, Heighten, or Empower effects automatically.",,Concept Demo,No Data,1 / 1,Ali,4/29/26,
 Efficient Cast,Yellow,Thrust,Enchantment,2,3/3,0,"Quicken, 0-Cost Counter","When a Yellow card in your casting well is Quickened, place a 0-Cost Counter on it.",,,No Data,1 / 1,Noah,4/29/26,
 Unaware Puppeteer,Purple,Soul,Ward,2,2/2,1,"Suppress, Draw, Self-Discard","Whenever a card in your concentration circle is Suppressed, Draw 2. You may Discard both drawn cards to stop the Suppression.",,,No Data,0 / 0,Ali,5/25/26,
-Divine the Stars,Purple,Divination,Instant,1,5,N/A,Draw,Choose a Subdomain. Draw the first card of that Subdomain from your deck and shuffle your deck afterwards.,,,No Data,0 / 0,Daniel,5/25/26,
+Divine the Stars,Purple,Divination,Instant,1,5,N/A,"Draw, Reveal","Choose a Subdomain. Reveal the first card of that Subdomain from your deck, add it to your hand, and shuffle your deck afterwards.",,,No Data,0 / 0,Daniel,5/25/26,
 The Brink of Madness,Blue,Sanity,Instant,2,3/4,N/A,Synergize,"The target must shuffle their hand into their codex, then draw up to the number of cards they previously had in their hand.
 
 Synergize Blue: They target draws one less card after shuffling.",,,No Data,0 / 0,Noah,5/25/26,
@@ -312,7 +312,6 @@ Reccurent Poison,Orange,Chemical,Curse,2,2/2,3,"DoT, Exert","Deal 1 DoT to a tar
 
 Exert: Deal 1 more DoT.",,,No Data,0 / 0,Daniel,5/25/26,
 Force Their Hand,Blue,Domination,Instant,2,3/3,N/A,"Reveal, Forced-Discard","Reveal three cards from a target's hand. Of the three, choose one they must play next round, one they cannot play next round, and one they must discard. If they have fewer than three cards in their hand, you may choose which of the three options you'd prefer to inflict.",,,No Data,0 / 1,Noah,5/25/26,4/22/2026
-Banishment,Purple,Soul,Instant,2,4/4,N/A,,Pick a card on the target's side of the field. Annul it and other copies of the card on the field and in the target's archive.,,,No Data,0 / 0,Ali,5/25/26,
 Tumult Future,Purple,Divination,Instant,1,5,N/A,,"Look at the top 4 cards in your deck and put at least one of them in your archive. Then, put the rest back in any order.",,,No Data,0 / 0,Ali,5/25/26,
 Returned Effort,Green,Growth,Enchantment,2,2/2,1,"Draw, Heal","At the start of Adjudication Phase, for each caster who has at least 3 cards in their casting well, you Draw 1. If there are at least 6 cards in total between everyone's casting wells, also Heal 1.",,,No Data,0 / 0,Ali,5/25/26,
 Greedy Offer,Purple,Soul,Instant,2,2/2,N/A,"Draw, Everyone, 0-Cost Counter","Place a 0-Cost Counter on any card on your side of the field. Everyone may Draw 2. For every caster other than you that draws, place two more 0-Cost Counters on any card on your side of the field.",,,No Data,0 / 0,Ali,5/25/26,
@@ -331,7 +330,7 @@ See and Suspend,Blue,Domination,Instant,2,3/4,N/A,"Reveal, Heighten, Synergize",
 
 Heighten or Synergize Blue: Choose one to delay.",,,No Data,0 / 0,Noah,5/25/26,
 Headache,Blue,Sanity,Instant,1,3,N/A,,"Choose a card in a target's casting well. They take damage equal to its tier. If the card is revealed, deal 1 additional damage.",,,No Data,0 / 0,Noah,5/25/26,
-Fading Memory,Blue,Domination,Curse,2,1/1,1,,"Choose a card in a target's concentration circle and put a number of counters on it equal to its tier. During End Phase remove a counter on it and annul it when there arent any left while this card is in play. Discard this card after it annulls a card, pick a new target if its original target is no longer in play. ",,,No Data,0 / 0,Ali,5/25/26,
+Fading Memory,Blue,Domination,Curse,2,1/1,1,,"Choose a card in a target's concentration circle and put a number of counters on it equal to its tier. During Draw Phase remove a counter on it and annul it when there arent any left while this card is in play. Discard this card after it annulls a card, pick a new target if its original target is no longer in play. ",,,No Data,0 / 0,Ali,5/25/26,
 Guilt Trip,Blue,Sanity,Instant,3,2/2/2,N/A,"Reveal, Forced-Discard",Reveal a target's hand. Choose one card from their hand to Discard.,,,No Data,0 / 0,Daniel,5/25/26,
 Unmake,Orange,Conjuration,Curse,2,3/3,2,0-Cost Counter,"All cards on the field that have 0-cost counters are immediately discarded. While this card is in play, any that card gains a 0-cost counter is immediately discarded.",,,No Data,0 / 0,Noah,5/25/26,
 Cancerous Growth,Green,Growth,Curse,3,1/3/4,2,Self-Discard,"Choose a target. Add 3 counters to this card. During Draw Phase, add a counter to this card. During End Phase, if the target's health is lower than the number of counters on this card, deal damage to them equal to the number of counters on this card. Discard this card afterwards.",,,No Data,0 / 0,Noah,5/25/26,
@@ -351,10 +350,15 @@ Cold Shoulder,Red,Freeze,Instant,1,5,N/A,"Delay, Upcast, Forced-Discard","Inflic
 
 Upcast: Discard the card instead.",,,No Data,0 / 0,Daniel,5/25/26,
 Volcanic Ash,Orange,Conjuration,Instant,1,4,N/A,Conjure,Deal 2 damage to a target. Conjure a Sulfur and add it to your Component Pouch.,,,No Data,0 / 0,Noah,5/25/26,
-Easing Oregano,Orange,Conjuration,Instant,1,1,N/A,Conjure,Gain 3 mana. Conjure an Oregano and add it to your Component Pouch.,,,No Data,0 / 0,Noah,5/25/26,
+Easing Oregano,Orange,Conjuration,Instant,1,1,N/A,Conjure,Gain 5 mana. Conjure an Oregano and add it to your Component Pouch.,,Recently Modified,No Data,0 / 0,Noah,5/25/26,
 Anything is Possible,Orange,Conjuration,Instant,3,1/3/1,N/A,"Reveal, Conjure","Search your codex for an orange card, reveal it, and set it aside. Shuffle your codex, then set that card on top.
 
 Conjure a Diamond and add it to your Component Pouch.",,,No Data,0 / 0,Noah,5/25/26,
 Hotshot,Red,Heat,Instant,2,3/1,N/A,Material,"Deal 3 damage to a target.
 
 Material x2 Sulfur: Deal 3 additional damage.",,,No Data,0 / 0,Noah,5/25/26,
+Scorching Reproach,Red,Heat,Instant,2,2/4,N/A,Return,Deal 3 damage to a target. Return a card from the target's concentration circle.,,,No Data,0 / 0,Daniel,5/26/26,
+Lapse in Memory,Blue,Domination,Instant,2,2/4,N/A,"Forced-Discard, Reveal, Synergize","Discard a card from a target's concentration circle.
+
+Synergize Blue: The target must Reveal all cards of the same name as the discarded card in their hand.",,,No Data,0 / 0,Ali,5/26/26,
+Petrify,Orange,Transmute,Instant,2,2/1,N/A,Forced-Discard,"Choose a card in a target's concentration circle. Pay its Upkeep cost, then Discard it.",,,No Data,0 / 0,Daniel,5/26/26,
