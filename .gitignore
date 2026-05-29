@@ -19,3 +19,6 @@ mono_crash.*.json
 
 # Folder of card files
 card_generator/current_cards/
+
+# Ignore OSE files
+.DS_Store
