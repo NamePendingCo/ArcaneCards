@@ -24,9 +24,9 @@ curse_fpath = "icons/curse.png"
 ward_fpath = "icons/ward.png"
 component_fpath = "icons/knife.png"
 
-font_fpath = "fonts/Verdana.ttf"
-bold_font_fpath = "fonts/Verdana-Bold.ttf"
-viner_font_fpath = "fonts/VINERITC.TTF"
+font_fpath = "../assets/fonts/Verdana.ttf"
+bold_font_fpath = "../assets/fonts/Verdana-Bold.ttf"
+viner_font_fpath = "../assets/fonts/VINERITC.TTF"
 
 # Positions
 name_pos = (105, 42)
