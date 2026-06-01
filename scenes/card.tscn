@@ -24,6 +24,9 @@ size = Vector3(2.0881653, 2.9725227, 0.04144287)
 mesh = SubResource("QuadMesh_4dx8l")
 surface_material_override/0 = SubResource("StandardMaterial3D_qf083")
 
+[node name="SubViewport" type="SubViewport" parent="Cardfront" unique_id=321299806]
+render_target_update_mode = 1
+
 [node name="Cardback" type="MeshInstance3D" parent="." unique_id=452658717]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0.01)
 mesh = SubResource("QuadMesh_tgmmg")

@@ -18,11 +18,11 @@ purple_card_fpath = "card_bases/purple_base_card.png"
 gray_card_fpath = "card_bases/gray_base_card.png"
 
 # icon files
-instant_fpath = "icons/instant.png"
-enchantment_fpath = "icons/enchantment.png"
-curse_fpath = "icons/curse.png"
-ward_fpath = "icons/ward.png"
-component_fpath = "icons/knife.png"
+instant_fpath = "..assets/icons/instant.png"
+enchantment_fpath = "..assets/icons/enchantment.png"
+curse_fpath = "..assets/icons/curse.png"
+ward_fpath = "..assets/icons/ward.png"
+component_fpath = "..assets/icons/knife.png"
 
 font_fpath = "../assets/fonts/Verdana.ttf"
 bold_font_fpath = "../assets/fonts/Verdana-Bold.ttf"

@@ -1,6 +1,27 @@
 [gd_scene format=3 uid="uid://depd3dnoynrpg"]
 
 [ext_resource type="Texture2D" uid="uid://duig5but855j2" path="res://assets/Blank Card.png" id="1_rj1u7"]
+[ext_resource type="FontFile" uid="uid://c2rk024ngkqph" path="res://assets/fonts/VINERITC.TTF" id="2_avsb6"]
+[ext_resource type="FontFile" uid="uid://r7ndtctuxoni" path="res://assets/fonts/Verdana-Bold.ttf" id="3_x5lwi"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_x5lwi"]
+font = ExtResource("2_avsb6")
+font_size = 15
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_18tv8"]
+font = ExtResource("3_x5lwi")
+font_size = 11
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_l463w"]
+font = ExtResource("3_x5lwi")
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_01o04"]
+font = ExtResource("3_x5lwi")
+font_size = 9
+font_color = Color(0, 0, 0, 1)
 
 [node name="SpellTemplate" type="Control" unique_id=1779560279]
 layout_mode = 3
@@ -15,3 +36,52 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("1_rj1u7")
+
+[node name="Name" type="Label" parent="." unique_id=205504195]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 27.0
+offset_right = 203.0
+offset_bottom = 50.0
+text = "Name"
+label_settings = SubResource("LabelSettings_x5lwi")
+
+[node name="ActivationCost" type="Label" parent="." unique_id=189158246]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 6.9
+offset_right = 54.0
+offset_bottom = 21.9
+text = "0/0/0"
+label_settings = SubResource("LabelSettings_18tv8")
+horizontal_alignment = 1
+
+[node name="UpkeepCost" type="Label" parent="." unique_id=637650338]
+layout_mode = 0
+offset_left = 154.0
+offset_top = 7.0
+offset_right = 203.0
+offset_bottom = 22.0
+text = "0/0/0"
+label_settings = SubResource("LabelSettings_18tv8")
+horizontal_alignment = 1
+
+[node name="Tier" type="Label" parent="." unique_id=1816708285]
+layout_mode = 0
+offset_left = 95.0
+offset_top = 4.0
+offset_right = 115.0
+offset_bottom = 27.0
+text = "I"
+label_settings = SubResource("LabelSettings_l463w")
+horizontal_alignment = 1
+
+[node name="Overview" type="Label" parent="." unique_id=130823765]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 53.0
+offset_right = 199.0
+offset_bottom = 68.0
+text = "-- color (subdomain) - type --"
+label_settings = SubResource("LabelSettings_01o04")
+horizontal_alignment = 1
