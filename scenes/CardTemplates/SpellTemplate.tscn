@@ -23,6 +23,9 @@ font = ExtResource("3_x5lwi")
 font_size = 9
 font_color = Color(0, 0, 0, 1)
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_x5lwi"]
+load_path = "res://.godot/imported/instant.png-addb7bc48318535cf01c5106a34b83d8.ctex"
+
 [node name="SpellTemplate" type="Control" unique_id=1779560279]
 layout_mode = 3
 anchors_preset = 15
@@ -85,3 +88,12 @@ offset_bottom = 68.0
 text = "-- color (subdomain) - type --"
 label_settings = SubResource("LabelSettings_01o04")
 horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=957713439]
+layout_mode = 0
+offset_left = 60.0
+offset_top = 75.0
+offset_right = 150.0
+offset_bottom = 165.0
+texture = SubResource("CompressedTexture2D_x5lwi")
+expand_mode = 1

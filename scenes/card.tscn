@@ -1,31 +1,46 @@
 [gd_scene format=3 uid="uid://5lmiygl27ndb"]
 
-[ext_resource type="Texture2D" uid="uid://duig5but855j2" path="res://assets/Blank Card.png" id="1_6u4wf"]
-[ext_resource type="Texture2D" uid="uid://cbbp3f4fbfnuv" path="res://assets/TEMP_yugioh_cardback.png" id="2_ktuci"]
+[ext_resource type="Script" uid="uid://cgm831da7hmhu" path="res://scripts/CardData.gd" id="1_4dx8l"]
+[ext_resource type="PackedScene" uid="uid://depd3dnoynrpg" path="res://scenes/CardTemplates/SpellTemplate.tscn" id="2_qf083"]
+[ext_resource type="Texture2D" uid="uid://cbbp3f4fbfnuv" path="res://assets/TEMP_yugioh_cardback.png" id="3_40ytf"]
 
-[sub_resource type="QuadMesh" id="QuadMesh_4dx8l"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_yiag5"]
+viewport_path = NodePath("Cardfront/SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yiag5"]
+resource_local_to_scene = true
+albedo_texture = SubResource("ViewportTexture_yiag5")
+
+[sub_resource type="QuadMesh" id="QuadMesh_b7oqo"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_yiag5")
 size = Vector2(2.1, 3)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qf083"]
-albedo_texture = ExtResource("1_6u4wf")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4dx8l"]
+albedo_texture = ExtResource("3_40ytf")
 
 [sub_resource type="QuadMesh" id="QuadMesh_tgmmg"]
+material = SubResource("StandardMaterial3D_4dx8l")
 size = Vector2(2.1, 3)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tgmmg"]
-albedo_texture = ExtResource("2_ktuci")
+albedo_texture = ExtResource("3_40ytf")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6u4wf"]
 size = Vector3(2.0881653, 2.9725227, 0.04144287)
 
 [node name="Card" type="Node3D" unique_id=484358041]
+script = ExtResource("1_4dx8l")
 
 [node name="Cardfront" type="MeshInstance3D" parent="." unique_id=565735632]
-mesh = SubResource("QuadMesh_4dx8l")
-surface_material_override/0 = SubResource("StandardMaterial3D_qf083")
+mesh = SubResource("QuadMesh_b7oqo")
 
 [node name="SubViewport" type="SubViewport" parent="Cardfront" unique_id=321299806]
+disable_3d = true
+size = Vector2i(210, 300)
 render_target_update_mode = 1
+
+[node name="CardFace" parent="Cardfront/SubViewport" unique_id=1779560279 instance=ExtResource("2_qf083")]
 
 [node name="Cardback" type="MeshInstance3D" parent="." unique_id=452658717]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0.01)
