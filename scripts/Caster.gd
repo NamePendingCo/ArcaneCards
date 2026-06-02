@@ -1,6 +1,6 @@
 class_name Caster
 
-extends "res://scripts/Being.gd"
+extends Being
 
 #List of important children to track
 var card_manager: CardManager
@@ -43,5 +43,11 @@ func draw(num_drawn: int = 1, dest: DrawDest = DrawDest.HAND):
 		print("Non-implemented draw destination: " + str(dest))
 		return
 	else:
-		my_deck.pop_top_cards(num_drawn)
+		#get list of cards from the deck
+		var card_ids = my_deck.pop_top_cards(num_drawn)
+		#loop through card ids, get data, make a card, then add it to hand
+		for id in card_ids:
+			var card_data = CardDatabase.get_card_data(id)
+			var drawn_card = card_manager.instatiate_card(card_data)
+			my_hand.add_card_to_hand(drawn_card)
 		

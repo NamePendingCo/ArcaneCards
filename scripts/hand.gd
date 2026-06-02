@@ -45,6 +45,6 @@ Returns:
 func calculate_card_offset(index: int):
 	var total_width = (hand.size() - 1) * CARD_WIDTH
 	
-	var offset = transform.origin + transform.basis.y * index * CARD_WIDTH - total_width/2
+	var offset = transform.origin + transform.basis.y * (index * CARD_WIDTH - int(total_width/2))
 	
 	return offset

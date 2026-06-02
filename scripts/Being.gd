@@ -6,7 +6,6 @@ var being_name: String
 var _health: int
 #main health variable. Can't go below 0
 var health = _health:
-	get: _health
 	set(val): _health = max(0, val)
 
 var attack_strength: int

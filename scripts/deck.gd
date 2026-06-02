@@ -1,6 +1,6 @@
 class_name Deck extends Node3D
 
-#The array of the deck. The top of the deck is the least index
+#An array of card_ids. The top of the deck is the least index
 var deck : Array[String] = [] #TYPE TBD
 
 '''
@@ -26,7 +26,7 @@ func pop_top_cards(num_cards: int):
 		num_cards = deck.size()
 	
 	var card_list = []
-	for i in num_cards:
+	for i in range(num_cards):
 		card_list += pop_top_card()
 	
 	return card_list

@@ -10,6 +10,7 @@ extends Resource
 @export var type: Enums.CardType
 @export var tier: int
 
+@export_group("Costs")
 @export var activation_cost: Array[int]
 @export var upkeep_cost: int
 
