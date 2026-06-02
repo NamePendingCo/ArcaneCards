@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://5lmiygl27ndb"]
 
-[ext_resource type="Script" uid="uid://cgm831da7hmhu" path="res://scripts/CardData.gd" id="1_4dx8l"]
+[ext_resource type="Script" uid="uid://cgm831da7hmhu" path="res://scripts/card.gd" id="1_4dx8l"]
 [ext_resource type="PackedScene" uid="uid://depd3dnoynrpg" path="res://scenes/CardTemplates/SpellTemplate.tscn" id="2_qf083"]
 [ext_resource type="Texture2D" uid="uid://cbbp3f4fbfnuv" path="res://assets/TEMP_yugioh_cardback.png" id="3_40ytf"]
 

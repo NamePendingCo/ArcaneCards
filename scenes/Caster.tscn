@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bf5hb8yrkmoyv"]
 
-[ext_resource type="Script" uid="uid://87txbqeppm3e" path="res://scripts/Caster.gd" id="2_puh4a"]
+[ext_resource type="Script" uid="uid://87txbqeppm3e" path="res://scripts/caster.gd" id="2_puh4a"]
 [ext_resource type="Texture2D" uid="uid://cbbp3f4fbfnuv" path="res://assets/TEMP_yugioh_cardback.png" id="2_rakli"]
 [ext_resource type="PackedScene" uid="uid://dpu52olnuxqcy" path="res://scenes/CardSlot.tscn" id="2_u20q3"]
 [ext_resource type="Script" uid="uid://dcbly24n8tlsv" path="res://scenes/CardManager.gd" id="2_xfmn6"]
