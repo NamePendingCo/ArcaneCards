@@ -53,7 +53,7 @@ enum Subdomain {
 
 #Convert subdomain to a string format
 static func subdomainString(subdomain: Subdomain):
-	return String(Subdomain.keys()[subdomain]).to_pascal_case()
+	return String(Subdomain.keys()[Subdomain.keys().find(subdomain)]).to_pascal_case()
 
 enum CardType {
 	NULL,
@@ -66,4 +66,4 @@ enum CardType {
 
 #Convert type to a string format
 static func typeString(type: CardType):
-	return String(CardType.keys()[type]).to_pascal_case()
+	return String(CardType.keys()[CardType.keys().find(type)]).to_pascal_case()

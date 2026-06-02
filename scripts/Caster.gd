@@ -48,6 +48,12 @@ func draw(num_drawn: int = 1, dest: DrawDest = DrawDest.HAND):
 		#loop through card ids, get data, make a card, then add it to hand
 		for id in card_ids:
 			var card_data = CardDatabase.get_card_data(id)
-			var drawn_card = card_manager.instatiate_card(card_data)
+			var drawn_card = card_manager.instatiate_card(card_data, my_deck.position)
+			
+			#rotates card to be flat and readable
+			drawn_card.rotate_object_local(Vector3.RIGHT, PI/-2) 
 			my_hand.add_card_to_hand(drawn_card)
 		
+func _input(event):
+	if event.is_action("debug_draw"):
+		draw(1)

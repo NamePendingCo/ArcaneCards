@@ -1,7 +1,7 @@
 class_name Hand extends Node3D
 
 #width of a card object
-const CARD_WIDTH = 300
+const CARD_WIDTH = 2.3
 
 var card_manager: CardManager
 
@@ -45,6 +45,6 @@ Returns:
 func calculate_card_offset(index: int):
 	var total_width = (hand.size() - 1) * CARD_WIDTH
 	
-	var offset = transform.origin + transform.basis.y * (index * CARD_WIDTH - int(total_width/2))
+	var offset = transform.basis.x * (index * CARD_WIDTH - int(total_width/2))
 	
 	return offset

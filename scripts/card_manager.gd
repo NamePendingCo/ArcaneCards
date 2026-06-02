@@ -18,11 +18,13 @@ Params:
 Return:
 	- new_card: the newly created card object
 '''
-func instatiate_card(data: CardData):
+func instatiate_card(data: CardData, start_pos: Vector3 = position):
 	var new_card: Card = card_scene.instantiate()
+	new_card.position = start_pos
 	add_child(new_card)
-	new_card.data = data
+	new_card.card_data = data
 	new_card.card_owner = my_caster
+	print(new_card.card_data.cardName + " Created at " + str(new_card.position))
 	return new_card
 
 '''
@@ -32,4 +34,4 @@ Params:
 '''
 func animate_move_card(card: Card, new_pos: Vector3):
 	var tween = get_tree().create_tween()
-	tween.tween_property(card, "position", new_pos, 0.1)
+	tween.tween_property(card, "position", new_pos, 0.2)

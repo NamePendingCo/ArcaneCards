@@ -19,16 +19,16 @@ var card_owner: Caster
 		match card_data.tier:
 			1:
 				spell_face.get_node("Tier").text = 'I'
-				spell_face.get_node("ActivationCost").text = ac[0]
+				spell_face.get_node("ActivationCost").text = str(ac[0])
 			2:
 				spell_face.get_node("Tier").text = 'II'
-				spell_face.get_node("ActivationCost").text = ac[0] + '/' + ac[1]
+				spell_face.get_node("ActivationCost").text = str(ac[0]) + '/' + str(ac[1])
 			3:
 				spell_face.get_node("Tier").text = 'III'
-				spell_face.get_node("ActivationCost").text = ac[0] + '/' + ac[1] + '/' + ac[2]
+				spell_face.get_node("ActivationCost").text = str(ac[0]) + '/' + str(ac[1]) + '/' + str(ac[2])
 				
 		#set upkeep cost on cardface
-		spell_face.get_node("UpkeepCost").text = card_data.upkeep_cost
+		spell_face.get_node("UpkeepCost").text = str(card_data.upkeep_cost)
 		
 		#creates the overview string and sets it on cardface
 		spell_face.get_node("Overview").text = '-- ' + Enums.colorString(card_data.color) + ' (' + Enums.subdomainString(card_data.subdomain) + ') -- ' + Enums.typeString(card_data.type) + ' --'

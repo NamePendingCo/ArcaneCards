@@ -7,6 +7,12 @@ var card_db: Dictionary[String, CardData] = {}
 func _ready():
 	#TODO autopopulate from csv file
 	
+	var chilly_breeze: CardData = load("res://card_data_files/chilly_breeze.tres")
+	var echoing_roar: CardData = load("res://card_data_files/echoing_roar.tres")
+	
+	card_db[chilly_breeze.card_id] = chilly_breeze
+	card_db[echoing_roar.card_id] = echoing_roar
+	
 	fail_card_data = CardData.new()
 	fail_card_data.card_id = "null"
 	fail_card_data.cardName = "No Data Found"
