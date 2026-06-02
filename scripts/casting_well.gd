@@ -1,5 +1,7 @@
 class_name CastingWell extends Node3D
 
+const SPACE_BETWEEN_SLOTS = 0.2
+
 const CARD_SLOT_PATH = "res://scenes/CardSlot.tscn"
 var card_slot_scene : PackedScene
 
@@ -7,10 +9,10 @@ const DEFAULT_SLOTS = 3
 const MIN_SLOTS = 1
 const MAX_SLOTS = 5
 
+#actual tracker for card slots. Each hold reference to card in well
 var card_slots: Array[CardSlot]
 
 var num_slots: int = card_slots.size()
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -25,12 +27,16 @@ func add_slot():
 	if num_slots + 1 > MIN_SLOTS:
 		print("Slots cannot be increased above " + str(MAX_SLOTS))
 		return
+	
+	var slot_pos = position + num_slots * basis.x * (Constants.CARD_WIDTH + SPACE_BETWEEN_SLOTS)
+	
 	#creates new slot object
 	var new_slot = card_slot_scene.instantiate()
 	#adds as a child of well
 	add_child(new_slot)
 	#adds to list
 	card_slots.push_back(new_slot)
+	new_slot.position = slot_pos
 
 '''
 Removes the last slot from the slots list and destroys it.
@@ -71,6 +77,8 @@ func add_card_to_well(card: Card):
 	for slot in card_slots:
 		if not slot.has_card_attached:
 			slot.attached_card = card
+			card.card_state = Enums.CardState.CASTING
 			return true
 	return false
-			
+	
+	

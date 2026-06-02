@@ -1,7 +1,7 @@
 class_name Hand extends Node3D
 
-#width of a card object
-const CARD_WIDTH = 2.3
+#shorthand access to this enum val
+const IN_HAND = Enums.CardState.IN_HAND
 
 var hand: Array[Card] = []
 
@@ -11,11 +11,14 @@ func _ready():
 
 func add_card_to_hand(card: Card):
 	if card not in hand:
+		card.card_state = IN_HAND
 		hand.append(card)
 		update_hand_positions()
 
 func remove_card_from_hand(card: Card):
 	if card in hand:
+		if card.card_state == IN_HAND:
+			card.card_state = Enums.CardState.NULL
 		hand.erase(card)
 		update_hand_positions()
 
@@ -41,8 +44,11 @@ Returns:
 	- offset: Vector3 for the relative position of the card to the hand origin
 '''
 func calculate_card_offset(index: int):
-	var total_width = (hand.size() - 1) * CARD_WIDTH
+	# Takes card with then gives space on either side
+	var card_space = Constants.CARD_WIDTH + 0.2 
+	var total_width = (hand.size() - 1) * card_space
 	
-	var offset = transform.basis.x * (index * CARD_WIDTH - int(total_width/2))
+	#extends out left and right from the hand node, remaining centered
+	var offset = transform.basis.x * (index * card_space - int(total_width/2))
 	
 	return offset

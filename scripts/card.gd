@@ -4,6 +4,12 @@ var card_owner: Caster
 
 var card_state: Enums.CardState
 
+#when true, card can be dragged around by player. When false, cannot move
+#for now, assume always can while in hand or state is null. Probably fix later
+var position_locked: bool:
+	get: return card_state <= Enums.CardState.IN_HAND
+	set(val): pass
+
 @export var card_data: CardData:
 	set(value):
 		#Get the cardface object to modify
