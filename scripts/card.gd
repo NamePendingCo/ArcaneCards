@@ -4,6 +4,7 @@ class_name Card extends Node3D
 	set(value):
 		#Get the cardface object to modify
 		var spell_face = $"Cardfront/SubViewport/CardFace"
+		var viewport = $"Cardfront/SubViewport"
 		
 		#set the new data as the data for this card
 		data = value
@@ -29,3 +30,6 @@ class_name Card extends Node3D
 		
 		#creates the overview string and sets it on cardface
 		spell_face.get_node("Overview").text = '-- ' + Enums.colorString(data.color) + ' (' + Enums.subdomainString(data.subdomain) + ') -- ' + Enums.typeString(data.type) + ' --'
+		
+		#reset the viewport so it reloads with the new info
+		viewport.render_target_update_mode = SubViewport.UpdateMode.UPDATE_ONCE

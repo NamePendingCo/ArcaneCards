@@ -24,7 +24,7 @@ material = SubResource("StandardMaterial3D_o4s3k")
 [node name="Caster" type="Node3D" unique_id=616650361]
 script = ExtResource("2_puh4a")
 
-[node name="Card Manager" type="Node3D" parent="." unique_id=591655411]
+[node name="CardManager" type="Node3D" parent="." unique_id=591655411]
 script = ExtResource("2_xfmn6")
 
 [node name="CasterCardImage" type="Sprite3D" parent="." unique_id=125533167]
