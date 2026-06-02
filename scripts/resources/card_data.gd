@@ -13,4 +13,4 @@ extends Resource
 @export var activation_cost: Array[int]
 @export var upkeep_cost: int
 
-@export var art:Texture
+@export var art: Texture

@@ -2,10 +2,13 @@ class_name CardManager extends Node3D
 
 const CARD_SCENE_PATH = "res://scenes/Card.tscn"
 
+var my_caster #the card manager's caster
+
 var card_scene: PackedScene
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	my_caster = $".."
 	card_scene = preload(CARD_SCENE_PATH)
 
 '''
@@ -16,9 +19,10 @@ Return:
 	- new_card: the newly created card object
 '''
 func instatiate_card(data: CardData):
-	var new_card = card_scene.instantiate()
+	var new_card: Card = card_scene.instantiate()
 	add_child(new_card)
 	new_card.data = data
+	new_card.card_owner = my_caster
 	return new_card
 
 '''
