@@ -2,6 +2,8 @@ class_name Card extends Node3D
 
 var card_owner: Caster
 
+var card_state: Enums.CardState
+
 @export var card_data: CardData:
 	set(value):
 		#Get the cardface object to modify
@@ -38,6 +40,7 @@ var card_owner: Caster
 
 func _ready():
 	card_owner = null
+	card_state = Enums.CardState.NULL
 
 #TODO: Add flipping support here perhaps?
 '''
@@ -48,3 +51,10 @@ Params:
 func animate_move_card(new_pos: Vector3):
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "position", new_pos, 0.2)
+
+#TODO
+'''
+Moves card to owner's discard pile. On success, return true. If no owner, returns false.
+'''
+func discard():
+	pass

@@ -67,3 +67,12 @@ enum CardType {
 #Convert type to a string format
 static func typeString(type: CardType):
 	return String(CardType.keys()[CardType.keys().find(type)]).to_pascal_case()
+	
+enum CardState {
+	NULL,
+	IN_HAND,
+	IN_CASTING,
+	IN_CIRCLE,
+	IN_DECK, #UNUSABLE AS DOES NOT CONTAIN CARD OBJECTS
+	IN_DISCARD #UNUSABLE AS DOES NOT CONTAIN CARD OBJECTS
+}
