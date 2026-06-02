@@ -2,13 +2,13 @@ class_name CardManager extends Node3D
 
 const CARD_SCENE_PATH = "res://scenes/Card.tscn"
 
-var my_caster #the card manager's caster
+@export
+var my_caster: Caster #the card manager's caster
 
 var card_scene: PackedScene
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	my_caster = $".."
 	card_scene = preload(CARD_SCENE_PATH)
 
 '''

@@ -15,7 +15,9 @@ var mana: int
 func _ready():
 	super()
 	card_manager = $"CardManager"
+	card_manager.my_caster = self
 	my_hand = $"Hand"
+	my_hand.card_manager = card_manager #sets the card manager of the card
 	my_deck = $"Deck"
 
 #Enum for determining destinations for drawn cards. Maybe should be moved

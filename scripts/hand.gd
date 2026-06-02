@@ -3,13 +3,14 @@ class_name Hand extends Node3D
 #width of a card object
 const CARD_WIDTH = 2.3
 
+@export
 var card_manager: CardManager
 
 var hand: Array[Card] = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	card_manager = $"../CardManager"
+	pass
 
 func add_card_to_hand(card: Card):
 	if card not in hand:
