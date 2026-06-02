@@ -3,9 +3,6 @@ class_name Hand extends Node3D
 #width of a card object
 const CARD_WIDTH = 2.3
 
-@export
-var card_manager: CardManager
-
 var hand: Array[Card] = []
 
 # Called when the node enters the scene tree for the first time.
@@ -34,7 +31,7 @@ func update_hand_positions():
 		var new_pos = transform.origin + offset
 		
 		#move the card into new position
-		card_manager.animate_move_card(hand[i], new_pos)
+		hand[i].animate_move_card(new_pos)
 
 '''
 Calculates the position a card should be assigned based on its index:

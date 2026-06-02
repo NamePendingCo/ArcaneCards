@@ -38,3 +38,13 @@ var card_owner: Caster
 
 func _ready():
 	card_owner = null
+
+#TODO: Add flipping support here perhaps?
+'''
+Runs a tween to move the card to a new location
+Params:
+	- new_pos: the new location for the card
+'''
+func animate_move_card(new_pos: Vector3):
+	var tween = get_tree().create_tween()
+	tween.tween_property(self, "position", new_pos, 0.2)

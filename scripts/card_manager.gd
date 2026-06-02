@@ -26,12 +26,3 @@ func instatiate_card(data: CardData, start_pos: Vector3 = position):
 	new_card.card_owner = my_caster
 	print(new_card.card_data.cardName + " Created at " + str(new_card.position))
 	return new_card
-
-'''
-Params:
-	- card: the card to move
-	- new_pos: the new location for the card
-'''
-func animate_move_card(card: Card, new_pos: Vector3):
-	var tween = get_tree().create_tween()
-	tween.tween_property(card, "position", new_pos, 0.2)
