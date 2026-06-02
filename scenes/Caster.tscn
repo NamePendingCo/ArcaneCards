@@ -4,9 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://cbbp3f4fbfnuv" path="res://assets/TEMP_yugioh_cardback.png" id="2_rakli"]
 [ext_resource type="PackedScene" uid="uid://dpu52olnuxqcy" path="res://scenes/CardSlot.tscn" id="2_u20q3"]
 [ext_resource type="Script" uid="uid://dcbly24n8tlsv" path="res://scripts/card_manager.gd" id="2_xfmn6"]
-[ext_resource type="Script" uid="uid://ib2osvbdn8q0" path="res://scenes/Hand.gd" id="3_m8rb2"]
+[ext_resource type="Script" uid="uid://ib2osvbdn8q0" path="res://scripts/hand.gd" id="3_m8rb2"]
 [ext_resource type="Texture2D" uid="uid://d1qybs0ji2g2u" path="res://assets/Vaati on Ice.png" id="3_rakli"]
-[ext_resource type="Script" uid="uid://3f0prgjypuvs" path="res://scenes/Deck.gd" id="4_wg42b"]
+[ext_resource type="Script" uid="uid://3f0prgjypuvs" path="res://scripts/deck.gd" id="4_wg42b"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m8rb2"]
 albedo_texture = ExtResource("2_rakli")
