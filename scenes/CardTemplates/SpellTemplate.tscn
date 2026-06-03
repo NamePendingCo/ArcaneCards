@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://duig5but855j2" path="res://assets/Blank Card.png" id="1_rj1u7"]
 [ext_resource type="FontFile" uid="uid://c2rk024ngkqph" path="res://assets/fonts/VINERITC.TTF" id="2_avsb6"]
 [ext_resource type="FontFile" uid="uid://r7ndtctuxoni" path="res://assets/fonts/Verdana-Bold.ttf" id="3_x5lwi"]
+[ext_resource type="FontFile" uid="uid://bjmqp31mhhanh" path="res://assets/fonts/Verdana.ttf" id="4_18tv8"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_x5lwi"]
 font = ExtResource("2_avsb6")
@@ -25,6 +26,12 @@ font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_x5lwi"]
 load_path = "res://.godot/imported/instant.png-addb7bc48318535cf01c5106a34b83d8.ctex"
+
+[sub_resource type="LabelSettings" id="LabelSettings_vhcn7"]
+line_spacing = 1.0
+font = ExtResource("4_18tv8")
+font_size = 9
+font_color = Color(0, 0, 0, 1)
 
 [node name="SpellTemplate" type="Control" unique_id=1779560279]
 layout_mode = 3
@@ -97,3 +104,13 @@ offset_right = 150.0
 offset_bottom = 165.0
 texture = SubResource("CompressedTexture2D_x5lwi")
 expand_mode = 1
+
+[node name="Effects" type="Label" parent="." unique_id=1976768161]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 176.0
+offset_right = 196.0
+offset_bottom = 284.2447
+text = "Example Text"
+label_settings = SubResource("LabelSettings_vhcn7")
+autowrap_mode = 3

@@ -1,5 +1,7 @@
 class_name Card extends Node3D
 
+const COLOR = Enums.SpellColor
+
 #signals to tell the caster to take actions on this card
 signal marked_for_discard
 signal marked_for_casting(card, slot: int)
@@ -25,6 +27,27 @@ var card_owner: Caster
 		#set name in cardface
 		spell_face.get_node("Name").text = card_data.cardName
 		
+		#TODO Make this more efficient, probably by preloading these guys
+		var backdrop_path = ""
+		match card_data.color:
+			COLOR.NULL:
+				backdrop_path = "res://assets/Blank Card.png"
+			COLOR.RED:
+				backdrop_path = "res://assets/card_bases/red_base_card.png"
+			COLOR.ORANGE:
+				backdrop_path = "res://assets/card_bases/orange_base_card.png"
+			COLOR.YELLOW:
+				backdrop_path = "res://assets/card_bases/yellow_base_card.png"
+			COLOR.GREEN:
+				backdrop_path = "res://assets/card_bases/green_base_card.png"
+			COLOR.BLUE:
+				backdrop_path = "res://assets/card_bases/blue_base_card.png"
+			COLOR.PURPLE:
+				backdrop_path = "res://assets/card_bases/purple_base_card.png"
+				
+		var backdrop: TextureRect = spell_face.get_node("CardBackdrop")
+		backdrop.texture = load(backdrop_path)
+		
 		#set tier and activation cost on cardface
 		var ac = card_data.activation_cost
 		match card_data.tier:
@@ -43,6 +66,8 @@ var card_owner: Caster
 		
 		#creates the overview string and sets it on cardface
 		spell_face.get_node("Overview").text = '-- ' + Enums.colorString(card_data.color) + ' (' + Enums.subdomainString(card_data.subdomain) + ') -- ' + Enums.typeString(card_data.type) + ' --'
+		
+		spell_face.get_node("Effects").text = card_data.effects
 		
 		#reset the viewport so it reloads with the new info
 		viewport.render_target_update_mode = SubViewport.UpdateMode.UPDATE_ONCE

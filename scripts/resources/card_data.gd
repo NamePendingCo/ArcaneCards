@@ -14,4 +14,7 @@ extends Resource
 @export var activation_cost: Array[int]
 @export var upkeep_cost: int
 
+@export_group("Details")
+@export_multiline() var effects: String
+
 @export var art: Texture

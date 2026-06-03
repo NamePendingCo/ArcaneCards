@@ -11,4 +11,7 @@ subdomain = 33
 type = 1
 tier = 2
 activation_cost = Array[int]([2, 1])
+effects = "Deal 3 damage.
+
+Chain Vibration: Return this card to your hand."
 metadata/_custom_type_script = "uid://x0i1uyfprpdj"
