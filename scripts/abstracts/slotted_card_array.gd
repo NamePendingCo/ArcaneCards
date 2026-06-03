@@ -9,7 +9,7 @@ var card_slots: Array[CardSlot]
 Just used to return the state a card should be changed to when attached
 '''
 @abstract
-func _get_relevant_card_state()
+func _get_relevant_card_state() -> Enums.CardState
 
 #easy variable for tracking size of card_slots
 var num_slots: int:

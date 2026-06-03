@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://3f0prgjypuvs" path="res://scripts/deck.gd" id="4_wg42b"]
 [ext_resource type="Script" uid="uid://cdses3ncf76ha" path="res://scripts/concentration_circle.gd" id="8_kll7q"]
 [ext_resource type="Script" uid="uid://bv2gqrgycjo7l" path="res://scripts/casting_well.gd" id="8_ybpqv"]
+[ext_resource type="Script" uid="uid://bg8drmnlr4qkf" path="res://scripts/discard.gd" id="10_cnbmw"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m8rb2"]
 albedo_texture = ExtResource("2_rakli")
@@ -78,6 +79,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
 
 [node name="Discard" type="Node3D" parent="." unique_id=1768579913]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 5)
+script = ExtResource("10_cnbmw")
 
 [node name="Label3D" type="Label3D" parent="Discard" unique_id=618743847]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.01, 0)

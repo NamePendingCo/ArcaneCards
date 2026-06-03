@@ -1,9 +1,11 @@
 class_name Card extends Node3D
 
+#signals to tell the caster to take actions on this card
 signal marked_for_discard
 signal marked_for_casting(card, slot: int)
 signal marked_for_conc_circle(card, slot: int)
 
+#signals for notifying state changes
 signal left_hand
 signal detatched_from_slot
 
@@ -85,7 +87,9 @@ func ready_state_change(new_state: Enums.CardState):
 			detatched_from_slot.emit()
 	
 	card_state = new_state
-	
+
+func self_destruct():
+	self.queue_free()
 
 #TODO: Add flipping support here perhaps?
 '''

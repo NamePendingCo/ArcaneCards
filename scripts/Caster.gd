@@ -4,11 +4,10 @@ extends Being
 
 #List of important children to track
 @onready var card_manager: CardManager = $CardManager
-@onready var my_deck: Deck = $Deck
 @onready var my_hand: Hand = $Hand
+@onready var my_deck: Deck = $Deck
+@onready var my_discard: Discard = $Discard
 @onready var my_casting_well: CastingWell = $CastingWell
-#var my_discard: Discard
-#var my_casting_well: CastingWell
 @onready var my_conc_circle: ConcentrationCircle = $ConcentrationCircle
 
 var mana: int
@@ -33,36 +32,6 @@ func _register_card(card: Card):
 	#card.marked_for_discard.connect() TODO
 	card.marked_for_casting.connect(cast_card) #connects casting to card's signal
 	card.marked_for_conc_circle.connect(move_to_conc_circle_card) #connects conc circle to card's signal
-
-#TODO: Handle dest value
-'''
-Takes in a number of cards to draw from the deck. Draws them, then sends them to
-a destination, defaulting to the hand.
-Params:
-	num_drawn: Number of cards drawn, defaults to 1
-	dest: Enum specifying destination of where the cards should go. 
-	Defaults to the hand (0). 
-Returns:
-	True on successful draw. False if failed
-'''
-func draw(num_drawn: int = 1, dest: DrawDest = DrawDest.HAND):
-	if num_drawn <= 0:
-		print("Cannot draw " + str(num_drawn) + " Cards")
-		return false
-	
-	if dest > 0:
-		print("Non-implemented draw destination: " + str(dest))
-		return false
-	else:
-		#get list of cards from the deck
-		var card_ids = my_deck.pop_top_cards(num_drawn)
-		#loop through card ids, get data, make a card, then add it to hand
-		for id in card_ids:
-			var card_data = CardDatabase.get_card_data(id)
-			var drawn_card = card_manager.instatiate_card(card_data, my_deck.position)
-			
-			move_to_hand_card(drawn_card)
-		return true
 
 '''
 Adds a card to the hand
@@ -92,6 +61,64 @@ Params:
 func move_to_conc_circle_card(card: Card, slot: int=-1):
 	my_conc_circle.add_card_to_conc_circle(card, slot)
 
+#TODO: Handle dest value
+'''
+Takes in a number of cards to draw from the deck. Draws them, then sends them to
+a destination, defaulting to the hand.
+Params:
+	num_drawn: Number of cards drawn, defaults to 1
+	dest: Enum specifying destination of where the cards should go. 
+	Defaults to the hand (0). 
+Returns:
+	True on successful draw. False if failed
+'''
+func draw(num_drawn: int = 1, dest: DrawDest = DrawDest.HAND):
+	if num_drawn <= 0:
+		print("Cannot draw " + str(num_drawn) + " Cards")
+		return false
+	
+	if dest > 0:
+		print("Non-implemented draw destination: " + str(dest))
+		return false
+	else:
+		#get list of cards from the deck
+		var card_ids = my_deck.pop_top_cards(num_drawn)
+		#loop through card ids, get data, make a card, then add it to hand
+		for id in card_ids:
+			var drawn_card = card_manager.instantiate_card_from_id(id, my_deck.global_transform.origin)
+			
+			move_to_hand_card(drawn_card)
+		return true
+
+'''
+Sends passed card to the deck pile. 
+Params:
+	- card: card to add to the deck
+	- bottom_deck: if true, will place card on bottom of deck
+'''
+func move_to_deck_card(card: Card, bottom_deck: bool=false):
+	my_deck.add_card_to_deck(card, bottom_deck)
+
+'''
+Sends passed card to the discard pile
+'''
+func discard_card(card: Card):
+	my_discard.add_card_to_discard(card)
+
+func move_card_from_discard_pile(index: int, dest: DrawDest = DrawDest.HAND):
+	if index >= my_discard.size:
+		return false
+	
+	var grabbed_id = my_discard.grab_card(index)
+	
+	if dest > 0:
+		print("Non-implemented draw destination: " + str(dest))
+		return false
+	else:
+		var card = card_manager.instantiate_card_from_id(grabbed_id, my_discard.global_transform.origin)
+		move_to_hand_card(card)
+		return true
+
 func _input(event):
 	if event.is_action("debug_draw", true):
 		draw(1)
@@ -103,8 +130,9 @@ func _input(event):
 			print("Cast card from hand")
 			print("Hand: " + my_hand.list_cards_in_hand())
 	elif event.is_action("debug_conc_from_well", true):
-		if my_casting_well.card_slots[0].has_card_attached:
-			move_to_conc_circle_card(my_casting_well.card_slots[0]._attached_card, -1)
+		var grabbed_card = my_casting_well.get_first_card_in_array() 
+		if grabbed_card != null:
+			move_to_conc_circle_card(grabbed_card, -1)
 			print("Concentration circle from well")
 			print("Hand: " + my_hand.list_cards_in_hand())
 	elif event.is_action("debug_conc", true):
@@ -121,5 +149,15 @@ func _input(event):
 		var grabbed_card = my_casting_well.get_first_card_in_array() 
 		if grabbed_card != null:
 			move_to_hand_card(grabbed_card)
-		print("Returned from well", true)
+		print("Returned from well", true	)
 		print("Hand: " + my_hand.list_cards_in_hand())
+	elif event.is_action("debug_discard", true):
+		if my_hand.hand.size() > 0:
+			discard_card(my_hand.hand[0])
+			print("Discarded card")
+			print("discard: " + str(my_discard.stack))
+	elif event.is_action("debug_undiscard", true):
+		if my_discard.size > 0:
+			move_card_from_discard_pile(0)
+			print("Reclaimed discarded card")
+			print("discard: " + str(my_discard.stack))

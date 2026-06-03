@@ -19,6 +19,8 @@ func attach_card(card: Card):
 	#moves the card to a position just above the card slot
 	var card_pos = global_transform.origin + transform.basis.x * CARD_DISTANCE
 	card.animate_move_card(card_pos)
+	
+	#When the card has its state changed again, this will make it automatically detatch
 	card.detatched_from_slot.connect(detach_card)
 
 '''
@@ -26,6 +28,7 @@ Detatches the card in the slot, if present. Returns true if there was a card, fa
 '''
 func detach_card():
 	if _attached_card != null:
+		#disconnect the signal as card won't be attached anymore
 		_attached_card.detatched_from_slot.disconnect(detach_card)
 		_attached_card = null
 		has_card_attached = false
