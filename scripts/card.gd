@@ -2,6 +2,7 @@ class_name Card extends Node3D
 
 signal marked_for_discard
 signal marked_for_casting(card, slot: int)
+signal marked_for_conc_circle(card, slot: int)
 
 signal left_hand
 signal detatched_from_slot
@@ -73,10 +74,10 @@ func _reset_casting_data():
 	quickenAmount = 0
 
 '''
-Handles having the card's state changed. Sends any relevant signals, as well as
+Prepares to have the card's state changed. Sends any relevant signals, as well as
 sets the state to the new state
 '''
-func handle_state_change(new_state: Enums.CardState):
+func ready_state_change(new_state: Enums.CardState):
 	match card_state:
 		Enums.CardState.IN_HAND:
 			left_hand.emit(self)
@@ -94,7 +95,7 @@ Params:
 '''
 func animate_move_card(new_pos: Vector3):
 	var tween = get_tree().create_tween()
-	tween.tween_property(self, "position", new_pos, 0.2)
+	tween.tween_property(self, "global_position", new_pos, 0.2)
 
 '''
 Called by other classes to tell the card it should be discarded. Used to signal
@@ -110,3 +111,11 @@ Params:
 '''
 func mark_cast(slot: int=-1):
 	marked_for_casting.emit(self, slot)
+
+'''
+Called by other classes to tell the card to be moved to concentration circle 
+Params:
+	- slot: the slot the card should be cast to. -1 means first open
+'''
+func mark_conc_circle(slot: int=-1):
+	marked_for_conc_circle.emit(self, slot)

@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://ib2osvbdn8q0" path="res://scripts/hand.gd" id="3_m8rb2"]
 [ext_resource type="Texture2D" uid="uid://d1qybs0ji2g2u" path="res://assets/Vaati on Ice.png" id="3_rakli"]
 [ext_resource type="Script" uid="uid://3f0prgjypuvs" path="res://scripts/deck.gd" id="4_wg42b"]
+[ext_resource type="Script" uid="uid://cdses3ncf76ha" path="res://scripts/concentration_circle.gd" id="8_kll7q"]
 [ext_resource type="Script" uid="uid://bv2gqrgycjo7l" path="res://scripts/casting_well.gd" id="8_ybpqv"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m8rb2"]
@@ -53,25 +54,27 @@ mesh = SubResource("QuadMesh_o4s3k")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.35, 0.1, -7.549759)
 script = ExtResource("8_ybpqv")
 
-[node name="ConcentrationCircle" type="Node3D" parent="." unique_id=560687061]
+[node name="ConcentrationCircle" type="Node3D" parent="." unique_id=560687061 node_paths=PackedStringArray("card_slots")]
+script = ExtResource("8_kll7q")
+card_slots = [NodePath("CardSlot1"), NodePath("CardSlot2"), NodePath("CardSlot3"), NodePath("CardSlot4"), NodePath("CardSlot5"), NodePath("CardSlot6")]
 
-[node name="CardSlot" parent="ConcentrationCircle" unique_id=1587189409 instance=ExtResource("2_u20q3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
-
-[node name="CardSlot2" parent="ConcentrationCircle" unique_id=1567077773 instance=ExtResource("2_u20q3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
-
-[node name="CardSlot3" parent="ConcentrationCircle" unique_id=1222616978 instance=ExtResource("2_u20q3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 3.6)
-
-[node name="CardSlot4" parent="ConcentrationCircle" unique_id=45054272 instance=ExtResource("2_u20q3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 3.6)
-
-[node name="CardSlot5" parent="ConcentrationCircle" unique_id=1506852343 instance=ExtResource("2_u20q3")]
+[node name="CardSlot1" parent="ConcentrationCircle" unique_id=1506852343 instance=ExtResource("2_u20q3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -3.6)
 
-[node name="CardSlot6" parent="ConcentrationCircle" unique_id=1243004508 instance=ExtResource("2_u20q3")]
+[node name="CardSlot2" parent="ConcentrationCircle" unique_id=1243004508 instance=ExtResource("2_u20q3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -3.6)
+
+[node name="CardSlot3" parent="ConcentrationCircle" unique_id=1567077773 instance=ExtResource("2_u20q3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
+
+[node name="CardSlot4" parent="ConcentrationCircle" unique_id=1222616978 instance=ExtResource("2_u20q3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 3.6)
+
+[node name="CardSlot5" parent="ConcentrationCircle" unique_id=45054272 instance=ExtResource("2_u20q3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 3.6)
+
+[node name="CardSlot6" parent="ConcentrationCircle" unique_id=1587189409 instance=ExtResource("2_u20q3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
 
 [node name="Discard" type="Node3D" parent="." unique_id=1768579913]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 5)

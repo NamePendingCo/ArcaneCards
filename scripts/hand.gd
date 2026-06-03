@@ -9,10 +9,21 @@ var hand: Array[Card] = []
 func _ready():
 	pass
 
+#TODO: Delete this or change to return list of IDs
+'''
+Utility function just to get the list of cards in the hand
+Returns: a string of the list of card names
+'''
+func list_cards_in_hand():
+	var card_names = []
+	for card in hand:
+		card_names.append(card.card_data.cardName)
+	return ", ".join(card_names)
+
 func add_card_to_hand(card: Card):
 	if card not in hand:
 		card.left_hand.connect(remove_card_from_hand)
-		card.handle_state_change(IN_HAND)
+		card.ready_state_change(IN_HAND)
 		hand.append(card)
 		_update_hand_positions()
 

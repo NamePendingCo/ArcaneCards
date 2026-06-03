@@ -1,4 +1,4 @@
-class_name CastingWell extends Node3D
+class_name CastingWell extends SlottedCardArray
 
 const SPACE_BETWEEN_SLOTS = 0.8
 
@@ -11,19 +11,14 @@ const MAX_SLOTS = 5
 const CARD_SLOT_PATH = "res://scenes/CardSlot.tscn"
 var card_slot_scene : PackedScene
 
-#actual tracker for card slots. Each hold reference to card in well
-var card_slots: Array[CardSlot]
-
-#easy variable for tracking size of card_slots
-var num_slots: int:
-	get: return card_slots.size()
-	set(val): pass
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	card_slot_scene = preload(CARD_SLOT_PATH)
 	for i in range(DEFAULT_SLOTS):
 		add_slot()
+
+func _get_relevant_card_state():
+	return Enums.CardState.CASTING
 
 '''
 Adds a slot to the casting well
@@ -42,8 +37,6 @@ func add_slot():
 	add_child(new_slot)
 	#adds to list
 	card_slots.push_back(new_slot)
-	
-	print(new_slot.global_position)
 
 '''
 Removes the last slot from the slots list and destroys it.
@@ -71,36 +64,11 @@ func set_slots(new_num_slots: int):
 			add_slot()
 		else:
 			#removes slot if too many
-			remove_slot()
-'''
-Helper function that attaches a card to a card slot
-Params:
-	- card: a card
-	- slot: a card slot
-Returns: True on success, false on failure
-'''
-func _attach_card_to_slot(card: Card, slot: CardSlot):
-	if not slot.has_card_attached:
-		slot.attached_card = card
-		card.handle_state_change(Enums.CardState.CASTING)
-		return true
-	else:
-		return false
+			remove_slot()	
 
 '''
-Adds a card to the casting well in the first available slot
-Params:
-	- card: Card to be added to the well
-Return:
-	- True if card could be added, False if it could not
+Alias for add card to array for casting well
 '''
 func add_card_to_well(card: Card, slot_num: int=-1):
-	if slot_num == -1:
-		for slot in card_slots:
-			if _attach_card_to_slot(card, slot):
-				return true
-	elif slot_num >= 0 and slot_num < num_slots:
-		return _attach_card_to_slot(card, card_slots[slot_num])
-	return false
-	
+	_add_card_to_array(card, slot_num)
 	

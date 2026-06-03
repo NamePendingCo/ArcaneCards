@@ -1,7 +1,7 @@
 class_name Deck extends Node3D
 
 #An array of card_ids. The top of the deck is the least index
-var deck : Array[String] = ["chilly_breeze", "echoing_roar", "echoing_roar"] #TYPE TBD
+var deck : Array[String] = ["chilly_breeze", "echoing_roar", "echoing_roar", "chilly_breeze"] #TYPE TBD
 
 '''
 Pops the top card of the deck.
