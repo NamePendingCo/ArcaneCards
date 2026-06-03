@@ -49,6 +49,10 @@ text = "Deck"
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
 mesh = SubResource("QuadMesh_o4s3k")
 
+[node name="CastingWell" type="Node3D" parent="." unique_id=1779029347]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.35, 0.1, -5.549759)
+script = ExtResource("8_ybpqv")
+
 [node name="ConcentrationCircle" type="Node3D" parent="." unique_id=560687061]
 
 [node name="CardSlot" parent="ConcentrationCircle" unique_id=1587189409 instance=ExtResource("2_u20q3")]
@@ -68,18 +72,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -3.6)
 
 [node name="CardSlot6" parent="ConcentrationCircle" unique_id=1243004508 instance=ExtResource("2_u20q3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -3.6)
-
-[node name="CastingWell" type="Node3D" parent="." unique_id=1779029347]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8)
-script = ExtResource("8_ybpqv")
-
-[node name="CardSlot" parent="CastingWell" unique_id=613259698 instance=ExtResource("2_u20q3")]
-
-[node name="CardSlot2" parent="CastingWell" unique_id=1340917560 instance=ExtResource("2_u20q3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 0)
-
-[node name="CardSlot3" parent="CastingWell" unique_id=1291081508 instance=ExtResource("2_u20q3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
 
 [node name="Discard" type="Node3D" parent="." unique_id=1768579913]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 5)

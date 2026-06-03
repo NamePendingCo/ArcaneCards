@@ -3,9 +3,10 @@ class_name Caster
 extends Being
 
 #List of important children to track
-var card_manager: CardManager
-var my_deck: Deck
-var my_hand: Hand
+@onready var card_manager: CardManager = $CardManager
+@onready var my_deck: Deck = $Deck
+@onready var my_hand: Hand = $Hand
+@onready var my_casting_well: CastingWell = $CastingWell
 #var my_discard: Discard
 #var my_casting_well: CastingWell
 #var my_conc_circle: ConcentrationCircle
@@ -14,10 +15,7 @@ var mana: int
 
 func _ready():
 	super()
-	card_manager = $"CardManager"
-	card_manager.my_caster = self
-	my_hand = $"Hand"
-	my_deck = $"Deck"
+	card_manager.created_card.connect(_register_card)
 
 #Enum for determining destinations for drawn cards. Maybe should be moved
 enum DrawDest {
@@ -25,6 +23,15 @@ enum DrawDest {
 	SELECTION, #send cards to a selection page to choose from them
 	DISCARD #send directly to discard
 }
+
+'''
+Connects a card's signals to the caster and also sets its owner to this caster
+Params:
+	- card: The card to connect with
+'''
+func _register_card(card: Card):
+	#card.marked_for_discard.connect() TODO
+	card.marked_for_casting.connect(cast_card) #connects casting to card's signal
 
 #TODO: Handle dest value
 '''
@@ -34,15 +41,17 @@ Params:
 	num_drawn: Number of cards drawn, defaults to 1
 	dest: Enum specifying destination of where the cards should go. 
 	Defaults to the hand (0). 
+Returns:
+	True on successful draw. False if failed
 '''
 func draw(num_drawn: int = 1, dest: DrawDest = DrawDest.HAND):
 	if num_drawn <= 0:
 		print("Cannot draw " + str(num_drawn) + " Cards")
-		return
+		return false
 	
 	if dest > 0:
 		print("Non-implemented draw destination: " + str(dest))
-		return
+		return false
 	else:
 		#get list of cards from the deck
 		var card_ids = my_deck.pop_top_cards(num_drawn)
@@ -51,10 +60,20 @@ func draw(num_drawn: int = 1, dest: DrawDest = DrawDest.HAND):
 			var card_data = CardDatabase.get_card_data(id)
 			var drawn_card = card_manager.instatiate_card(card_data, my_deck.position)
 			
-			#rotates card to be flat and readable
-			drawn_card.rotate_object_local(Vector3.RIGHT, PI/-2) 
 			my_hand.add_card_to_hand(drawn_card)
-		
+		return true
+
+'''
+Send a spell into the casting well. 
+Params:
+	- card: the card to cast
+	- slot: the slot to cast it to. If -1, does the first open slot. 
+Return:
+	- True if successful. False if not
+'''
+func cast_card(card: Card, slot: int=-1):
+	my_casting_well.add_card_to_well(card, slot)
+
 func _input(event):
 	if event.is_action("debug_draw"):
 		draw(1)

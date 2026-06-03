@@ -1,12 +1,16 @@
 class_name Being extends Node
 
+signal health_depleted
+
 var being_name: String
 
 #backdoor in case we ever need to handle health below zero
 var _health: int
 #main health variable. Can't go below 0
 var health = _health:
-	set(val): _health = max(0, val)
+	set(val): 
+		_health = max(0, val)
+		health_depleted.emit()
 
 var attack_strength: int
 

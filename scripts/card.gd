@@ -1,14 +1,13 @@
 class_name Card extends Node3D
 
+signal marked_for_discard
+signal marked_for_casting(card, slot: int)
+
+signal detatched_from_slot
+
+@export
 var card_owner: Caster
-
-var card_state: Enums.CardState
-
-#when true, card can be dragged around by player. When false, cannot move
-#for now, assume always can while in hand or state is null. Probably fix later
-var position_locked: bool:
-	get: return card_state <= Enums.CardState.IN_HAND
-	set(val): pass
+#THIS SHOULD BE USED *ONLY* TO COMPARE OWNERS. NEVER CALL THIS
 
 @export var card_data: CardData:
 	set(value):
@@ -44,9 +43,47 @@ var position_locked: bool:
 		#reset the viewport so it reloads with the new info
 		viewport.render_target_update_mode = SubViewport.UpdateMode.UPDATE_ONCE
 
+var card_state: Enums.CardState
+
+var roundsSpentCasting: int: 
+	set(val): 
+		roundsSpentCasting = max(val, 0)
+var delayAmount: int:
+	set(val): 
+			delayAmount = max(val, 0)
+var quickenAmount: int:
+	set(val): 
+			quickenAmount = max(val, 0)
+
+#when true, card can be dragged around by player. When false, cannot move
+#for now, assume always can while in hand or state is null. Probably fix later
+var position_locked: bool:
+	get: return card_state <= Enums.CardState.IN_HAND
+	set(val): pass
+
 func _ready():
 	card_owner = null
 	card_state = Enums.CardState.NULL
+	_reset_casting_data()
+	
+func _reset_casting_data():
+	roundsSpentCasting = 0
+	delayAmount = 0
+	quickenAmount = 0
+
+'''
+Handles having the card's state changed. Sends any relevant signals, as well as
+sets the state to the new state
+'''
+func handle_state_change(new_state: Enums.CardState):
+	match card_state:
+		Enums.CardState.IN_HAND:
+			print()
+		Enums.CardState.CASTING, Enums.CardState.IN_CIRCLE:
+			detatched_from_slot.emit()
+	
+	card_state = new_state
+	
 
 #TODO: Add flipping support here perhaps?
 '''
@@ -58,9 +95,17 @@ func animate_move_card(new_pos: Vector3):
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "position", new_pos, 0.2)
 
-#TODO
 '''
-Moves card to owner's discard pile. On success, return true. If no owner, returns false.
+Called by other classes to tell the card it should be discarded. Used to signal
+to the caster it should be discarded.
 '''
-func discard():
-	pass
+func mark_discard():
+	marked_for_discard.emit()
+
+'''
+Called by other classes to tell the card to be cast. 
+Params:
+	- slot: the slot the card should be cast to. -1 means first open
+'''
+func mark_cast(slot: int=-1):
+	marked_for_casting.emit(self, slot)

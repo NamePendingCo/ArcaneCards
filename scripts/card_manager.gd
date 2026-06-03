@@ -1,9 +1,9 @@
 class_name CardManager extends Node3D
 
-const CARD_SCENE_PATH = "res://scenes/Card.tscn"
+#sent to notify it created a card
+signal created_card(card: Card)
 
-@export
-var my_caster: Caster #the card manager's caster
+const CARD_SCENE_PATH = "res://scenes/Card.tscn"
 
 var card_scene: PackedScene
 
@@ -23,6 +23,7 @@ func instatiate_card(data: CardData, start_pos: Vector3 = position):
 	new_card.position = start_pos
 	add_child(new_card)
 	new_card.card_data = data
-	new_card.card_owner = my_caster
+	#tell listeners a new card object has been made
+	created_card.emit(new_card)
 	print(new_card.card_data.cardName + " Created at " + str(new_card.position))
 	return new_card

@@ -11,21 +11,21 @@ func _ready():
 
 func add_card_to_hand(card: Card):
 	if card not in hand:
-		card.card_state = IN_HAND
+		card.handle_state_change(IN_HAND)
 		hand.append(card)
-		update_hand_positions()
+		_update_hand_positions()
 
 func remove_card_from_hand(card: Card):
 	if card in hand:
 		if card.card_state == IN_HAND:
 			card.card_state = Enums.CardState.NULL
 		hand.erase(card)
-		update_hand_positions()
+		_update_hand_positions()
 
 '''
 Updates the positions of all cards in the hand based on their sizes
 '''
-func update_hand_positions():
+func _update_hand_positions():
 	for i in range(hand.size()):
 		#get offset of the card relative to hand
 		var offset = calculate_card_offset(i)
