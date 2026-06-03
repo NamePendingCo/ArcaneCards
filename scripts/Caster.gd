@@ -119,6 +119,8 @@ func move_card_from_discard_pile(index: int, dest: DrawDest = DrawDest.HAND):
 		move_to_hand_card(card)
 		return true
 
+#TODO Remove this in place of actual input action
+# This is not a permanent function, it's merely to test things out
 func _input(event):
 	if event.is_action("debug_draw", true):
 		draw(1)
