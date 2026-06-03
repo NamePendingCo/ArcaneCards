@@ -3,6 +3,7 @@ class_name Card extends Node3D
 signal marked_for_discard
 signal marked_for_casting(card, slot: int)
 
+signal left_hand
 signal detatched_from_slot
 
 @export
@@ -78,7 +79,7 @@ sets the state to the new state
 func handle_state_change(new_state: Enums.CardState):
 	match card_state:
 		Enums.CardState.IN_HAND:
-			print()
+			left_hand.emit(self)
 		Enums.CardState.CASTING, Enums.CardState.IN_CIRCLE:
 			detatched_from_slot.emit()
 	

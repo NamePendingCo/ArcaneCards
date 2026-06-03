@@ -77,3 +77,6 @@ func cast_card(card: Card, slot: int=-1):
 func _input(event):
 	if event.is_action("debug_draw"):
 		draw(1)
+	elif event.is_action("debug_cast"):
+		if my_hand.hand.size() > 0:
+			cast_card(my_hand.hand[0], -1)

@@ -11,14 +11,14 @@ func _ready():
 
 func add_card_to_hand(card: Card):
 	if card not in hand:
+		card.left_hand.connect(remove_card_from_hand)
 		card.handle_state_change(IN_HAND)
 		hand.append(card)
 		_update_hand_positions()
 
 func remove_card_from_hand(card: Card):
 	if card in hand:
-		if card.card_state == IN_HAND:
-			card.card_state = Enums.CardState.NULL
+		card.left_hand.disconnect(remove_card_from_hand)
 		hand.erase(card)
 		_update_hand_positions()
 
@@ -31,7 +31,7 @@ func _update_hand_positions():
 		var offset = calculate_card_offset(i)
 		
 		#adds the offset to the hand origin to shift card
-		var new_pos = transform.origin + offset
+		var new_pos = global_transform.origin + offset
 		
 		#move the card into new position
 		hand[i].animate_move_card(new_pos)

@@ -34,7 +34,7 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0
 texture = ExtResource("3_rakli")
 
 [node name="Hand" type="Node3D" parent="." unique_id=1343946323]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6.500291)
 script = ExtResource("3_m8rb2")
 
 [node name="Deck" type="Node3D" parent="." unique_id=762550448]
@@ -50,7 +50,7 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0
 mesh = SubResource("QuadMesh_o4s3k")
 
 [node name="CastingWell" type="Node3D" parent="." unique_id=1779029347]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.35, 0.1, -5.549759)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.35, 0.1, -7.549759)
 script = ExtResource("8_ybpqv")
 
 [node name="ConcentrationCircle" type="Node3D" parent="." unique_id=560687061]

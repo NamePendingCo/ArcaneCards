@@ -35,19 +35,15 @@ func add_slot():
 	
 	var offset = transform.basis.x * num_slots * (Constants.CARD_WIDTH + SPACE_BETWEEN_SLOTS)
 	
-	var slot_pos = global_position + offset
-	
-	print(global_transform.origin)
-	print(slot_pos)
-	
 	#creates new slot object
 	var new_slot: CardSlot = card_slot_scene.instantiate()
-	new_slot.global_position = slot_pos
+	new_slot.set_position(offset)
 	#adds as a child of well
 	add_child(new_slot)
 	#adds to list
 	card_slots.push_back(new_slot)
-	print(new_slot.transform)
+	
+	print(new_slot.global_position)
 
 '''
 Removes the last slot from the slots list and destroys it.
