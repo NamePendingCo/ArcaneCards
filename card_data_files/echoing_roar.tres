@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://br83bg2y5hb6v"]
+
+[ext_resource type="Script" uid="uid://x0i1uyfprpdj" path="res://scripts/resources/card_data.gd" id="1_a40os"]
+
+[resource]
+script = ExtResource("1_a40os")
+card_id = "echoing_roar"
+cardName = "Echoing Roar"
+color = 3
+subdomain = 33
+type = 1
+tier = 2
+activation_cost = Array[int]([2, 1])
+effects = "Deal 3 damage.
+
+Chain Vibration: Return this card to your hand."
+metadata/_custom_type_script = "uid://x0i1uyfprpdj"

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://d2n5shcpvrktb"]
+
+[ext_resource type="Script" uid="uid://x0i1uyfprpdj" path="res://scripts/resources/card_data.gd" id="1_vcjca"]
+
+[resource]
+script = ExtResource("1_vcjca")
+card_id = "chilly_breeze"
+cardName = "Chilly Breeze"
+color = 1
+subdomain = 12
+type = 1
+tier = 1
+activation_cost = Array[int]([2])
+effects = "Deal 1 damage to a target and place a 0-Cost Counter on a Red card in your casting well.
+
+Empower 1: Deal 1 more damage."
+metadata/_custom_type_script = "uid://x0i1uyfprpdj"

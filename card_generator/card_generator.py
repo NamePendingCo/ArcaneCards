@@ -8,25 +8,33 @@ components_file = "component_list.csv"
 outpath = "current_cards/"
 zipped_fn = "current_cards"
 
+assets_fpath = "..assets/"
+
+cardbase_fpath = assets_fpath + "card_bases/"
+
 # color files
-red_card_fpath = "card_bases/red_base_card.png"
-orange_card_fpath = "card_bases/orange_base_card.png"
-yellow_card_fpath = "card_bases/yellow_base_card.png"
-green_card_fpath = "card_bases/green_base_card.png"
-blue_card_fpath = "card_bases/blue_base_card.png"
-purple_card_fpath = "card_bases/purple_base_card.png"
-gray_card_fpath = "card_bases/gray_base_card.png"
+red_card_fpath = cardbase_fpath + "red_base_card.png"
+orange_card_fpath = cardbase_fpath + "orange_base_card.png"
+yellow_card_fpath = cardbase_fpath + "yellow_base_card.png"
+green_card_fpath = cardbase_fpath + "green_base_card.png"
+blue_card_fpath = cardbase_fpath + "blue_base_card.png"
+purple_card_fpath = cardbase_fpath + "purple_base_card.png"
+gray_card_fpath = cardbase_fpath + "gray_base_card.png"
+
+icons_fpath = assets_fpath + "icons/"
 
 # icon files
-instant_fpath = "icons/instant.png"
-enchantment_fpath = "icons/enchantment.png"
-curse_fpath = "icons/curse.png"
-ward_fpath = "icons/ward.png"
-component_fpath = "icons/knife.png"
+instant_fpath = icons_fpath + "instant.png"
+enchantment_fpath = icons_fpath + "enchantment.png"
+curse_fpath = icons_fpath + "curse.png"
+ward_fpath = icons_fpath + "ward.png"
+component_fpath = icons_fpath + "knife.png"
 
-font_fpath = "fonts/Verdana.ttf"
-bold_font_fpath = "fonts/Verdana-Bold.ttf"
-viner_font_fpath = "fonts/VINERITC.TTF"
+fonts_fpath = assets_fpath + "fonts/"
+
+font_fpath = fonts_fpath + "Verdana.ttf"
+bold_font_fpath = fonts_fpath + "Verdana-Bold.ttf"
+viner_font_fpath = fonts_fpath + "VINERITC.TTF"
 
 # Positions
 name_pos = (105, 42)
