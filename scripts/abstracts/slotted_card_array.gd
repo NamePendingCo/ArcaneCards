@@ -51,9 +51,9 @@ func _add_card_to_array(card: Card, slot_num: int=-1):
 	elif slot_num >= 0 and slot_num < num_slots:
 		return _attach_card_to_slot(card, card_slots[slot_num])
 	return false
-	
+
 func get_first_card_in_array():
 	for slot in card_slots:
 		if slot.has_card_attached:
-			return slot._attached_card
+			return slot.attached_card
 	return null

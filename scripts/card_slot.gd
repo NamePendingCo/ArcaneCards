@@ -4,6 +4,9 @@ class_name CardSlot extends Node3D
 const CARD_DISTANCE = 0.01
 
 var _attached_card: Card
+var attached_card: Card:
+	get(): return _attached_card
+	set(val): pass
 var has_card_attached: bool
 
 # Called when the node enters the scene tree for the first time.
