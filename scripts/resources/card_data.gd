@@ -18,3 +18,6 @@ extends Resource
 @export_multiline() var effects: String
 
 @export var art: Texture
+
+@export_category("Events and Effects")
+@export var events: Array[CardEvent]
