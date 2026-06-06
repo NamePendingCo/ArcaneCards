@@ -1,4 +1,4 @@
-class_name CardEffect extends Resource
+class_name Effect extends Resource
 
 @export
 var val: int

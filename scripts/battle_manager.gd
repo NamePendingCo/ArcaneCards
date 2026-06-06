@@ -21,37 +21,59 @@ enum RoundPhase {
 @export
 var casters: Array[Caster] = []
 
-var roundNum: int
-var currentPhase: RoundPhase
+var round_num: int
+var current_phase: RoundPhase
+
+var event_stack: Array[Event] #stack used for event processing
+var to_stack_list: Array[Event] #events queued to be added to stack
+
 
 func _ready():
-	currentPhase = RoundPhase.NULL
+	current_phase = RoundPhase.NULL
+	event_stack = []
 
 #TODO Clean up description
 '''
 goes through the actor event and see what effects are present. 
 Notify affected cards/casters of what will occur so they can send 
-relevant signals. Then, see if there is anything in toStack. 
+relevant signals. Then, see if there is anything in to_stack_list. 
 If there is, order them based on RULESET HERE, add them all to 
 both the actor's triggeredEvents list and the spellStack, and then return False. 
 Otherwise return true
+Returns:
+	- True if to_stack_list is empty after announcing event
+	- False if to_stack_list has items in it
 '''
-func _pre_trigger(actor):# -> bool:
-	pass
+func _pre_trigger(event: Event) -> bool:
+	#TODO make some sort of announcement of event here
+	
+	if to_stack_list.is_empty():
+		return true
+	else:
+		to_stack_list.sort_custom(func(a, b): return true) #TODO replace with real comparison function
+		event.triggered_events.append_array(to_stack_list)
+		event_stack.append_array(to_stack_list)
+		return false
 
 '''
-The big one. While event stack not empty, get top then pass to pre-trigger. If true,
+While event stack not empty, get top then pass to pre-trigger. If true,
 pop from spell stack and trigger. If false, discard
 '''
 func _process_event_stack():
+	while not event_stack.is_empty():
+		#checks the top item on stack
+		if _pre_trigger(event_stack[-1]):
+			var running_event: Event = event_stack.pop_back()
+			running_event.run()
+
+func _queue_event():
 	pass
-	
 
 '''
 All game start and setup stuff should be done here
 '''
 func startMatch():
-	roundNum = 0 #starts at zero so it can increase every round
+	round_num = 0 #starts at zero so it can increase every round
 	phaseRoundLoad()
 
 '''
@@ -61,7 +83,7 @@ all calls of the phase function
 '''
 func advancePhase():
 	# next phase is either the next phase on the list, or if it is END resets to ROUND_LOAD
-	var next_phase = currentPhase + 1 if currentPhase < RoundPhase.END else RoundPhase.ROUND_LOAD
+	var next_phase = current_phase + 1 if current_phase < RoundPhase.END else RoundPhase.ROUND_LOAD
 	
 	match next_phase:
 		RoundPhase.ROUND_LOAD: phaseRoundLoad()
@@ -76,10 +98,10 @@ func advancePhase():
 Any events that should occur technical wise but not mechanically go here.
 '''
 func phaseRoundLoad():
-	currentPhase = RoundPhase.ROUND_LOAD
+	current_phase = RoundPhase.ROUND_LOAD
 	round_load_phase_began.emit()
 	
-	roundNum += 1 #Increases the round number
+	round_num += 1 #Increases the round number
 	
 	advancePhase()
 
@@ -87,7 +109,7 @@ func phaseRoundLoad():
 The draw phase of the game. Any events that should occur go here.
 '''
 func phaseDraw():
-	currentPhase = RoundPhase.DRAW
+	current_phase = RoundPhase.DRAW
 	draw_phase_began.emit()
 	
 	_process_event_stack() #Handle any draw phase events/invocations
@@ -108,8 +130,8 @@ func _do_standard_draw():
 Runs the upkeep phase of the game.
 '''
 func phaseUpkeep():
-	currentPhase = RoundPhase.UPKEEP
-	if roundNum == 1:
+	current_phase = RoundPhase.UPKEEP
+	if round_num == 1:
 		#skip upkeep phase for first round
 		advancePhase()
 	
@@ -126,14 +148,21 @@ func _casters_gain_mana_income():
 
 #TODO	
 func _casters_pay_upkeep():
-	pass
+	for caster in casters:
+		caster.declare_paying_upkeep()
+
+'''
+Processes a declaration to pay upkeep by running any events that it triggers
+'''
+func _process_upkeep_payment(caster: Caster):
+	_process_event_stack()
 
 #TODO: Add an await function (or two) waiting on casters to make their choices
 '''
 Should allow casters to pick their cards here
 '''
 func phaseCasting():
-	currentPhase = RoundPhase.CASTING
+	current_phase = RoundPhase.CASTING
 	casting_phase_began.emit()
 	
 	advancePhase()
@@ -142,7 +171,7 @@ func phaseCasting():
 Resolution of actions. Most important for having the effect stack here.
 '''
 func phaseAdjudication():
-	currentPhase = RoundPhase.ADJUDICATION
+	current_phase = RoundPhase.ADJUDICATION
 	adjudication_phase_began.emit()
 	
 	# Loop that should go here to cycle through activations and also invocations
@@ -153,7 +182,7 @@ func phaseAdjudication():
 All end phase mechanics triggered here
 '''
 func phaseEnd():
-	currentPhase = RoundPhase.END
+	current_phase = RoundPhase.END
 	end_phase_began.emit()
 	
 	_process_event_stack() #Handle any end phase events/invocations

@@ -2,6 +2,10 @@ class_name Card extends Node3D
 
 const COLOR = Enums.SpellColor
 
+#Core signals to denote state change
+signal casted #TODO
+signal activated
+
 #signals to tell the caster to take actions on this card
 signal marked_for_discard
 signal marked_for_casting(card, slot: int)
@@ -77,8 +81,6 @@ var activation_cost: Array[int]:
 			2: spell_face.get_node("ActivationCost").text = str(ac[0]) + '/' + str(ac[1])
 			3: spell_face.get_node("ActivationCost").text = str(ac[0]) + '/' + str(ac[1]) + '/' + str(ac[2])
 
-			
-		
 var upkeep: int:
 	set(val):
 		#set upkeep cost on cardface
@@ -89,20 +91,18 @@ var upkeep: int:
 var card_state: Enums.CardState
 
 var roundsSpentCasting: int: 
-	set(val): 
-		roundsSpentCasting = max(val, 0)
-var delayAmount: int:
-	set(val): 
-			delayAmount = max(val, 0)
-var quickenAmount: int:
-	set(val): 
-			quickenAmount = max(val, 0)
+	set(val): roundsSpentCasting = max(val, 0)
+var delayAmount: int: 
+	set(val): delayAmount = max(val, 0)
+var quickenAmount: int: 
+	set(val): quickenAmount = max(val, 0)
 
 #when true, card can be dragged around by player. When false, cannot move
 #for now, assume always can while in hand or state is null. Probably fix later
 var position_locked: bool:
 	get: return card_state <= Enums.CardState.IN_HAND
 	set(val): pass
+
 
 func _ready():
 	card_owner = null
@@ -140,6 +140,11 @@ func animate_move_card(new_pos: Vector3):
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "global_position", new_pos, 0.2)
 
+func activate():
+	pass
+
+### Below are functions for sending signals pre-events occuring
+
 '''
 Called by other classes to tell the card it should be discarded. Used to signal
 to the caster it should be discarded.
@@ -163,6 +168,7 @@ Params:
 func mark_conc_circle(slot: int=-1):
 	marked_for_conc_circle.emit(self, slot)
 
+#TODO merge with pay upkeep. Use awaits instead
 '''
 Emits a signal saying its upkeep is about to be paid.
 '''
