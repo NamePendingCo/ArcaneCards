@@ -1,9 +1,16 @@
+@tool
 class_name Event extends Resource
+
+signal effects_len_changed(int)
 
 signal eventTriggered
 
 @export
-var effects: Array[Effect]
+var effects: Array[Effect]:
+	set(val):
+		effects = val
+		for effect in effects:
+			effect._num_parent_effects = effects.size()
 
 @export
 var isInvocation: bool = true

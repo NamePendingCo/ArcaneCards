@@ -20,4 +20,4 @@ extends Resource
 @export var art: Texture
 
 @export_category("Events and Effects")
-@export var events: Array[CardEvent]
+@export var events: Array[Event]
