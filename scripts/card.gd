@@ -100,7 +100,7 @@ var quickenAmount: int:
 #when true, card can be dragged around by player. When false, cannot move
 #for now, assume always can while in hand or state is null. Probably fix later
 var position_locked: bool:
-	get: return card_state <= Enums.CardState.IN_HAND
+	get: return card_state <= Enums.CardState.HAND
 	set(val): pass
 
 
@@ -120,9 +120,9 @@ sets the state to the new state
 '''
 func ready_state_change(new_state: Enums.CardState):
 	match card_state:
-		Enums.CardState.IN_HAND:
+		Enums.CardState.HAND:
 			left_hand.emit(self)
-		Enums.CardState.CASTING, Enums.CardState.IN_CIRCLE:
+		Enums.CardState.CASTING_WELL, Enums.CardState.CONCENTRATION_CIRCLE:
 			detatched_from_slot.emit()
 	
 	card_state = new_state

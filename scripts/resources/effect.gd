@@ -27,10 +27,10 @@ func _validate_property(property: Dictionary) -> void:
 	if property.name == "bonus_triggers":
 		if multi_bonus_trigger:
 			property.hint = PROPERTY_HINT_FLAGS
-			property.hint_string = ",".join(EventEnums.getExportEnumVals(EventEnums.BonusTriggers).slice(1))
+			property.hint_string = EventEnums.getEnumValsHintString(EventEnums.BonusTriggers, false, 1)
 		else:
 			property.hint = PROPERTY_HINT_ENUM
-			property.hint_string = ",".join(EventEnums.getExportEnumVals(EventEnums.BonusTriggers))
+			property.hint_string = EventEnums.getEnumValsHintString(EventEnums.BonusTriggers)
 
 func invoke() -> bool: 
 	return true

@@ -2,6 +2,18 @@
 
 [ext_resource type="Script" uid="uid://dedl4t18oxaef" path="res://scripts/resources/event.gd" id="1_fo6l7"]
 [ext_resource type="Script" uid="uid://x0i1uyfprpdj" path="res://scripts/resources/card_data.gd" id="1_vcjca"]
+[ext_resource type="Script" uid="uid://chu660wrfnmcc" path="res://scripts/resources/target_parameters/card_target_param.gd" id="2_dj1eg"]
+[ext_resource type="Script" uid="uid://c3lsne5qhwrmf" path="res://scripts/resources/effect.gd" id="2_hda2m"]
+[ext_resource type="Script" uid="uid://l66kvw1qw48c" path="res://scripts/resources/target_parameters/being_target_param.gd" id="3_whvih"]
+
+[sub_resource type="Resource" id="Resource_dj1eg"]
+script = ExtResource("2_dj1eg")
+metadata/_custom_type_script = "uid://chu660wrfnmcc"
+
+[sub_resource type="Resource" id="Resource_atrgt"]
+script = ExtResource("1_fo6l7")
+card_target_ranges = Array[ExtResource("2_dj1eg")]([SubResource("Resource_dj1eg")])
+metadata/_custom_type_script = "uid://dedl4t18oxaef"
 
 [resource]
 script = ExtResource("1_vcjca")
@@ -12,4 +24,5 @@ subdomain = 12
 type = 1
 tier = 1
 activation_cost = Array[int]([2])
+events = Array[ExtResource("1_fo6l7")]([SubResource("Resource_atrgt")])
 metadata/_custom_type_script = "uid://x0i1uyfprpdj"

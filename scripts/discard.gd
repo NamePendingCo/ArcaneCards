@@ -5,7 +5,7 @@ func _ready():
 	stack = []
 
 func _get_relevant_card_state():
-	return Enums.CardState.IN_DISCARD
+	return Enums.CardState.DISCARD
 
 '''
 Alias function specialized for _add_card_to_stack

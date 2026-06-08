@@ -18,7 +18,7 @@ func _ready():
 		add_slot()
 
 func _get_relevant_card_state():
-	return Enums.CardState.CASTING
+	return Enums.CardState.CASTING_WELL
 
 '''
 Adds a slot to the casting well

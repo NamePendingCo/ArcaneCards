@@ -4,7 +4,7 @@ func _ready():
 	stack = ["chilly_breeze", "echoing_roar", "echoing_roar", "chilly_breeze"] #TYPE TBD
 
 func _get_relevant_card_state():
-	return Enums.CardState.IN_DECK
+	return Enums.CardState.DECK
 
 '''
 Alias function specialized for _add_card_to_stack
