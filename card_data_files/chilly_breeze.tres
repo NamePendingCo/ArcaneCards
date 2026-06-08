@@ -12,7 +12,4 @@ subdomain = 12
 type = 1
 tier = 1
 activation_cost = Array[int]([2])
-effects = "Deal 1 damage to a target and place a 0-Cost Counter on a Red card in your casting well.
-
-Empower 1: Deal 1 more damage."
 metadata/_custom_type_script = "uid://x0i1uyfprpdj"

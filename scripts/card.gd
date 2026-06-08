@@ -65,7 +65,7 @@ var card_owner: Caster
 		#creates the overview string and sets it on cardface
 		spell_face.get_node("Overview").text = '-- ' + Enums.colorString(card_data.color) + ' (' + Enums.subdomainString(card_data.subdomain) + ') -- ' + Enums.typeString(card_data.type) + ' --'
 		
-		spell_face.get_node("Effects").text = card_data.effects
+		spell_face.get_node("Effects").text = card_data.effects_text
 		
 		#reset the viewport so it reloads with the new info
 		viewport.render_target_update_mode = SubViewport.UpdateMode.UPDATE_ONCE

@@ -15,7 +15,7 @@ extends Resource
 @export var upkeep_cost: int
 
 @export_group("Details")
-@export_multiline() var effects: String
+@export_multiline() var effects_text: String
 
 @export var art: Texture
 

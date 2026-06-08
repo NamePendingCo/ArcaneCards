@@ -3,8 +3,19 @@ class_name Event extends Resource
 
 signal effects_len_changed(int)
 
-signal eventTriggered
+signal event_triggered
 
+#TODO: consider
+@export
+var is_invocation: bool = true
+
+#list of targeting parameters which are used by effects
+@export
+var target_ranges: Array[BeingTargetParam]
+@export
+var card_target_ranges: Array[CardTargetParam]
+
+#List of effects that occur during this event
 @export
 var effects: Array[Effect]:
 	set(val):
@@ -12,11 +23,11 @@ var effects: Array[Effect]:
 		for effect in effects:
 			effect._num_parent_effects = effects.size()
 
-@export
-var isInvocation: bool = true
-
 # The list of events that this event has triggered during its invocation
 var triggered_events: Array[Event]
+
+#The entity making the event occur
+var actor: Being
 
 func _ready():
 	triggered_events = []
@@ -27,7 +38,7 @@ Usually connected with a signal. When called, signals to the battle_manager
 to be added to the event stack.
 '''
 func trigger():
-	eventTriggered.emit()
+	event_triggered.emit()
 
 '''
 Runs the event and all effects that should occur as part of it.
