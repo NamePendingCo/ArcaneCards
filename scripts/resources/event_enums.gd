@@ -37,7 +37,7 @@ Takes a flag int and converts it into an array of enum values.
 '''
 static func flagIntToEnum(value: int):
 	var vals: Array[int] = []
-	var place_counter: int = 1
+	var place_counter: int = 0
 	while value > 0:
 		if value & 1 == 1: #if has a 1 in this place, add to list
 			vals.append(place_counter)
