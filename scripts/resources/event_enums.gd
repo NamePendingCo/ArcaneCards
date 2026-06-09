@@ -35,12 +35,17 @@ enum BonusTriggers {
 '''
 Takes a flag int and converts it into an array of enum values.
 '''
-static func flagIntToEnum(value: int):
+static func flagIntToEnum(value: int, enum_list: Dictionary={}):
 	var vals: Array[int] = []
-	var place_counter: int = 0
+	var place_counter: int = 1
+	if not enum_list.is_empty() and (enum_list.values()[0] == 0):
+		place_counter = 0
 	while value > 0:
 		if value & 1 == 1: #if has a 1 in this place, add to list
-			vals.append(place_counter)
+			if enum_list.is_empty():
+				vals.append(place_counter)
+			else:
+				vals.append(enum_list.values()[place_counter])
 		value >>= 1 #shift to the right
 		place_counter += 1
 	return vals
@@ -58,11 +63,11 @@ Example:
 	enum_list=CardState
 	shortcuts: {"FIELD": [CardState.HAND, CardState.CASTING_WELL, CardState.CONCENTRATION_CIRCLE]}
 Returns:
-	- 
-	- 
+	- a dict of flags
 '''
-static func enumToFlags(enum_list: Dictionary, ignore_list: Array, shortcuts: Dictionary[String, Array]={}):
+static func enumToFlags(enum_list: Dictionary, ignore_list: Array=[], shortcuts: Dictionary[String, Array]={}):
 	var new_dict: Dictionary = {}
+	var count = 0 #use this to avoid shifting by arbitrary size
 	
 	for key in enum_list:
 		if enum_list[key] in ignore_list:
@@ -70,7 +75,8 @@ static func enumToFlags(enum_list: Dictionary, ignore_list: Array, shortcuts: Di
 		elif enum_list[key] == 0:
 			new_dict[key] = 0
 		else:
-			new_dict[key] = 1 << enum_list[key]
+			new_dict[key] = 1 << count
+		count += 1
 	
 	for key in shortcuts:
 		new_dict[key] = 0
@@ -103,3 +109,8 @@ static func getEnumValsHintString(enum_list: Dictionary, start=0, end=2147483647
 		key_val.append(str(keys[i]) + ':' + str(vals[i]))
 	
 	return ",".join(key_val.slice(start, end))
+
+static func enumFlagProperty(property: Dictionary, enum_list: Dictionary, start=0, end=2147483647):
+	property.usage ^= PROPERTY_USAGE_EDITOR
+	property.hint = PROPERTY_HINT_FLAGS
+	property.hint_string = EventEnums.getEnumValsHintString(enum_list, start, end)

@@ -4,21 +4,30 @@
 [ext_resource type="Script" uid="uid://x0i1uyfprpdj" path="res://scripts/resources/card_data.gd" id="1_vcjca"]
 [ext_resource type="Script" uid="uid://chu660wrfnmcc" path="res://scripts/resources/target_parameters/card_target_param.gd" id="2_dj1eg"]
 [ext_resource type="Script" uid="uid://c3lsne5qhwrmf" path="res://scripts/resources/effect.gd" id="2_hda2m"]
+[ext_resource type="Script" uid="uid://crlxib6wo5hh6" path="res://scripts/resources/filters/card_filter.gd" id="3_atrgt"]
 [ext_resource type="Script" uid="uid://l66kvw1qw48c" path="res://scripts/resources/target_parameters/being_target_param.gd" id="3_whvih"]
 
-[sub_resource type="Resource" id="Resource_dj1eg"]
-script = ExtResource("2_dj1eg")
-is_chosen_from = false
-metadata/_custom_type_script = "uid://chu660wrfnmcc"
+[sub_resource type="Resource" id="Resource_v6au5"]
+script = ExtResource("3_atrgt")
+metadata/_custom_type_script = "uid://crlxib6wo5hh6"
 
 [sub_resource type="Resource" id="Resource_cy4iv"]
-script = ExtResource("2_hda2m")
-metadata/_custom_type_script = "uid://c3lsne5qhwrmf"
+script = ExtResource("2_dj1eg")
+card_filter = SubResource("Resource_v6au5")
+metadata/_custom_type_script = "uid://chu660wrfnmcc"
+
+[sub_resource type="Resource" id="Resource_dj1eg"]
+script = ExtResource("3_whvih")
+is_chosen_from = false
+range = 3
+metadata/_custom_type_script = "uid://l66kvw1qw48c"
 
 [sub_resource type="Resource" id="Resource_atrgt"]
 script = ExtResource("1_fo6l7")
-card_target_ranges = Array[ExtResource("2_dj1eg")]([SubResource("Resource_dj1eg")])
-effects = Array[ExtResource("2_hda2m")]([SubResource("Resource_cy4iv")])
+is_invocation = true
+target_ranges = Array[ExtResource("3_whvih")]([SubResource("Resource_dj1eg")])
+card_target_ranges = Array[ExtResource("2_dj1eg")]([SubResource("Resource_cy4iv")])
+effects = Array[ExtResource("2_hda2m")]([])
 metadata/_custom_type_script = "uid://dedl4t18oxaef"
 
 [resource]

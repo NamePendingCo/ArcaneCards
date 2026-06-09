@@ -21,29 +21,29 @@ enum Subdomain {
 	HEAT = 11, 
 	FREEZE = 12,
 	LIGHTNING = 13,
-	CHEMICAL = 21, 
 	
 	#Orange
+	CHEMICAL = 21, 
 	TRANSMUTATION = 22,
 	CONJURATION = 23,
-	IMPACT = 31, 
 	
 	#Yellow
+	IMPACT = 31, 
 	THRUST = 32,
 	VIBRATION = 33,
 	GRIP = 34,
-	GROWTH = 41, 
 	
 	#Green
+	GROWTH = 41, 
 	DRAINING = 42,
 	RELEASE = 43,
 	ANIMATION = 44,
-	TELEPATHY = 51, 
 	
 	#Blue
+	TELEPATHY = 51, 
 	SANITY = 52,
 	DOMINATION = 53,
-	ILUSION = 54,
+	ILLUSION = 54,
 	
 	#Purple
 	SOUL = 61, 

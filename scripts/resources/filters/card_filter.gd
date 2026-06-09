@@ -4,12 +4,37 @@ used to make comparisons about a card more swiftly than
 just using the data. It is a mask so if a variable isn't used
 it can be ignored
 '''
-
+@tool
 class_name CardFilter extends Resource
 
+#Colors to filter, set with flags
+var _colors: int:
+	set(val):
+		_colors = val
+		colors = EventEnums.flagIntToEnum(val)
+		print(colors)
 var colors: Array[Enums.SpellColor]
+
+#Subdomains to filter, set with flags
+var _subdomains: int:
+	set(val):
+		_subdomains = val
+		subdomains = EventEnums.flagIntToEnum(val, Enums.Subdomain)
+		print(subdomains)
 var subdomains: Array[Enums.Subdomain]
+
+#Types to filter, set with flags
+var _types: int:
+	set(val):
+		_types = val
+		types = EventEnums.flagIntToEnum(val)
 var types: Array[Enums.CardType]
+
+#Tiers to filter, set with flags
+var _tiers: int:
+	set(val):
+		_tiers = val
+		tiers = EventEnums.flagIntToEnum(val)
 var tiers: Array[int]
 
 #could do activation cost and upkeep but for now we don't
@@ -22,6 +47,19 @@ func _ready():
 	subdomains = []
 	types = []
 	tiers = []
+
+func _validate_property(property):
+	if property.name == "_colors":
+		EventEnums.enumFlagProperty(property, \
+		EventEnums.enumToFlags(Enums.SpellColor, [Enums.SpellColor.NULL]))
+	elif property.name == "_subdomains":
+		EventEnums.enumFlagProperty(property, \
+		EventEnums.enumToFlags(Enums.Subdomain, [Enums.Subdomain.NULL]))
+	elif property.name == "_types":
+		EventEnums.enumFlagProperty(property, \
+		EventEnums.enumToFlags(Enums.CardType, [Enums.CardType.NULL]))
+	elif property.name == "_tiers":
+		EventEnums.enumFlagProperty(property, EventEnums.enumToFlags({1:1, 2:2, 3:3}))
 
 '''
 Checks if a card matches the parameters of the filter.
