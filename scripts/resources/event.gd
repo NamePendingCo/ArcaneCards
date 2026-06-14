@@ -11,9 +11,9 @@ var is_invocation: bool = true
 
 #list of targeting parameters which are used by effects
 @export
-var target_ranges: Array[BeingTargetParam] = []
+var target_ranges: Dictionary[String, BeingTargetParam]
 @export
-var card_target_ranges: Array[CardTargetParam]
+var card_target_ranges: Dictionary[String, CardTargetParam]
 
 #List of effects that occur during this event
 @export
