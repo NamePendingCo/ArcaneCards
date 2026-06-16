@@ -1,5 +1,5 @@
 @tool
-class_name CardTargetParam extends Resource
+class_name CardTargetParam extends EventParam
 
 #Set the range of the being who should own the available cards
 var being_range: EventEnums.BeingRangeOption
@@ -51,16 +51,11 @@ func _validate_property(property: Dictionary) -> void:
 
 	elif property.name == "is_chosen":
 		# chosen should not be visible if card_range is null
-		if (_card_range != Enums.CardState.NULL):
-			property.usage |= PROPERTY_USAGE_EDITOR
-		else:
-			property.usage &= ~PROPERTY_USAGE_EDITOR
+		set_property_visibility(property, \
+		_card_range != Enums.CardState.NULL)
 
 	elif property.name == "num_cards_min"\
 	or property.name == "num_cards_max":
 		# If chosen is true, reveal the number of cards options
-		if is_chosen and \
-		(_card_range != Enums.CardState.NULL):
-			property.usage |= PROPERTY_USAGE_EDITOR
-		else:
-			property.usage &= ~PROPERTY_USAGE_EDITOR
+		set_property_visibility(property, is_chosen and \
+		(_card_range != Enums.CardState.NULL))

@@ -30,6 +30,10 @@ var card_owner: Caster
 		#set the new data as the data for this card
 		card_data = value
 		
+		#the event structure of the card
+		params = card_data.params
+		events = card_data.events
+		
 		# Set local variables from the card total so that data itself remains consistent
 		upkeep = card_data.upkeep_cost
 		activation_cost = card_data.activation_cost
@@ -86,6 +90,10 @@ var upkeep: int:
 		upkeep = val
 		spell_face.get_node("UpkeepCost").text = str(val)
 
+#Dictionary of parameters attached to this card
+var params: Dictionary[String, EventParam]
+#Dictionary of events on this card
+var events: Dictionary[String, Event]
 
 #In game states
 var card_state: Enums.CardState

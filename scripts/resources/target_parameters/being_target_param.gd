@@ -1,5 +1,5 @@
 @tool
-class_name BeingTargetParam extends Resource
+class_name BeingTargetParam extends EventParam
 
 #The range of applicable targets
 @export
@@ -36,15 +36,10 @@ var targets: Array[Being]
 func _validate_property(property: Dictionary) -> void:
 	if property.name == "is_chosen":
 		# Chosen only shown if range isn't null or self
-		if ((range & EventEnums.BeingRangeOption.ALL_OTHERS) != 0):
-			property.usage |= PROPERTY_USAGE_EDITOR
-		else:
-			property.usage &= ~PROPERTY_USAGE_EDITOR
+		set_property_visibility(property,\
+		(range & EventEnums.BeingRangeOption.ALL_OTHERS) != 0)
 	elif property.name == "num_targets_min" \
 	or property.name == "num_targets_max":
 		#target numbers only shown if is chosen is relevant
-		if is_chosen and \
-		((range & EventEnums.BeingRangeOption.ALL_OTHERS) != 0):
-			property.usage |= PROPERTY_USAGE_EDITOR
-		else:
-			property.usage &= ~PROPERTY_USAGE_EDITOR
+		set_property_visibility(property,\
+		(is_chosen  and (range & EventEnums.BeingRangeOption.ALL_OTHERS) != 0))

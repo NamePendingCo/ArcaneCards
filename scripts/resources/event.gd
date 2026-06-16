@@ -7,16 +7,14 @@ signal event_triggered
 
 #TODO: consider
 @export
+
 var is_invocation: bool = true
-
-#The lists of names of selections that should be made by
-#actor upon this event triggering. For editor use
-@export var chosen_target_ranges_names: Array[String]
-@export var chosen_card_target_ranges_names: Array[String]
-
-#actual internal list variables used when selections made
-var chosen_target_ranges: Array[BeingTargetParam]
-var chosen_card_target_ranges: Array[CardTargetParam]
+#The lists of names of param selections that should be made
+#by actor upon this event triggering. For editor use
+@export var choice_param_names: Array[String]
+#actual internal list variables used when selections made.
+#Set by the spell_data
+var choice_params: Array[EventParam]
 
 #List of effects that occur during this event
 @export
