@@ -9,11 +9,14 @@ signal event_triggered
 @export
 var is_invocation: bool = true
 
-#list of targeting parameters which are used by effects
-@export
-var target_ranges: Dictionary[String, BeingTargetParam]
-@export
-var card_target_ranges: Dictionary[String, CardTargetParam]
+#The lists of names of selections that should be made by
+#actor upon this event triggering. For editor use
+@export var chosen_target_ranges_names: Array[String]
+@export var chosen_card_target_ranges_names: Array[String]
+
+#actual internal list variables used when selections made
+var chosen_target_ranges: Array[BeingTargetParam]
+var chosen_card_target_ranges: Array[CardTargetParam]
 
 #List of effects that occur during this event
 @export

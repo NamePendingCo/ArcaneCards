@@ -80,14 +80,14 @@ var activation_cost: Array[int]:
 			1: spell_face.get_node("ActivationCost").text = str(ac[0])
 			2: spell_face.get_node("ActivationCost").text = str(ac[0]) + '/' + str(ac[1])
 			3: spell_face.get_node("ActivationCost").text = str(ac[0]) + '/' + str(ac[1]) + '/' + str(ac[2])
-
 var upkeep: int:
 	set(val):
 		#set upkeep cost on cardface
 		upkeep = val
 		spell_face.get_node("UpkeepCost").text = str(val)
-		
 
+
+#In game states
 var card_state: Enums.CardState
 
 var roundsSpentCasting: int: 

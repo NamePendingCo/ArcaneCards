@@ -20,4 +20,8 @@ extends Resource
 @export var art: Texture
 
 @export_category("Events and Effects")
+#list of targeting parameters which are used by effects
+@export var target_ranges: Dictionary[String, BeingTargetParam]
+@export var card_target_ranges: Dictionary[String, CardTargetParam]
+
 @export var events: Array[Event]

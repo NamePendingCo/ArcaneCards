@@ -1,17 +1,19 @@
 @tool
 class_name BeingTargetParam extends Resource
 
-@export
-var is_chosen_from: bool = true:
-	set(val): 
-		is_chosen_from = val
-		notify_property_list_changed()
-
 #The range of applicable targets
 @export
 var range: EventEnums.BeingRangeOption:
 	set(val): 
 		range = val
+		notify_property_list_changed()
+
+@export_category("Selection")
+#Whether the range is chosen from by the caster
+@export
+var is_chosen: bool = false:
+	set(val): 
+		is_chosen = val
 		notify_property_list_changed()
 
 #number of targets to select from, only shown if actor chooses target
@@ -24,14 +26,25 @@ var num_targets_min: int = 1:
 var num_targets_max: int = 1:
 	set(val): num_targets_max = max(val, num_targets_min)
 
+#the name of the event that, when triggered, should have
+#this selection made
+var choose_on_event: String
+
 #the actual chosen targets
 var targets: Array[Being]
 
 func _validate_property(property: Dictionary) -> void:
-	if property.name == "num_targets_min" \
+	if property.name == "is_chosen":
+		# Chosen only shown if range isn't null or self
+		if ((range & EventEnums.BeingRangeOption.ALL_OTHERS) != 0):
+			property.usage |= PROPERTY_USAGE_EDITOR
+		else:
+			property.usage &= ~PROPERTY_USAGE_EDITOR
+	elif property.name == "num_targets_min" \
 	or property.name == "num_targets_max":
-		if is_chosen_from and \
+		#target numbers only shown if is chosen is relevant
+		if is_chosen and \
 		((range & EventEnums.BeingRangeOption.ALL_OTHERS) != 0):
-			property.usage |= PROPERTY_USAGE_EDITOR 
+			property.usage |= PROPERTY_USAGE_EDITOR
 		else:
 			property.usage &= ~PROPERTY_USAGE_EDITOR

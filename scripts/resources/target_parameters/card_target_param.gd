@@ -14,6 +14,11 @@ var _card_range: int:
 #The real one that mattters for code
 var card_range: Array[Enums.CardState]
 
+@export_category("Selection")
+
+@export
+var card_filter: CardFilter
+
 @export
 var is_chosen: bool = true:
 	set(val): 
@@ -28,26 +33,32 @@ var num_cards_min: int = 1:
 var num_cards_max: int = num_cards_min:
 	set(val): num_cards_max = max(val, num_cards_min)
 
-@export
-var card_filter: CardFilter
-
 #The actual chosen targets
 var card_targets: Array[Card]
 
 func _validate_property(property: Dictionary) -> void:
 	if property.name == "_card_range":
+		
+		#card range should be a flag list based on CardStates, but
+		#cannot be Null, Deck, or Discard Pile. Also creates a field flag
 		EventEnums.enumFlagProperty(property, EventEnums.enumToFlags(Enums.CardState,\
 		[Enums.CardState.NULL, Enums.CardState.DECK, Enums.CardState.DISCARD],\
 		{"FIELD": [Enums.CardState.HAND, Enums.CardState.CASTING_WELL, Enums.CardState.CONCENTRATION_CIRCLE]}))
-	if property.name == "being_range":
+	
+	elif property.name == "being_range":
+		#the being range should be a dropdown of all non-null options
 		EventEnums.enumFlagProperty(property, EventEnums.BeingRangeOption, 1)
-	if property.name == "is_chosen":
+
+	elif property.name == "is_chosen":
+		# chosen should not be visible if card_range is null
 		if (_card_range != Enums.CardState.NULL):
 			property.usage |= PROPERTY_USAGE_EDITOR
 		else:
 			property.usage &= ~PROPERTY_USAGE_EDITOR
-	if property.name == "num_cards_min"\
+
+	elif property.name == "num_cards_min"\
 	or property.name == "num_cards_max":
+		# If chosen is true, reveal the number of cards options
 		if is_chosen and \
 		(_card_range != Enums.CardState.NULL):
 			property.usage |= PROPERTY_USAGE_EDITOR
