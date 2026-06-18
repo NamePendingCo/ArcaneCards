@@ -61,7 +61,7 @@ pop from spell stack and trigger. If false, discard
 '''
 func _process_event_stack():
 	while not event_stack.is_empty():
-		#checks the top item on stack
+		#checks the top item on stack. If no new events stacked, run it
 		if _pre_trigger(event_stack[-1]):
 			var running_event: Event = event_stack.pop_back()
 			running_event.run()

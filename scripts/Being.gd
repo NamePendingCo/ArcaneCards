@@ -15,6 +15,8 @@ var health = _health:
 var attack_strength: int
 
 func _ready():
+	add_to_group(Constants.GROUP_BEING)
+	
 	#silly base values, maybe change eventually
 	health = 40
 	attack_strength = 1

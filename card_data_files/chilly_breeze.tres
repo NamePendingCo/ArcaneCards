@@ -2,13 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dedl4t18oxaef" path="res://scripts/resources/event.gd" id="1_fo6l7"]
 [ext_resource type="Script" uid="uid://x0i1uyfprpdj" path="res://scripts/resources/card_data.gd" id="1_vcjca"]
-[ext_resource type="Script" uid="uid://c3lsne5qhwrmf" path="res://scripts/resources/effect.gd" id="2_hda2m"]
 [ext_resource type="Script" uid="uid://cij78igff85cg" path="res://scripts/abstracts/event_param.gd" id="3_whvih"]
-
-[sub_resource type="Resource" id="Resource_dj1eg"]
-script = ExtResource("1_fo6l7")
-choice_param_names = null
-metadata/_custom_type_script = "uid://dedl4t18oxaef"
 
 [resource]
 script = ExtResource("1_vcjca")
@@ -19,5 +13,4 @@ subdomain = 12
 type = 1
 tier = 1
 activation_cost = Array[int]([2])
-events = Array[ExtResource("1_fo6l7")]([SubResource("Resource_dj1eg")])
 metadata/_custom_type_script = "uid://x0i1uyfprpdj"

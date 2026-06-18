@@ -1,14 +1,12 @@
 @tool
+@abstract
 class_name Event extends Resource
 
 signal effects_len_changed(int)
 
 signal event_triggered
 
-#TODO: consider
-@export
-
-var is_invocation: bool = true
+var is_invocation: bool
 #The lists of names of param selections that should be made
 #by actor upon this event triggering. For editor use
 @export var choice_param_names: Array[String]
@@ -32,7 +30,6 @@ var actor: Being
 
 func _ready():
 	triggered_events = []
-	pass
 
 '''
 Usually connected with a signal. When called, signals to the battle_manager

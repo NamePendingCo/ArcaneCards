@@ -1,3 +1,4 @@
+@tool
 class_name CardData
 
 extends Resource
@@ -26,6 +27,8 @@ extends Resource
 @export var events: Dictionary[String, Event]
 
 func _ready():
+	if Constants.ACTIVATION_KEY not in events:
+		events[Constants.ACTIVATION_KEY] = ActivationEvent.new()
 	if not Engine.is_editor_hint():
 		#Prepare params when in game, but not in editor
 		prepare_params()

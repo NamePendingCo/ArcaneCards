@@ -36,6 +36,10 @@ var num_cards_max: int = num_cards_min:
 #The actual chosen targets
 var card_targets: Array[Card]
 
+#TODO
+func get_targets(actor):
+	pass
+
 func _validate_property(property: Dictionary) -> void:
 	if property.name == "_card_range":
 		

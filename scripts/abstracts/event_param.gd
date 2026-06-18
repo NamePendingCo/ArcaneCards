@@ -14,3 +14,10 @@ func set_property_visibility(property: Dictionary, condition: bool):
 		property.usage |= PROPERTY_USAGE_EDITOR
 	else:
 		property.usage &= ~PROPERTY_USAGE_EDITOR
+
+'''
+Takes the range and grabs all viable targets. Has the 
+owner choose the target, if applicable.
+'''
+@abstract
+func get_targets(actor: Being)

@@ -33,6 +33,10 @@ var choose_on_event: String
 #the actual chosen targets
 var targets: Array[Being]
 
+#TODO
+func get_targets(actor):
+	pass
+
 func _validate_property(property: Dictionary) -> void:
 	if property.name == "is_chosen":
 		# Chosen only shown if range isn't null or self
