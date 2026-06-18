@@ -1,7 +1,7 @@
 class_name Hand extends Node3D
 
 #shorthand access to this enum val
-const IN_HAND = Enums.CardState.IN_HAND
+const IN_HAND = Enums.CardState.HAND
 
 var hand: Array[Card] = []
 
@@ -23,7 +23,7 @@ func list_cards_in_hand():
 func add_card_to_hand(card: Card):
 	if card not in hand:
 		card.left_hand.connect(remove_card_from_hand)
-		card.ready_state_change(IN_HAND)
+		card.ready_state_change(Enums.CardState.HAND)
 		hand.append(card)
 		_update_hand_positions()
 

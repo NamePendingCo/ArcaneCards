@@ -1,6 +1,13 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://br83bg2y5hb6v"]
 
+[ext_resource type="Script" uid="uid://c3lsne5qhwrmf" path="res://scripts/resources/effect.gd" id="1_0fvhi"]
 [ext_resource type="Script" uid="uid://x0i1uyfprpdj" path="res://scripts/resources/card_data.gd" id="1_a40os"]
+[ext_resource type="Script" uid="uid://66qrd6hx72oi" path="res://scripts/resources/events/activation_event.gd" id="2_kxa1e"]
+[ext_resource type="Script" uid="uid://cij78igff85cg" path="res://scripts/abstracts/event_param.gd" id="3_72r2o"]
+
+[sub_resource type="Resource" id="Resource_42et8"]
+script = ExtResource("2_kxa1e")
+metadata/_custom_type_script = "uid://66qrd6hx72oi"
 
 [resource]
 script = ExtResource("1_a40os")
@@ -11,7 +18,6 @@ subdomain = 33
 type = 1
 tier = 2
 activation_cost = Array[int]([2, 1])
-effects = "Deal 3 damage.
-
-Chain Vibration: Return this card to your hand."
+activation_event = SubResource("Resource_42et8")
+_events = null
 metadata/_custom_type_script = "uid://x0i1uyfprpdj"
