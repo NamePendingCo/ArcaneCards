@@ -5,6 +5,7 @@ class_name Event extends Resource
 signal effects_len_changed(int)
 
 signal event_triggered
+signal event_running
 
 var is_invocation: bool
 #The lists of names of param selections that should be made
@@ -36,7 +37,14 @@ Usually connected with a signal. When called, signals to the battle_manager
 to be added to the event stack.
 '''
 func trigger():
-	event_triggered.emit()
+	event_triggered.emit(self)
+
+'''
+Send signal that this event is running. Only used right now
+to notify it is being invoked.
+'''
+func declare_running():
+	event_running.emit()
 
 '''
 Runs the event and all effects that should occur as part of it.

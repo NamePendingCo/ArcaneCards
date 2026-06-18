@@ -8,15 +8,7 @@ signal casting_phase_began
 signal adjudication_phase_began
 signal end_phase_began
 
-enum RoundPhase {
-	NULL,
-	ROUND_LOAD,
-	DRAW,
-	UPKEEP,
-	CASTING,
-	ADJUDICATION,
-	END
-}
+const RoundPhase = Enums.RoundPhase
 
 @export
 var casters: Array[Caster] = []
@@ -25,49 +17,15 @@ var round_num: int
 var current_phase: RoundPhase
 
 var event_stack: Array[Event] #stack used for event processing
-var to_stack_list: Array[Event] #events queued to be added to stack
+var to_stack_list: Array[Event] #events queued to be added to stack before triggering event
+var to_stack_after_list: Array[Event] #events queued to be added to stack after the triggering event
 
+#collection of events that listen for signal from cards
+var card_listening_events: Array[Event]
 
 func _ready():
 	current_phase = RoundPhase.NULL
 	event_stack = []
-
-#TODO Clean up description
-'''
-goes through the actor event and see what effects are present. 
-Notify affected cards/casters of what will occur so they can send 
-relevant signals. Then, see if there is anything in to_stack_list. 
-If there is, order them based on RULESET HERE, add them all to 
-both the actor's triggeredEvents list and the spellStack, and then return False. 
-Otherwise return true
-Returns:
-	- True if to_stack_list is empty after announcing event
-	- False if to_stack_list has items in it
-'''
-func _pre_trigger(event: Event) -> bool:
-	#TODO make some sort of announcement of event here
-	
-	if to_stack_list.is_empty():
-		return true
-	else:
-		to_stack_list.sort_custom(func(a, b): return true) #TODO replace with real comparison function
-		event.triggered_events.append_array(to_stack_list)
-		event_stack.append_array(to_stack_list)
-		return false
-
-'''
-While event stack not empty, get top then pass to pre-trigger. If true,
-pop from spell stack and trigger. If false, discard
-'''
-func _process_event_stack():
-	while not event_stack.is_empty():
-		#checks the top item on stack. If no new events stacked, run it
-		if _pre_trigger(event_stack[-1]):
-			var running_event: Event = event_stack.pop_back()
-			running_event.run()
-
-func _queue_event():
-	pass
 
 '''
 All game start and setup stuff should be done here
@@ -188,3 +146,98 @@ func phaseEnd():
 	_process_event_stack() #Handle any end phase events/invocations
 	
 	advancePhase()
+
+'''
+Takes a card object and activates it, registering each
+event into its event list.
+Params:
+	- card: a Card
+'''
+func _activate_card(card: Card):
+	for key in card.events:
+		var event: Event = card.events[key]
+		event.event_triggered.connect(_queue_event)
+		
+		if event is ActivationEvent:
+			#Activation event should do nothing here
+			continue
+		elif event is OnPhaseEvent:
+			var phase_signal: Signal
+			#Picks correct signal based on phase type
+			match event.phase:
+				RoundPhase.DRAW: phase_signal = draw_phase_began
+				RoundPhase.UPKEEP: phase_signal = upkeep_phase_began
+				RoundPhase.CASTING: phase_signal = casting_phase_began
+				RoundPhase.ADJUDICATION: phase_signal = adjudication_phase_began
+				RoundPhase.END: phase_signal = end_phase_began
+			phase_signal.connect(event.trigger)
+		
+	card.events[Constants.ACTIVATION_KEY].trigger()
+
+'''
+When passed a card object, registers a card for any
+listeners that need to track it.
+Params:
+	- card: a card object
+'''
+func _register_card(card: Card):
+	for event in listening_events:
+		print()
+
+'''
+Takes a list of events, sorts them based on the sort function, 
+then places them on the event stack. Then clears the list.
+'''
+func _stack_event_list(event_list: Array[Event]):
+	event_list.sort_custom(func(a, b): return true) #TODO replace with real comparison function
+	event_stack.append_array(to_stack_list)
+	event_list.clear()
+
+'''
+Takes in an event and processes if there are triggered events. 
+Puts events into the stack in appropriate order of after events, 
+the original event, then any preceding events, sorting them as
+appropriate. Then returns if there are no new preceding events.
+Returns:
+	- True if to_stack_list is empty after announcing event
+	- False if to_stack_list has items in it
+'''
+func _handled_triggered_events(event: Event) -> bool:
+	
+	#Updates the triggered events list for the event
+	event.triggered_events.append(to_stack_list)
+	event.triggered_events.append(to_stack_after_list)
+	
+	if to_stack_list.is_empty():
+		#If no preceding event was triggered, add after events
+		# and return true
+		_stack_event_list(to_stack_after_list)
+		return true
+	else:
+		#If event triggered preceding events, 
+		# add preceding events and repush event,
+		# then add after events and return false
+		_stack_event_list(to_stack_list)
+		event_stack.push_back(event)
+		_stack_event_list(to_stack_after_list)
+		return false
+
+'''
+While event stack not empty, get top then pass to pre-trigger. If true,
+pop from spell stack and trigger. If false, discard
+'''
+func _process_event_stack():
+	while not event_stack.is_empty():
+		#checks the top item on stack. If no new events stacked, run it
+		var event = event_stack.pop_back()
+		
+		#Send signal that this event is running
+		event.declare_running()
+		
+		#TODO add function for checking effects
+		
+		if _handled_triggered_events(event):
+			event.run()
+
+func _queue_event(event: Event):
+	to_stack_list.append(event)

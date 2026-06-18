@@ -1,6 +1,8 @@
 @abstract
 class_name EventParam extends Resource
 
+signal updated_targets
+
 '''
 this is purely an abstract class made to help
 categorize the param classes for list making.

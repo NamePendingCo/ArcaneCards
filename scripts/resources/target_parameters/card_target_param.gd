@@ -34,7 +34,10 @@ var num_cards_max: int = num_cards_min:
 	set(val): num_cards_max = max(val, num_cards_min)
 
 #The actual chosen targets
-var card_targets: Array[Card]
+var card_targets: Array[Card]:
+	set(val):
+		card_targets = val
+		updated_targets.emit() #notify of update
 
 #TODO
 func get_targets(actor):

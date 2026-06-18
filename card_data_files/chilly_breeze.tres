@@ -3,11 +3,11 @@
 [ext_resource type="Script" uid="uid://coweccke0kjnp" path="res://scripts/resources/abstract_resources/listener_event.gd" id="1_dj1eg"]
 [ext_resource type="Script" uid="uid://x0i1uyfprpdj" path="res://scripts/resources/card_data.gd" id="1_vcjca"]
 [ext_resource type="Script" uid="uid://c3lsne5qhwrmf" path="res://scripts/resources/effect.gd" id="1_whvih"]
-[ext_resource type="Script" uid="uid://66qrd6hx72oi" path="res://scripts/resources/events/activation_event.gd" id="2_dj1eg"]
-[ext_resource type="Script" uid="uid://cij78igff85cg" path="res://scripts/abstracts/event_param.gd" id="3_whvih"]
+[ext_resource type="Script" uid="uid://66qrd6hx72oi" path="res://scripts/resources/events/activation_event.gd" id="3_dj1eg"]
+[ext_resource type="Script" uid="uid://cij78igff85cg" path="res://scripts/abstracts/event_param.gd" id="4_atrgt"]
 
 [sub_resource type="Resource" id="Resource_dj1eg"]
-script = ExtResource("2_dj1eg")
+script = ExtResource("3_dj1eg")
 metadata/_custom_type_script = "uid://66qrd6hx72oi"
 
 [resource]

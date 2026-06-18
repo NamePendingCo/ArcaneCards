@@ -4,7 +4,8 @@ const COLOR = Enums.SpellColor
 
 #Core signals to denote state change
 signal casted #TODO
-signal activated
+signal activated #TODO
+signal invoked
 
 #signals to tell the caster to take actions on this card
 signal marked_for_discard
@@ -121,6 +122,21 @@ func _reset_casting_data():
 	roundsSpentCasting = 0
 	delayAmount = 0
 	quickenAmount = 0
+
+func _reset_event_data():
+	params = card_data.params
+	events = card_data.events
+	#Subscribe to each invocation event so can declare when invoked
+	for key in events:
+		var event = events[key]
+		if event.is_invocation:
+			event.event_running.connect(_declare_invoked)
+
+'''
+Sends a signal that this card was invoked.
+'''
+func _declare_invoked():
+	invoked.emit()
 
 '''
 Prepares to have the card's state changed. Sends any relevant signals, as well as

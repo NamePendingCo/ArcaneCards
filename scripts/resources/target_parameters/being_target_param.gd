@@ -31,7 +31,10 @@ var num_targets_max: int = 1:
 var choose_on_event: String
 
 #the actual chosen targets
-var targets: Array[Being]
+var targets: Array[Being]:
+	set(val):
+		targets = val
+		updated_targets.emit() #notify of update
 
 #TODO
 func get_targets(actor):
