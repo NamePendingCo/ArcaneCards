@@ -52,3 +52,13 @@ Runs the event and all effects that should occur as part of it.
 func run():
 	for effect in effects:
 		effect.invoke()
+
+'''
+Calculates the priority score for the event for determining. 
+Execution order if triggered at the same time. The lower
+the score, the earlier it goes.
+Returns:
+	- score: a positive int
+'''
+func calculate_priority() -> int:
+	return 1

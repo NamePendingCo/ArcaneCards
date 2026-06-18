@@ -181,7 +181,7 @@ Params:
 	- card: a card object
 '''
 func _register_card(card: Card):
-	for event in listening_events:
+	for event in card_listening_events:
 		print()
 
 '''
@@ -189,7 +189,11 @@ Takes a list of events, sorts them based on the sort function,
 then places them on the event stack. Then clears the list.
 '''
 func _stack_event_list(event_list: Array[Event]):
-	event_list.sort_custom(func(a, b): return true) #TODO replace with real comparison function
+	# Sorts by priority score. Higher scores go earlier in list
+	event_list.sort_custom(\
+	func(a: Event, b: Event):
+		return a.calculate_priority() > b.calculate_priority())
+		
 	event_stack.append_array(to_stack_list)
 	event_list.clear()
 

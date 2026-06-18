@@ -112,8 +112,10 @@ var position_locked: bool:
 	get: return card_state <= Enums.CardState.HAND
 	set(val): pass
 
-
 func _ready():
+	#Add to the card group
+	add_to_group(Constants.GROUP_CARD)
+	
 	card_owner = null
 	card_state = Enums.CardState.NULL
 	_reset_casting_data()
