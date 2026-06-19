@@ -99,12 +99,12 @@ var events: Dictionary[String, Event]
 #In game states
 var card_state: Enums.CardState
 
-var roundsSpentCasting: int: 
-	set(val): roundsSpentCasting = max(val, 0)
-var delayAmount: int: 
-	set(val): delayAmount = max(val, 0)
-var quickenAmount: int: 
-	set(val): quickenAmount = max(val, 0)
+var rounds_spent_casting: int: 
+	set(val): rounds_spent_casting = max(val, 0)
+var delay_amount: int: 
+	set(val): delay_amount = max(val, 0)
+var quicken_amount: int: 
+	set(val): quicken_amount = max(val, 0)
 
 #when true, card can be dragged around by player. When false, cannot move
 #for now, assume always can while in hand or state is null. Probably fix later
@@ -119,26 +119,6 @@ func _ready():
 	card_owner = null
 	card_state = Enums.CardState.NULL
 	_reset_casting_data()
-	
-func _reset_casting_data():
-	roundsSpentCasting = 0
-	delayAmount = 0
-	quickenAmount = 0
-
-func _reset_event_data():
-	params = card_data.params
-	events = card_data.events
-	#Subscribe to each invocation event so can declare when invoked
-	for key in events:
-		var event = events[key]
-		if event.is_invocation:
-			event.event_running.connect(_declare_invoked)
-
-'''
-Sends a signal that this card was invoked.
-'''
-func _declare_invoked():
-	invoked.emit()
 
 '''
 Prepares to have the card's state changed. Sends any relevant signals, as well as
@@ -166,8 +146,33 @@ func animate_move_card(new_pos: Vector3):
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "global_position", new_pos, 0.2)
 
+'''
+Increases the casting stage. If it is ready to activate,
+activate the card.
+'''
+func progress_casting(progression_amount: int):
+	rounds_spent_casting += 1
+	
+	var wait_total = card_data.tier + delay_amount
+	
+	if rounds_spent_casting >= wait_total:
+		activate()
+
+'''
+Set all events to active.
+
+Finally, run the activation event.
+'''
 func activate():
-	pass
+	
+	for key in events:
+		var event = events[key]
+		event.event_state = Event.EventState.ACTIVE
+		
+	events[Constants.ACTIVATION_KEY].trigger()
+	
+	#notifies card was activated
+	activated.emit()
 
 ### Below are functions for sending signals pre-events occuring
 
@@ -207,3 +212,26 @@ Actually pays the upkeep. Handles any effects that are set up on card for this.
 func pay_upkeep():
 	#TODO Add handling for cost counters
 	return upkeep
+
+'''
+Set all casting data back to 0.
+'''
+func _reset_casting_data():
+	rounds_spent_casting = 0
+	delay_amount = 0
+	quicken_amount = 0
+
+func _reset_event_data():
+	params = card_data.params
+	events = card_data.events
+	#Subscribe to each invocation event so can declare when invoked
+	for key in events:
+		var event = events[key]
+		if event.is_invocation:
+			event.event_running.connect(_declare_invoked)
+
+'''
+Sends a signal that this card was invoked.
+'''
+func _declare_invoked():
+	invoked.emit()

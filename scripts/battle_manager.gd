@@ -171,8 +171,6 @@ func _activate_card(card: Card):
 				RoundPhase.ADJUDICATION: phase_signal = adjudication_phase_began
 				RoundPhase.END: phase_signal = end_phase_began
 			phase_signal.connect(event.trigger)
-		
-	card.events[Constants.ACTIVATION_KEY].trigger()
 
 '''
 When passed a card object, registers a card for any
