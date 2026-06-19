@@ -3,7 +3,7 @@ class_name CardListenerEvent extends ListenerEvent
 
 var triggering_cards: CardTargetParam
 
-func _ready():
+func _activate_event():
 	#Reset the connections every time the target list is updated
 	triggering_cards.updated_targets.connect(reset_connections)
 

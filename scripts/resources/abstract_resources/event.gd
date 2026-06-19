@@ -7,7 +7,14 @@ signal effects_len_changed(int)
 signal event_triggered
 signal event_running
 
+enum EventState {
+	INACTIVE = 0,
+	ACTIVE = 1,
+	DISABLED = 2
+}
+
 var is_invocation: bool
+
 #The lists of names of param selections that should be made
 #by actor upon this event triggering. For editor use
 @export var choice_param_names: Array[String]
@@ -26,18 +33,39 @@ var effects: Array[Effect]:
 # The list of events that this event has triggered during its invocation
 var triggered_events: Array[Event]
 
+# When true, this event is treated as a regular game
+# driven event and not an action triggered during play.
+var is_system_event: bool = false
+
+var event_state: EventState:
+	set(val):
+		event_state = val
+		if val == EventState.ACTIVE:
+			_activate_event()
+		else:
+			_deactivate_event()
+
 #The entity making the event occur
 var actor: Being
 
 func _ready():
+	event_state = EventState.INACTIVE
 	triggered_events = []
+
+@abstract
+func _activate_event()
+
+@abstract
+func _deactivate_event()
 
 '''
 Usually connected with a signal. When called, signals to the battle_manager
 to be added to the event stack.
 '''
 func trigger():
-	event_triggered.emit(self)
+	#Only can trigger if active
+	if event_state == EventState.ACTIVE:
+		event_triggered.emit(self)
 
 '''
 Send signal that this event is running. Only used right now
@@ -61,4 +89,8 @@ Returns:
 	- score: a positive int
 '''
 func calculate_priority() -> int:
-	return 1
+	var priority: int = 0
+	if is_system_event:
+		priority += 1 << 15 #TODO: decide actual flag
+	
+	return priority
