@@ -68,10 +68,13 @@ func trigger():
 		event_triggered.emit(self)
 
 '''
-Send signal that this event is running. Only used right now
-to notify it is being invoked.
+Have the event go through and make all selections for 
+the parameters and conditions. Then send signal that this event is running.
 '''
-func declare_running():
+func prepare_to_run():
+	
+	#TODO handle params
+	
 	event_running.emit()
 
 '''

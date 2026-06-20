@@ -233,8 +233,9 @@ func _process_event_stack():
 		#checks the top item on stack. If no new events stacked, run it
 		var event = event_stack.pop_back()
 		
-		#Send signal that this event is running
-		event.declare_running()
+		#Make all event decisions and conditional checks
+		#and send signal that this event is running
+		event.prepare_to_run()
 		
 		#TODO add function for checking effects
 		

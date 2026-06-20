@@ -3,8 +3,8 @@ class_name Card extends Node3D
 const COLOR = Enums.SpellColor
 
 #Core signals to denote state change
-signal casted #TODO
-signal activated #TODO
+signal casted
+signal activated
 signal invoked
 
 #signals to tell the caster to take actions on this card
@@ -145,6 +145,13 @@ Params:
 func animate_move_card(new_pos: Vector3):
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "global_position", new_pos, 0.2)
+
+'''
+Should only be called by caster. 
+'''
+func cast():
+	
+	casted.emit()
 
 '''
 Increases the casting stage. If it is ready to activate,
