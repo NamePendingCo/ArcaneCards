@@ -31,9 +31,8 @@ var card_owner: Caster
 		#set the new data as the data for this card
 		card_data = value
 		
-		#the event structure of the card
-		params = card_data.params
-		events = card_data.events
+		#Store a new set of the events
+		_reset_event_data()
 		
 		# Set local variables from the card total so that data itself remains consistent
 		upkeep = card_data.upkeep_cost
@@ -229,8 +228,9 @@ func _reset_casting_data():
 	quicken_amount = 0
 
 func _reset_event_data():
-	params = card_data.params
-	events = card_data.events
+	var effects_data: EffectsData = card_data.effects_data.duplicate_deep(Resource.DEEP_DUPLICATE_ALL)
+	params = effects_data.params
+	events = effects_data.events
 	#Subscribe to each invocation event so can declare when invoked
 	for key in events:
 		var event = events[key]
