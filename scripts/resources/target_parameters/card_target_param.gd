@@ -14,16 +14,8 @@ var _card_range: int:
 #The real one that mattters for code
 var card_range: Array[Enums.CardState]
 
-@export_category("Selection")
-
 @export
 var card_filter: CardFilter
-
-@export
-var is_chosen: bool = true:
-	set(val): 
-		is_chosen = val
-		notify_property_list_changed()
 
 #number of targets to select from, only shown if actor chooses target
 var num_cards_min: int = 1:

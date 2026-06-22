@@ -1,12 +1,15 @@
 @abstract
-class_name TargetParam extends Resource
+class_name TargetParam extends EventParam
 
 signal updated_targets
 
-'''
-this is purely an abstract class made to help
-categorize the param classes for list making.
-'''
+@export_category("Selection")
+
+#Whether the target is chosen by the player
+var is_chosen: bool = false:
+	set(val): 
+		is_chosen = val
+		notify_property_list_changed()
 
 '''
 Toggles visibility of a property depending on a given condition

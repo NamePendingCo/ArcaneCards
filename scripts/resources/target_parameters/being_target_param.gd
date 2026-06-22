@@ -9,12 +9,6 @@ var range: EventEnums.BeingRangeOption:
 		notify_property_list_changed()
 
 @export_category("Selection")
-#Whether the range is chosen from by the caster
-@export
-var is_chosen: bool = false:
-	set(val): 
-		is_chosen = val
-		notify_property_list_changed()
 
 #number of targets to select from, only shown if actor chooses target
 var num_targets_min: int = 1:
