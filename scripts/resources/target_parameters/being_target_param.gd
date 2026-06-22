@@ -1,5 +1,5 @@
 @tool
-class_name BeingTargetParam extends EventParam
+class_name BeingTargetParam extends TargetParam
 
 #The range of applicable targets
 @export
@@ -25,10 +25,6 @@ var num_targets_min: int = 1:
 #maximum number of targets to choose, if its a range
 var num_targets_max: int = 1:
 	set(val): num_targets_max = max(val, num_targets_min)
-
-#the name of the event that, when triggered, should have
-#this selection made
-var choose_on_event: String
 
 #the actual chosen targets
 var targets: Array[Being]:

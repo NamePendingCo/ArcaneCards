@@ -1,5 +1,5 @@
 @abstract
-class_name EventParam extends Resource
+class_name TargetParam extends Resource
 
 signal updated_targets
 

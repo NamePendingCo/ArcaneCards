@@ -1,5 +1,5 @@
 @tool
-class_name CardTargetParam extends EventParam
+class_name CardTargetParam extends TargetParam
 
 #Set the range of the being who should own the available cards
 var being_range: EventEnums.BeingRangeOption
