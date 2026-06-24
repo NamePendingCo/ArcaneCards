@@ -1,42 +1,28 @@
 @tool
-class_name CardTargetParam extends TargetParam
+class_name CardTargetFilterParam extends CardTargetParam
 
 #Set the range of the being who should own the available cards
 var being_range: EventEnums.BeingRangeOption
 
 #The range of applicable targets
-var _card_range: int:
+var _card_state_range: int:
 	set(val): 
-		_card_range = val
-		card_range = EventEnums.flagIntToEnum(val)
+		_card_state_range = val
+		card_state_range = EventEnums.flagIntToEnum(val)
 		notify_property_list_changed()
-
+	
 #The real one that mattters for code
-var card_range: Array[Enums.CardState]
+var card_state_range: Array[Enums.CardState]
 
 @export
 var card_filter: CardFilter
 
-#number of targets to select from, only shown if actor chooses target
-var num_cards_min: int = 1:
-	set(val): 
-		num_cards_min = max(val, 1)
-		if num_cards_max < num_cards_min: num_cards_max = val
-var num_cards_max: int = num_cards_min:
-	set(val): num_cards_max = max(val, num_cards_min)
-
-#The actual chosen targets
-var card_targets: Array[Card]:
-	set(val):
-		card_targets = val
-		updated_targets.emit() #notify of update
-
 #TODO
-func get_targets(actor):
+func update_range():
 	pass
 
 func _validate_property(property: Dictionary) -> void:
-	if property.name == "_card_range":
+	if property.name == "_card_state_range":
 		
 		#card range should be a flag list based on CardStates, but
 		#cannot be Null, Deck, or Discard Pile. Also creates a field flag
@@ -49,12 +35,16 @@ func _validate_property(property: Dictionary) -> void:
 		EventEnums.enumFlagProperty(property, EventEnums.BeingRangeOption, 1)
 
 	elif property.name == "is_chosen":
-		# chosen should not be visible if card_range is null
-		set_property_visibility(property, \
-		_card_range != Enums.CardState.NULL)
+		# chosen should not be visible if card_state_range is null
+		_set_property_visibility(property, \
+		_card_state_range != Enums.CardState.NULL)
 
-	elif property.name == "num_cards_min"\
-	or property.name == "num_cards_max":
+	elif property.name == "num_targets_min"\
+	or property.name == "num_targets_max":
 		# If chosen is true, reveal the number of cards options
-		set_property_visibility(property, is_chosen and \
-		(_card_range != Enums.CardState.NULL))
+		_set_property_visibility(property, is_chosen and \
+		(_card_state_range != Enums.CardState.NULL))
+	
+	elif property.name == "persistent":
+		_set_property_visibility(property, true)
+		

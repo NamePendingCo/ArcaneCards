@@ -35,5 +35,5 @@ static func array_intersection(arr1, arr2):
 static func array_difference(arr1, arr2):
 	return _arr_comp_all(arr1, arr2)[DIFFERENCE]
 
-func array_union(arr1, arr2):
+static func array_union(arr1, arr2):
 	return _arr_comp_all(arr1, arr2)[UNION]
