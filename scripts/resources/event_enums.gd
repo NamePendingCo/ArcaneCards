@@ -99,7 +99,7 @@ Params:
 Returns:
 	- The evals as a hint string
 '''
-static func getEnumValsHintString(enum_list: Dictionary, start=0, end=2147483647):
+static func getEnumValsHintString(enum_list: Dictionary, start=0, end=Constants.INT_MAX):
 	var key_val = []
 	
 	var keys = enum_list.keys()
@@ -110,7 +110,7 @@ static func getEnumValsHintString(enum_list: Dictionary, start=0, end=2147483647
 	
 	return ",".join(key_val.slice(start, end))
 
-static func enumFlagProperty(property: Dictionary, enum_list: Dictionary, start=0, end=2147483647):
+static func enumFlagProperty(property: Dictionary, enum_list: Dictionary, start=0, end=Constants.INT_MAX):
 	property.usage |= PROPERTY_USAGE_EDITOR
 	property.hint = PROPERTY_HINT_FLAGS
 	property.hint_string = EventEnums.getEnumValsHintString(enum_list, start, end)
