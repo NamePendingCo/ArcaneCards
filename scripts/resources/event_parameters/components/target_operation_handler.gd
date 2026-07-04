@@ -14,6 +14,7 @@ enum SetOperations {
 	INTERSECTION,
 	DIFFERENCE
 }
+
 @export
 var operation: SetOperations:
 	set(val):

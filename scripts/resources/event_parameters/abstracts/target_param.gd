@@ -11,12 +11,6 @@ var _targets_range: Array:
 #Actual chosen targets. Should be a subset of targets_range
 var _targets: Array:
 	get = _get_targets, set = _set_targets
-	
-#Whether the target is chosen by the player
-var is_chosen: bool = false:
-	set(val):
-		is_chosen = val
-		notify_property_list_changed()
 
 #number of targets to select from, only shown if actor chooses target
 var num_targets_min: int = 1:
