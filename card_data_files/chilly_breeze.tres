@@ -2,11 +2,19 @@
 
 [ext_resource type="Script" uid="uid://x0i1uyfprpdj" path="res://scripts/resources/card_data.gd" id="1_vcjca"]
 [ext_resource type="Script" uid="uid://coweccke0kjnp" path="res://scripts/resources/abstract_resources/listener_event.gd" id="1_whvih"]
+[ext_resource type="Script" uid="uid://c3lsne5qhwrmf" path="res://scripts/resources/effects/abstract_effects/effect.gd" id="2_atrgt"]
 [ext_resource type="Script" uid="uid://bm0rejlfkuuks" path="res://scripts/resources/event_parameters/abstracts/event_param.gd" id="2_dj1eg"]
 [ext_resource type="Script" uid="uid://bcy762hcj7wa7" path="res://scripts/resources/effects_data.gd" id="3_atrgt"]
+[ext_resource type="Script" uid="uid://66qrd6hx72oi" path="res://scripts/resources/events/activation_event.gd" id="3_cy4iv"]
+
+[sub_resource type="Resource" id="Resource_atrgt"]
+script = ExtResource("3_cy4iv")
+choice_param_names = Array[String](["cheese"])
+metadata/_custom_type_script = "uid://66qrd6hx72oi"
 
 [sub_resource type="Resource" id="Resource_cy4iv"]
 script = ExtResource("3_atrgt")
+activation_event = SubResource("Resource_atrgt")
 metadata/_custom_type_script = "uid://bcy762hcj7wa7"
 
 [resource]

@@ -1,3 +1,4 @@
+@tool
 class_name EffectsData extends Resource
 
 @export_category("Events and Effects")

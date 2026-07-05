@@ -16,6 +16,8 @@ var casters: Array[Caster] = []
 var round_num: int
 var current_phase: RoundPhase
 
+var casting_list: Array[Card] #list of cards that are being cast, sorted for processing order
+
 var event_stack: Array[Event] #stack used for event processing
 var to_stack_list: Array[Event] #events queued to be added to stack before triggering event
 var to_stack_after_list: Array[Event] #events queued to be added to stack after the triggering event
@@ -72,21 +74,14 @@ The draw phase of the game. Any events that should occur go here.
 '''
 func phaseDraw():
 	current_phase = RoundPhase.DRAW
+	
+	#Notify that the phase has begun. Should trigger
+	#casters to create their standard draw
 	draw_phase_began.emit()
 	
 	_process_event_stack() #Handle any draw phase events/invocations
 	
-	#should be last in the phase
-	_do_standard_draw()
-	
 	advancePhase()
-
-'''
-Have all casters in game do their standard draw.
-'''
-func _do_standard_draw():
-	#Maybe actually create an effect here and run that so it can be modified?
-	pass
 
 '''
 Runs the upkeep phase of the game.
@@ -97,12 +92,11 @@ func phaseUpkeep():
 		#skip upkeep phase for first round
 		advancePhase()
 	
+	#Notify that the phase has begun. Should trigger
+	#casters to create their gain mana income and pay upkeep events
 	upkeep_phase_began.emit()
 	
 	_process_event_stack() #Handle any upkeep phase events/invocations
-	
-	_casters_gain_mana_income()
-	_casters_pay_upkeep()
 
 #TODO: Add an await function (or two) waiting on casters to make their choices
 '''
@@ -121,7 +115,11 @@ func phaseAdjudication():
 	current_phase = RoundPhase.ADJUDICATION
 	adjudication_phase_began.emit()
 	
-	# Loop that should go here to cycle through activations and also invocations
+	#TODO function to sort casting list
+	
+	for card in casting_list:
+		card.progress_casting(1) #progress card
+		_process_event_stack() #process all triggered events
 	
 	advancePhase()
 
@@ -137,7 +135,7 @@ func phaseEnd():
 	advancePhase()
 
 #================================================
-# Public functions
+# Private functions
 #================================================
 
 '''
@@ -237,15 +235,6 @@ func _process_event_stack():
 
 func _queue_event(event: Event):
 	to_stack_list.append(event)
-
-#TODO
-func _casters_gain_mana_income():
-	pass
-
-#TODO	
-func _casters_pay_upkeep():
-	for caster in casters:
-		caster.declare_paying_upkeep()
 
 '''
 Processes a declaration to pay upkeep by running any events that it triggers

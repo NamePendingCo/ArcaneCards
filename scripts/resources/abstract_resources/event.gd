@@ -18,6 +18,7 @@ var is_invocation: bool
 #The lists of names of param selections that should be made
 #by actor upon this event triggering. For editor use
 @export var choice_param_names: Array[String]
+
 #actual internal list variables used when selections made.
 #Set by the spell_data
 var choice_params: Array[EventParam]
