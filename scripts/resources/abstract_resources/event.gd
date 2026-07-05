@@ -52,6 +52,10 @@ func _ready():
 	event_state = EventState.INACTIVE
 	triggered_events = []
 
+#================================================
+# Functions below here
+#================================================
+
 @abstract
 func _activate_event()
 
@@ -82,7 +86,7 @@ Runs the event and all effects that should occur as part of it.
 '''
 func run():
 	for effect in effects:
-		effect.invoke()
+		effect.run()
 
 '''
 Calculates the priority score for the event for determining. 

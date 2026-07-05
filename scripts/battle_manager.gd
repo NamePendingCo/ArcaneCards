@@ -27,6 +27,10 @@ func _ready():
 	current_phase = RoundPhase.NULL
 	event_stack = []
 
+#================================================
+# Public functions
+#================================================
+
 '''
 All game start and setup stuff should be done here
 '''
@@ -100,21 +104,6 @@ func phaseUpkeep():
 	_casters_gain_mana_income()
 	_casters_pay_upkeep()
 
-#TODO
-func _casters_gain_mana_income():
-	pass
-
-#TODO	
-func _casters_pay_upkeep():
-	for caster in casters:
-		caster.declare_paying_upkeep()
-
-'''
-Processes a declaration to pay upkeep by running any events that it triggers
-'''
-func _process_upkeep_payment(caster: Caster):
-	_process_event_stack()
-
 #TODO: Add an await function (or two) waiting on casters to make their choices
 '''
 Should allow casters to pick their cards here
@@ -146,6 +135,10 @@ func phaseEnd():
 	_process_event_stack() #Handle any end phase events/invocations
 	
 	advancePhase()
+
+#================================================
+# Public functions
+#================================================
 
 '''
 Takes a card object and activates it, registering each
@@ -244,3 +237,18 @@ func _process_event_stack():
 
 func _queue_event(event: Event):
 	to_stack_list.append(event)
+
+#TODO
+func _casters_gain_mana_income():
+	pass
+
+#TODO	
+func _casters_pay_upkeep():
+	for caster in casters:
+		caster.declare_paying_upkeep()
+
+'''
+Processes a declaration to pay upkeep by running any events that it triggers
+'''
+func _process_upkeep_payment(caster: Caster):
+	_process_event_stack()
