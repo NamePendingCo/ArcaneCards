@@ -1,7 +1,6 @@
 class_name CardListenerEvent extends ListenerEvent
 
 enum CardTriggers {
-	NULL = 0,
 	INVOKE,
 	ACTIVATE,
 	CAST
@@ -39,3 +38,11 @@ func reset_connections():
 	#connect to all triggers on card list
 	for card in triggering_cards.card_targets:
 		_connect_to_card(card)
+
+func _validate_property(property: Dictionary) -> void:
+	if property.name == "is_run_after":
+		#is run after should be shown if activate or invoke is true
+		if triggerEvent in [CardTriggers.INVOKE, CardTriggers.ACTIVATE]:
+			property.usage |= PROPERTY_USAGE_EDITOR
+		else:
+			property.usage &= ~PROPERTY_USAGE_EDITOR
