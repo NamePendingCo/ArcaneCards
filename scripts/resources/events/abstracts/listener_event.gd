@@ -1,3 +1,4 @@
+@tool
 @abstract
 class_name ListenerEvent extends Event
 
@@ -7,7 +8,10 @@ upon a signal instead of a direct internal trigger.
 '''
 
 #If true, this event runs after the event that triggered it
-@export var isRunAfter: bool = false
+@export var isRunAfter: bool = false:
+	set(val):
+		isRunAfter = val
+		notify_property_list_changed()
 
 '''
 Disconnects from all existing trigger signals

@@ -1,3 +1,4 @@
+@tool
 class_name CardListenerEvent extends ListenerEvent
 
 enum CardTriggers {
@@ -20,10 +21,13 @@ func _activate_event():
 func _connect_to_card(card: Card):
 	match triggerEvent:
 		CardTriggers.INVOKE:
+			isRunAfter = true
 			card.invoked.connect(trigger)
 		CardTriggers.ACTIVATE:
+			isRunAfter = false
 			card.activated.connect(trigger)
 		CardTriggers.CAST:
+			isRunAfter = false
 			card.casted.connect(trigger)
 
 '''
