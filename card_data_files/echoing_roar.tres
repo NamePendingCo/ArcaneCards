@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c3lsne5qhwrmf" path="res://scripts/resources/effects/abstract_effects/effect.gd" id="1_0fvhi"]
 [ext_resource type="Script" uid="uid://x0i1uyfprpdj" path="res://scripts/resources/card_data.gd" id="1_a40os"]
-[ext_resource type="Script" uid="uid://66qrd6hx72oi" path="res://scripts/resources/events/activation_event.gd" id="2_kxa1e"]
+[ext_resource type="Script" uid="uid://66qrd6hx72oi" path="res://scripts/resources/events/unsignaled_event.gd" id="2_kxa1e"]
 
 [sub_resource type="Resource" id="Resource_42et8"]
 script = ExtResource("2_kxa1e")

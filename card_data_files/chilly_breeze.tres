@@ -1,20 +1,22 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://d2n5shcpvrktb"]
 
 [ext_resource type="Script" uid="uid://x0i1uyfprpdj" path="res://scripts/resources/card_data.gd" id="1_vcjca"]
-[ext_resource type="Script" uid="uid://coweccke0kjnp" path="res://scripts/resources/events/abstracts/listener_event.gd" id="1_whvih"]
 [ext_resource type="Script" uid="uid://c3lsne5qhwrmf" path="res://scripts/resources/effects/abstract_effects/effect.gd" id="2_atrgt"]
+[ext_resource type="Script" uid="uid://66qrd6hx72oi" path="res://scripts/resources/events/unsignaled_event.gd" id="2_cy4iv"]
 [ext_resource type="Script" uid="uid://bm0rejlfkuuks" path="res://scripts/resources/event_parameters/abstracts/event_param.gd" id="2_dj1eg"]
 [ext_resource type="Script" uid="uid://bcy762hcj7wa7" path="res://scripts/resources/effects_data.gd" id="3_atrgt"]
-[ext_resource type="Script" uid="uid://66qrd6hx72oi" path="res://scripts/resources/events/activation_event.gd" id="3_cy4iv"]
+[ext_resource type="Script" uid="uid://dedl4t18oxaef" path="res://scripts/resources/events/abstracts/event.gd" id="3_v6au5"]
 
-[sub_resource type="Resource" id="Resource_atrgt"]
-script = ExtResource("3_cy4iv")
-choice_param_names = Array[String](["cheese"])
+[sub_resource type="Resource" id="Resource_0m7pk"]
+script = ExtResource("2_cy4iv")
 metadata/_custom_type_script = "uid://66qrd6hx72oi"
 
 [sub_resource type="Resource" id="Resource_cy4iv"]
 script = ExtResource("3_atrgt")
-activation_event = SubResource("Resource_atrgt")
+events = Dictionary[String, ExtResource("3_v6au5")]({
+"activation": SubResource("Resource_0m7pk")
+})
+_activation_event = SubResource("Resource_0m7pk")
 metadata/_custom_type_script = "uid://bcy762hcj7wa7"
 
 [resource]

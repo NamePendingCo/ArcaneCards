@@ -6,21 +6,8 @@ class_name EffectsData extends Resource
 @export var params: Dictionary[String, EventParam]
 
 #dictionary of events on this card
+@export
 var events: Dictionary[String, Event] = {}
-#exported activation event so designer can only set one
-@export var activation_event: ActivationEvent:
-	set(val):
-		activation_event = val
-		events[Constants.ACTIVATION_KEY] = activation_event
-#export listening events so any other events can be set
-@export var _events: Dictionary[String, ListenerEvent]:
-	set(val):
-		_events = val
-		events.clear()
-		for key in _events:
-			events[key] = _events[key]
-		events[Constants.ACTIVATION_KEY] = activation_event
-
 
 '''
 Uses the designer name based parameters in events and effects

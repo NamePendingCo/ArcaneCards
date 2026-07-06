@@ -1,4 +1,4 @@
-class_name ActivationEvent extends Event
+class_name UnsignaledEvent extends Event
 
 func _init():
 	is_invocation = true
