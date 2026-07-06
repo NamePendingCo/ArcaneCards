@@ -1,5 +1,13 @@
-@abstract
 class_name CardListenerEvent extends ListenerEvent
+
+enum CardTriggers {
+	NULL = 0,
+	INVOKE,
+	ACTIVATE,
+	CAST
+}
+
+@export var triggerEvent: CardTriggers
 
 var triggering_cards: CardTargetParam
 
@@ -7,9 +15,18 @@ func _activate_event():
 	#Reset the connections every time the target list is updated
 	triggering_cards.updated_targets.connect(reset_connections)
 
+func _deactivate_event():
+	pass
+
 #Subscribe to the correct signal for the listener
-@abstract
-func _connect_to_card(card: Card)
+func _connect_to_card(card: Card):
+	match triggerEvent:
+		CardTriggers.INVOKE:
+			card.invoked.connect(trigger)
+		CardTriggers.ACTIVATE:
+			card.activated.connect(trigger)
+		CardTriggers.CAST:
+			card.casted.connect(trigger)
 
 '''
 Disconnects from all existing connections. Then connect
