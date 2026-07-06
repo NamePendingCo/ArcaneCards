@@ -57,11 +57,11 @@ func _ready():
 # Functions below here
 #================================================
 
-@abstract
-func _activate_event()
+func _activate_event():
+	pass
 
-@abstract
-func _deactivate_event()
+func _deactivate_event():
+	pass
 
 '''
 Usually connected with a signal. When called, signals to the battle_manager

@@ -11,11 +11,10 @@ enum CardTriggers {
 var triggering_cards: CardTargetParam
 
 func _activate_event():
+	super()
 	#Reset the connections every time the target list is updated
 	triggering_cards.updated_targets.connect(reset_connections)
 
-func _deactivate_event():
-	pass
 
 #Subscribe to the correct signal for the listener
 func _connect_to_card(card: Card):
