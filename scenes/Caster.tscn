@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://bf5hb8yrkmoyv"]
 
-[ext_resource type="Script" uid="uid://87txbqeppm3e" path="res://scripts/caster.gd" id="2_puh4a"]
 [ext_resource type="Texture2D" uid="uid://cbbp3f4fbfnuv" path="res://assets/TEMP_yugioh_cardback.png" id="2_rakli"]
 [ext_resource type="PackedScene" uid="uid://dpu52olnuxqcy" path="res://scenes/CardSlot.tscn" id="2_u20q3"]
 [ext_resource type="Script" uid="uid://dcbly24n8tlsv" path="res://scripts/card_manager.gd" id="2_xfmn6"]
@@ -26,7 +25,6 @@ material = SubResource("StandardMaterial3D_o4s3k")
 size = Vector2(2.1, 3)
 
 [node name="Caster" type="Node3D" unique_id=616650361]
-script = ExtResource("2_puh4a")
 
 [node name="CardManager" type="Node3D" parent="." unique_id=591655411]
 script = ExtResource("2_xfmn6")

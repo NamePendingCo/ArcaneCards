@@ -26,11 +26,7 @@ var choice_params: Array[EventParam]
 
 #List of effects that occur during this event
 @export
-var effects: Array[Effect]:
-	set(val):
-		effects = val
-		for effect in effects:
-			effect._num_parent_effects = effects.size()
+var effects: Array[Effect]
 
 # The list of events that this event has triggered during its invocation
 var triggered_events: Array[Event]

@@ -10,9 +10,6 @@ signal end_phase_began
 
 const RoundPhase = Enums.RoundPhase
 
-@export
-var casters: Array[Caster] = []
-
 var round_num: int
 var current_phase: RoundPhase
 
@@ -236,9 +233,3 @@ func _process_event_stack():
 
 func _queue_event(event: Event):
 	to_stack_list.append(event)
-
-'''
-Processes a declaration to pay upkeep by running any events that it triggers
-'''
-func _process_upkeep_payment(caster: Caster):
-	_process_event_stack()

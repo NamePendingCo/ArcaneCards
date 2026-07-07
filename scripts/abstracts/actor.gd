@@ -1,5 +1,5 @@
 @abstract
-class_name Actor extends Node
+class_name Actor extends Node3D
 
 '''
 An abstract class that is a parent to Beings and Casters. This is just

@@ -263,6 +263,8 @@ func _reset_event_data():
 		var event = events[key]
 		if event.is_invocation:
 			event.event_running.connect(_declare_invoked)
+	
+	reset_event_data.emit()
 
 '''
 Disables all parameters and events so they don't interact with

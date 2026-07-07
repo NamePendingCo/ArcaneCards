@@ -19,8 +19,6 @@ var modifiers: Array[EffectOperator]
 # Private vars
 #================================================
 
-var _num_parent_effects: int = 0
-
 #Minimum allowed value for the effect
 #also used for ranges when making comparisons
 var _min_val: int:
