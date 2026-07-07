@@ -30,6 +30,7 @@ func _ready():
 	var casters = get_tree().get_nodes_in_group(Constants.GROUP_CASTER)
 	for caster: Caster in casters:
 		caster.card_manager.created_card.connect(_register_card)
+		_handle_activated_event(caster.initial_draw_event)
 
 #================================================
 # Public methods
@@ -39,7 +40,15 @@ func _ready():
 All game start and setup stuff should be done here
 '''
 func startMatch():
+	print("Starting match...")
 	round_num = 0 #starts at zero so it can increase every round
+	
+	var casters = get_tree().get_nodes_in_group(Constants.GROUP_CASTER)
+	for caster: Caster in casters:
+		caster.initial_draw_event.trigger()
+	
+	_process_event_stack()
+	
 	phaseRoundLoad()
 
 '''
@@ -169,7 +178,13 @@ Params:
 func _register_card(card: Card):
 	for event_name in card.events:
 		var event: Event = card.events[event_name]
-		event.event_triggered.connect(_handle_activated_event)
+		event.event_activated.connect(_handle_activated_event)
+
+'''
+Might delete later. For non card stuff.
+'''
+func _register_uncarded_event(event: Event):
+	event.event_activated.connect(_handle_activated_event)
 
 '''
 Takes a list of events, sorts them based on the sort function, 
@@ -183,6 +198,10 @@ func _stack_event_list(event_list: Array[Event]):
 		
 	event_stack.append_array(to_stack_list)
 	event_list.clear()
+
+func _initial_stack_setup():
+	_stack_event_list(to_stack_list)
+	_stack_event_list(to_stack_after_list)
 
 '''
 Takes in an event and processes if there are triggered events. 
@@ -218,7 +237,9 @@ While event stack not empty, pop top then prepare to run and pass to
 process_triggered_events. If true, run event. If false, ignore and loop
 '''
 func _process_event_stack():
+	_initial_stack_setup()
 	while not event_stack.is_empty():
+		print("Event stack...")
 		#checks the top item on stack. If no new events stacked, run it
 		var event = event_stack.pop_back()
 		

@@ -74,8 +74,10 @@ Usually connected with a signal. When called, signals to the battle_manager
 to be added to the event stack.
 '''
 func trigger():
+	print("Triggered Event for %s" % actor.name)
 	#Only can trigger if active
 	if event_state == EventState.ACTIVE:
+		print("Event is active")
 		event_triggered.emit(self)
 
 '''
@@ -83,6 +85,7 @@ Have the event go through and make all selections for
 the parameters and conditions. Then send signal that this event is running.
 '''
 func prepare_to_run():
+	print("Preparing to run event")
 	
 	for param in choice_params:
 		#Loops through and makes all choices for parameters
@@ -102,6 +105,7 @@ Runs the event and all effects that should occur as part of it. Does not
 run if the event is not active.
 '''
 func run():
+	print("Running event")
 	#Should not run if inactive or suppressed.
 	if event_state != EventState.ACTIVE:
 		return

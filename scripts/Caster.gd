@@ -5,6 +5,8 @@ extends Being
 
 signal paying_upkeep #send out before paying upkeep
 
+signal created_event(event)
+
 #List of important children to track
 @onready var card_manager: CardManager = $CardManager
 @onready var my_hand: Hand = $Hand
@@ -15,12 +17,16 @@ signal paying_upkeep #send out before paying upkeep
 
 var mana: int
 
+var initial_draw_event: UnsignaledEvent
+
 func _ready():
 	super()
 	add_to_group(Constants.GROUP_CASTER)
 	
 	#Connect all newly created cards with the register function
 	card_manager.created_card.connect(_register_card)
+	
+	_create_initial_draw_event()
 
 #Enum for determining destinations for drawn cards. Maybe should be moved
 enum DrawDest {
@@ -151,3 +157,23 @@ Only should activate via signal from battle manager. Actually pays upkeep cost
 '''
 func _pay_total_upkeep():
 	mana -= my_conc_circle.pay_circle_upkeep()
+
+func _create_initial_draw_event():
+	var event: UnsignaledEvent = UnsignaledEvent.new()
+	event.actor = self
+	event.event_state = event.EventState.ACTIVE
+	
+	var draw_effect: DrawEffect = DrawEffect.new()
+	draw_effect._val = 8
+	
+	var target_param: BeingTargetFilterParam = BeingTargetFilterParam.new()
+	target_param._being_parent = self
+	target_param.range_option = EventEnums.BeingRangeOption.SELF
+	
+	draw_effect.targets_param = target_param
+	
+	event.effects = [draw_effect]
+	
+	initial_draw_event = event
+	
+	print("Created initial draw event")

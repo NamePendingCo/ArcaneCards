@@ -3,10 +3,6 @@ class_name PlayerCaster extends Caster
 #VERY VERY TEMPORARY REMOVE BEFORE LONG
 @export var ui: TestingBattleUI
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
 #================================================
 # Public methods
 #================================================
@@ -16,7 +12,7 @@ func _ready():
 #================================================
 
 func _chose_being_from_menu(choice_indices: PackedInt32Array, param: BeingTargetParam):
-	var choices = Array[Being]
+	var choices: Array[Being] = []
 	for index in choice_indices:
 		choices.append(param.targets_range[index])
 	

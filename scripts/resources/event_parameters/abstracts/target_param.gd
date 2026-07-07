@@ -5,11 +5,11 @@ signal updated_range #updated the range of potential targets
 signal updated_targets #updated the selected targets
 
 #All possible values that can be chosen as targets
-var _targets_range: Array:
+var _targets_range: Array[Variant]:
 	get = _get_targets_range, set = _set_targets_range
 
 #Actual chosen targets. Should be a subset of targets_range
-var _targets: Array:
+var _targets: Array[Variant]:
 	get = _get_targets, set = _set_targets
 
 #number of targets to select from, only shown if actor chooses target
@@ -51,7 +51,7 @@ func disable():
 func _get_targets_range():
 	return _targets_range
 
-func _set_targets_range(arr: Array):
+func _set_targets_range(arr: Array[Variant]):
 	_targets_range.clear()
 	_targets_range.append(arr)
 	updated_range.emit() #notify of update
@@ -59,7 +59,7 @@ func _set_targets_range(arr: Array):
 func _get_targets():
 	return _targets
 
-func _set_targets(arr: Array):
+func _set_targets(arr: Array[Variant]):
 	_targets.clear()
 	_targets.append(arr)
 	updated_targets.emit() #notify of update

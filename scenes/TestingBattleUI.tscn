@@ -13,7 +13,7 @@ offset_right = 216.0
 offset_bottom = 505.0
 select_mode = 1
 
-[node name="Button" type="Button" parent="." unique_id=956354670]
+[node name="StartButton" type="Button" parent="." unique_id=956354670]
 offset_left = 960.0
 offset_top = 106.0
 offset_right = 1056.0
