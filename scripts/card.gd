@@ -24,15 +24,8 @@ var card_owner: Caster
 
 @export var card_data: CardData:
 	set(value):
-		#Get the cardface object to modify
-		spell_face = $"Cardfront/SubViewport/CardFace"
-		var viewport = $"Cardfront/SubViewport"
-		
 		#set the new data as the data for this card
 		card_data = value
-		
-		#Store a new set of the events
-		_reset_event_data()
 		
 		# Set local variables from the card total so that data itself remains consistent
 		upkeep = card_data.upkeep_cost
@@ -72,10 +65,11 @@ var card_owner: Caster
 		spell_face.get_node("Effects").text = card_data.effects_text
 		
 		#reset the viewport so it reloads with the new info
-		viewport.render_target_update_mode = SubViewport.UpdateMode.UPDATE_ONCE
+		_reload_cardface()
+		
+		#Store a new set of the events
+		_reset_event_data()
 
-#TODO: Move this to right place for management
-var spell_face: Control
 
 var activation_cost: Array[int]:
 	set(ac):
@@ -110,6 +104,9 @@ var quicken_amount: int:
 var position_locked: bool:
 	get: return card_state <= Enums.CardState.HAND
 	set(val): pass
+
+@onready var spell_face: Control = $"Cardfront/SubViewport/CardFace"
+@onready var viewport: Viewport = $"Cardfront/SubViewport"
 
 func _ready():
 	#Add to the card group
@@ -242,3 +239,9 @@ Sends a signal that this card was invoked.
 '''
 func _declare_invoked():
 	invoked.emit()
+
+'''
+Reloads the viewport for the cardface with new info.
+'''
+func _reload_cardface():
+	viewport.render_target_update_mode = SubViewport.UpdateMode.UPDATE_ONCE
