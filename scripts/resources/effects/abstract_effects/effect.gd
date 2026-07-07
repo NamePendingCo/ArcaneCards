@@ -1,9 +1,23 @@
-@tool
 @abstract
 class_name Effect extends Resource
 
-#The internal id name of the effect 
-var effect_id: String
+signal effect_running #Notify when this effect is about to run
+
+@export var _val: int:
+	set(new_val): _val = clamp(new_val, _min_val, _max_val)
+
+#The internal id name of the effect type. Effectively a constant
+var effect_id: String:
+	get: return _get_effect_id()
+	set(val): return
+
+var modifiers: Array[EffectOperator]
+
+#================================================
+# Private vars
+#================================================
+
+var _num_parent_effects: int = 0
 
 #Minimum allowed value for the effect
 #also used for ranges when making comparisons
@@ -15,10 +29,9 @@ var _min_val: int:
 var _max_val: int:
 	set(new_val): _val = max(_min_val, Constants.INT_MAX)
 
-@export var _val: int:
-	set(new_val): _val = clamp(new_val, _min_val, _max_val)
-
-var modifiers: Array[EffectOperator]
+#================================================
+# Public methods
+#================================================
 
 func get_base_val():
 	return _val
@@ -36,3 +49,11 @@ func get_final_val():
 
 @abstract
 func run()
+
+#================================================
+# Private methods
+#================================================
+
+#Should return a constant for each
+@abstract
+func _get_effect_id() -> String

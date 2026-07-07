@@ -2,15 +2,18 @@
 @abstract
 class_name Event extends Resource
 
+#This might not be needed anymore. TBD
 signal effects_len_changed(int)
 
-signal event_triggered
-signal event_running
+signal event_activated #When the event is enabled
+
+signal event_triggered #when told to run
+signal event_running #when actually running
 
 enum EventState {
 	INACTIVE = 0,
 	ACTIVE = 1,
-	DISABLED = 2
+	SUPRESSED = 2
 }
 
 #The lists of names of param selections that should be made
@@ -36,15 +39,25 @@ var triggered_events: Array[Event]
 # driven event and not an action triggered during play.
 var is_system_event: bool = false
 
-var is_invocation: bool
+# Whether this event should count as an invocation for its card
+var is_invocation: bool = true
 
-var event_state: EventState:
+#Tracks the current state of the event
+var event_state: EventState = EventState.INACTIVE:
 	set(val):
+		if event_state == val:
+			#return if event doesn't change
+			return
+			
 		event_state = val
-		if val == EventState.ACTIVE:
-			_activate_event()
-		else:
-			_deactivate_event()
+		
+		match event_state:
+			EventState.INACTIVE:
+				_deactivate_event()
+			EventState.ACTIVE:
+				_activate_event()
+			EventState.SUPRESSED:
+				_suppress_event()
 
 #The entity making the event occur
 var actor: Actor = null
@@ -57,14 +70,8 @@ func _ready():
 	triggered_events = []
 
 #================================================
-# Functions below here
+# Public methods
 #================================================
-
-func _activate_event():
-	pass
-
-func _deactivate_event():
-	pass
 
 '''
 Usually connected with a signal. When called, signals to the battle_manager
@@ -81,14 +88,28 @@ the parameters and conditions. Then send signal that this event is running.
 '''
 func prepare_to_run():
 	
-	#TODO handle params
+	for param in choice_params:
+		#Loops through and makes all choices for parameters
+		
+		if param is TargetParam:
+			param.update_range()
+		
+		param.request_selection()
 	
+	#Announce the event is running
 	event_running.emit()
+	
+	#TODO put here a loop that has each effect also announce it is happening
 
 '''
-Runs the event and all effects that should occur as part of it.
+Runs the event and all effects that should occur as part of it. Does not
+run if the event is not active.
 '''
 func run():
+	#Should not run if inactive or suppressed.
+	if event_state != EventState.ACTIVE:
+		return
+	
 	for effect in effects:
 		effect.run()
 
@@ -105,3 +126,19 @@ func calculate_priority() -> int:
 		priority += 1 << 15 #TODO: decide actual flag
 	
 	return priority
+
+#================================================
+# Private methods
+#================================================
+
+#In case its necessary--run when set to active
+func _activate_event():
+	event_activated.emit()
+
+#In case its necessary--run when set to inactive (but not suppressed)
+func _deactivate_event():
+	pass
+
+#In case its necessary--run when set to suppressed
+func _suppress_event():
+	pass

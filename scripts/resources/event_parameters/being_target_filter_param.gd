@@ -26,6 +26,9 @@ update_range_from_list
 func update_range():
 	requested_beings_list.emit()
 
+'''
+Filter function used to see if a specific being matches the parameter filters.
+'''
 func _check_being(being: Being) -> bool:
 	return being_filter.check_being(being)
 

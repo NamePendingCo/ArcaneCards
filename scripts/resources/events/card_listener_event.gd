@@ -16,7 +16,6 @@ func _activate_event():
 	#Reset the connections every time the target list is updated
 	triggering_cards.updated_targets.connect(reset_connections)
 
-
 #Subscribe to the correct signal for the listener
 func _connect_to_card(card: Card):
 	match triggerEvent:
