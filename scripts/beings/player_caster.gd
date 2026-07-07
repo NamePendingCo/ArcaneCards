@@ -1,5 +1,7 @@
 class_name PlayerCaster extends Caster
 
+#VERY VERY TEMPORARY REMOVE BEFORE LONG
+@export var ui: TestingBattleUI
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -13,17 +15,63 @@ func _ready():
 # Private methods
 #================================================
 
+func _chose_being_from_menu(choice_indices: PackedInt32Array, param: BeingTargetParam):
+	var choices = Array[Being]
+	for index in choice_indices:
+		choices.append(param.targets_range[index])
+	
+	param.targets = choices
+	
+
+'''
+Overrides.
+'''
 func _choose_being_from_range(param: BeingTargetParam):
 	#Just copy if the range isn't big enough
 	if param.targets_range.size() <= param.num_targets_min:
 		param.targets = param.targets_range.duplicate()
 		return
+	
+	var being_names = []
+	
+	for being: Being in param.targets_range:
+		being_names.append(being.name)
+	
+	ui.set_item_list_items(being_names)
+	
+	var selections: PackedInt32Array = await ui.selection_made
+	
+	var targets: Array[Being] = []
+	
+	for selection in selections:
+		targets.append(param.targets_range[selection])
+	
+	param.targets = targets
 
+'''
+Overrides.
+'''
 func _choose_card_from_range(param: CardTargetParam):
 	#Just copy if the range isn't big enough
 	if param.targets_range.size() <= param.num_targets_min:
 		param.targets = param.targets_range.duplicate()
 		return
+	
+	var card_names = []
+	
+	for card: Card in param.targets_range:
+		card_names.append(card.card_data.cardName)
+	
+	ui.set_item_list_items(card_names)
+	
+	var selections: PackedInt32Array = await ui.selection_made
+	
+	var targets: Array[Card] = []
+	
+	for selection in selections:
+		targets.append(param.targets_range[selection])
+	
+	param.targets = targets
 
 #TODO Remove this in place of actual input action
 # This is not a permanent function, it's merely to test things out

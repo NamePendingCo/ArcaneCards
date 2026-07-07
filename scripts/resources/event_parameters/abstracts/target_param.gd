@@ -52,12 +52,14 @@ func _get_targets_range():
 	return _targets_range
 
 func _set_targets_range(arr: Array):
-	_targets_range = arr
+	_targets_range.clear()
+	_targets_range.append(arr)
 	updated_range.emit() #notify of update
 
 func _get_targets():
 	return _targets
 
 func _set_targets(arr: Array):
-	_targets = arr
+	_targets.clear()
+	_targets.append(arr)
 	updated_targets.emit() #notify of update

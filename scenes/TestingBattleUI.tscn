@@ -1,12 +1,21 @@
 [gd_scene format=3 uid="uid://qn8wmasljdgo"]
 
+[ext_resource type="Script" uid="uid://bwbvv0qi2a38y" path="res://scripts/misc/testing_battle_ui.gd" id="1_aer3r"]
+
 [node name="TestingBattleUI" type="CanvasLayer" unique_id=2088716599]
 follow_viewport_enabled = true
+script = ExtResource("1_aer3r")
 
 [node name="ItemList" type="ItemList" parent="." unique_id=1779650681]
-offset_right = 40.0
+offset_left = 2.0
+offset_top = 189.0
+offset_right = 216.0
+offset_bottom = 505.0
+select_mode = 1
 
 [node name="Button" type="Button" parent="." unique_id=956354670]
-offset_right = 8.0
-offset_bottom = 8.0
+offset_left = 960.0
+offset_top = 106.0
+offset_right = 1056.0
+offset_bottom = 137.0
 text = "Start Game"
