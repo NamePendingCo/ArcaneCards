@@ -1,7 +1,7 @@
 @abstract
 class_name EventParam extends Resource
 
-signal selection_requested
+signal selection_requested #sent when asking actor to make a choice
 
 #Whether a selection is made by the player
 var is_chosen: bool = false:

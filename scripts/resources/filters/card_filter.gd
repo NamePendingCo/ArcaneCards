@@ -48,18 +48,9 @@ func _ready():
 	types = []
 	tiers = []
 
-func _validate_property(property):
-	if property.name == "_colors":
-		EventEnums.enumFlagProperty(property, \
-		EventEnums.enumToFlags(Enums.SpellColor, [Enums.SpellColor.NULL]))
-	elif property.name == "_subdomains":
-		EventEnums.enumFlagProperty(property, \
-		EventEnums.enumToFlags(Enums.Subdomain, [Enums.Subdomain.NULL]))
-	elif property.name == "_types":
-		EventEnums.enumFlagProperty(property, \
-		EventEnums.enumToFlags(Enums.CardType, [Enums.CardType.NULL]))
-	elif property.name == "_tiers":
-		EventEnums.enumFlagProperty(property, EventEnums.enumToFlags({1:1, 2:2, 3:3}))
+#================================================
+# Public functions
+#================================================
 
 '''
 Checks if a card matches the parameters of the filter.
@@ -67,7 +58,7 @@ Params:
 	- card: a Card
 Returns: true if matches, false if not
 '''
-func check_card(card: Card) -> bool:
+func card_valid(card: Card) -> bool:
 	var data = card.card_data
 	
 	#check colors
@@ -87,3 +78,20 @@ func check_card(card: Card) -> bool:
 		return false
 	
 	return true
+
+#================================================
+# Private functions
+#================================================
+
+func _validate_property(property):
+	if property.name == "_colors":
+		EventEnums.enumFlagProperty(property, \
+		EventEnums.enumToFlags(Enums.SpellColor, [Enums.SpellColor.NULL]))
+	elif property.name == "_subdomains":
+		EventEnums.enumFlagProperty(property, \
+		EventEnums.enumToFlags(Enums.Subdomain, [Enums.Subdomain.NULL]))
+	elif property.name == "_types":
+		EventEnums.enumFlagProperty(property, \
+		EventEnums.enumToFlags(Enums.CardType, [Enums.CardType.NULL]))
+	elif property.name == "_tiers":
+		EventEnums.enumFlagProperty(property, EventEnums.enumToFlags({1:1, 2:2, 3:3}))

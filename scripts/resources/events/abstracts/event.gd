@@ -13,8 +13,6 @@ enum EventState {
 	DISABLED = 2
 }
 
-var is_invocation: bool
-
 #The lists of names of param selections that should be made
 #by actor upon this event triggering. For editor use
 @export var choice_param_names: Array[String]
@@ -38,6 +36,8 @@ var triggered_events: Array[Event]
 # driven event and not an action triggered during play.
 var is_system_event: bool = false
 
+var is_invocation: bool
+
 var event_state: EventState:
 	set(val):
 		event_state = val
@@ -47,7 +47,10 @@ var event_state: EventState:
 			_deactivate_event()
 
 #The entity making the event occur
-var actor: Being
+var actor: Actor = null
+
+#Parent card that owns this event. Not always set
+var parent_card: Card = null
 
 func _ready():
 	event_state = EventState.INACTIVE

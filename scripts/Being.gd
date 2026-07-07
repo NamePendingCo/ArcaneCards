@@ -1,4 +1,4 @@
-class_name Being extends Node
+class_name Being extends Actor
 
 signal health_depleted
 
@@ -24,5 +24,6 @@ func _ready():
 func take_damage(dmg: int):
 	health -= dmg
 
+#TODO convert to an event
 func attack_being(target: Being):
 	target.take_damage(attack_strength)

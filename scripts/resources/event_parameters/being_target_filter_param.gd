@@ -1,6 +1,8 @@
 @tool
 class_name BeingTargetFilterParam extends BeingTargetParam
 
+signal requested_beings_list
+
 #The range of applicable targets
 @export
 var range_option: EventEnums.BeingRangeOption:
@@ -8,9 +10,24 @@ var range_option: EventEnums.BeingRangeOption:
 		range_option = val
 		notify_property_list_changed()
 
-#TODO override
+@export
+var being_filter: BeingFilter
+
+'''
+When passed a list of beings, updates from these
+'''
+func update_range_from_list(all_beings: Array[Being]):
+	targets_range = all_beings.filter(_check_being)
+
+'''
+Sends a signal which should tell the actor to update its range using
+update_range_from_list
+'''
 func update_range():
-	pass
+	requested_beings_list.emit()
+
+func _check_being(being: Being) -> bool:
+	return being_filter.check_being(being)
 
 func _validate_property(property: Dictionary) -> void:
 	if property.name == "is_chosen":
