@@ -7,6 +7,8 @@ signal marked_for_discard
 signal marked_for_casting(card, slot: int)
 signal marked_for_conc_circle(card, slot: int)
 
+signal payment_declared(type) #Eventually set param type with an enum
+
 #signals for notifying state changes
 signal left_hand
 signal detatched_from_slot
@@ -18,11 +20,15 @@ var card_owner: Caster
 @export var card_data: CardData:
 	set(value):
 		#Get the cardface object to modify
-		var spell_face = $"Cardfront/SubViewport/CardFace"
+		spell_face = $"Cardfront/SubViewport/CardFace"
 		var viewport = $"Cardfront/SubViewport"
 		
 		#set the new data as the data for this card
 		card_data = value
+		
+		# Set local variables from the card total so that data itself remains consistent
+		upkeep = card_data.upkeep_cost
+		activation_cost = card_data.activation_cost
 		
 		#set name in cardface
 		spell_face.get_node("Name").text = card_data.cardName
@@ -48,21 +54,9 @@ var card_owner: Caster
 		var backdrop: TextureRect = spell_face.get_node("CardBackdrop")
 		backdrop.texture = load(backdrop_path)
 		
-		#set tier and activation cost on cardface
-		var ac = card_data.activation_cost
-		match card_data.tier:
-			1:
-				spell_face.get_node("Tier").text = 'I'
-				spell_face.get_node("ActivationCost").text = str(ac[0])
-			2:
-				spell_face.get_node("Tier").text = 'II'
-				spell_face.get_node("ActivationCost").text = str(ac[0]) + '/' + str(ac[1])
-			3:
-				spell_face.get_node("Tier").text = 'III'
-				spell_face.get_node("ActivationCost").text = str(ac[0]) + '/' + str(ac[1]) + '/' + str(ac[2])
-				
-		#set upkeep cost on cardface
-		spell_face.get_node("UpkeepCost").text = str(card_data.upkeep_cost)
+		spell_face.get_node("Tier").text = ''
+		for i in range(card_data.tier):
+			spell_face.get_node("Tier").text += 'I'
 		
 		#creates the overview string and sets it on cardface
 		spell_face.get_node("Overview").text = '-- ' + Enums.colorString(card_data.color) + ' (' + Enums.subdomainString(card_data.subdomain) + ') -- ' + Enums.typeString(card_data.type) + ' --'
@@ -71,6 +65,26 @@ var card_owner: Caster
 		
 		#reset the viewport so it reloads with the new info
 		viewport.render_target_update_mode = SubViewport.UpdateMode.UPDATE_ONCE
+
+#TODO: Move this to right place for management
+var spell_face: Control
+
+var activation_cost: Array[int]:
+	set(ac):
+		activation_cost = ac
+		match card_data.tier:
+			1: spell_face.get_node("ActivationCost").text = str(ac[0])
+			2: spell_face.get_node("ActivationCost").text = str(ac[0]) + '/' + str(ac[1])
+			3: spell_face.get_node("ActivationCost").text = str(ac[0]) + '/' + str(ac[1]) + '/' + str(ac[2])
+
+			
+		
+var upkeep: int:
+	set(val):
+		#set upkeep cost on cardface
+		upkeep = val
+		spell_face.get_node("UpkeepCost").text = str(val)
+		
 
 var card_state: Enums.CardState
 
@@ -148,3 +162,16 @@ Params:
 '''
 func mark_conc_circle(slot: int=-1):
 	marked_for_conc_circle.emit(self, slot)
+
+'''
+Emits a signal saying its upkeep is about to be paid.
+'''
+func prepare_pay_upkeep():
+	payment_declared.emit("upkeep") #TODO swap with Enum
+
+'''
+Actually pays the upkeep. Handles any effects that are set up on card for this.
+'''
+func pay_upkeep():
+	#TODO Add handling for cost counters
+	return upkeep

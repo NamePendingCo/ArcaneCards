@@ -2,6 +2,8 @@ class_name Caster
 
 extends Being
 
+signal paying_upkeep #send out before paying upkeep
+
 #List of important children to track
 @onready var card_manager: CardManager = $CardManager
 @onready var my_hand: Hand = $Hand
@@ -22,6 +24,19 @@ enum DrawDest {
 	SELECTION, #send cards to a selection page to choose from them
 	DISCARD #send directly to discard
 }
+
+'''
+Only should activate via signal from battle manager. Actually pays upkeep cost
+'''
+func _pay_total_upkeep():
+	mana -= my_conc_circle.pay_circle_upkeep()
+
+'''
+Notify all actors that caster is paying upkeep
+'''
+func declare_paying_upkeep():
+	paying_upkeep.emit() #notify battle manager
+	my_conc_circle.prepare_pay_circle_upkeep() #notify cards in circle
 
 '''
 Connects a card's signals to the caster and also sets its owner to this caster
