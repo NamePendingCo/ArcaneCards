@@ -26,7 +26,7 @@ func instantiate_card(data: CardData, start_pos: Vector3 = position):
 	#tell listeners a new card object has been made
 	created_card.emit(new_card)
 	print(new_card.card_data.cardName + " Created at " + str(new_card.position))
-	return new_card	
+	return new_card
 
 func instantiate_card_from_id(card_id: String, start_pos: Vector3 = position):
 	var card_data = CardDatabase.get_card_data(card_id)

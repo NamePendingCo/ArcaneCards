@@ -93,13 +93,6 @@ var events: Dictionary[String, Event]
 #In game states
 var card_state: Enums.CardState
 
-var rounds_spent_casting: int: 
-	set(val): rounds_spent_casting = max(val, 0)
-var delay_amount: int: 
-	set(val): delay_amount = max(val, 0)
-var quicken_amount: int: 
-	set(val): quicken_amount = max(val, 0)
-
 #when true, card can be dragged around by player. When false, cannot move
 #for now, assume always can while in hand or state is null. Probably fix later
 var position_locked: bool:
@@ -108,6 +101,13 @@ var position_locked: bool:
 
 @onready var spell_face: Control = $"Cardfront/SubViewport/CardFace"
 @onready var viewport: Viewport = $"Cardfront/SubViewport"
+
+var _rounds_spent_casting: int: 
+	set(val): _rounds_spent_casting = max(val, 0)
+var _delay_amount: int: 
+	set(val): _delay_amount = max(val, 0)
+var _quicken_amount: int: 
+	set(val): _quicken_amount = max(val, 0)
 
 func _ready():
 	#Add to the card group
@@ -162,12 +162,13 @@ func cast():
 Increases the casting stage. If it is ready to activate,
 activate the card.
 '''
-func progress_casting(progression_amount: int):
-	rounds_spent_casting += 1
+func progress_casting(progress_increment: int):
+	_rounds_spent_casting += progress_increment
 	
-	var wait_total = card_data.tier + delay_amount
+	var progress_total = _rounds_spent_casting + _quicken_amount
+	var wait_total = card_data.tier + _delay_amount
 	
-	if rounds_spent_casting >= wait_total:
+	if progress_total >= wait_total:
 		activate()
 
 '''
@@ -177,8 +178,8 @@ Finally, run the activation event.
 '''
 func activate():
 	
-	for key in events:
-		var event = events[key]
+	for event_name in events:
+		var event = events[event_name]
 		event.event_state = Event.EventState.ACTIVE
 		
 	events[Constants.ACTIVATION_KEY].trigger()
@@ -233,9 +234,9 @@ func pay_upkeep():
 Set all casting data back to 0.
 '''
 func _reset_casting_data():
-	rounds_spent_casting = 0
-	delay_amount = 0
-	quicken_amount = 0
+	_rounds_spent_casting = 0
+	_delay_amount = 0
+	_quicken_amount = 0
 
 '''
 Resets the event data of this card to be based on the card data.

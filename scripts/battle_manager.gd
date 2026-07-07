@@ -28,9 +28,14 @@ var card_listening_events: Array[Event]
 func _ready():
 	current_phase = RoundPhase.NULL
 	event_stack = []
+	
+	#Connect all card creation to _register_card
+	var casters = get_tree().get_nodes_in_group(Constants.GROUP_CASTER)
+	for caster: Caster in casters:
+		caster.card_manager.created_card.connect(_register_card)
 
 #================================================
-# Public functions
+# Public methods
 #================================================
 
 '''
@@ -135,7 +140,7 @@ func phaseEnd():
 	advancePhase()
 
 #================================================
-# Private functions
+# Private methods
 #================================================
 
 '''

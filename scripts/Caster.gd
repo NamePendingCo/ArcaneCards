@@ -16,6 +16,9 @@ var mana: int
 
 func _ready():
 	super()
+	add_to_group(Constants.GROUP_CASTER)
+	
+	#Connect all newly created cards with the register function
 	card_manager.created_card.connect(_register_card)
 
 #Enum for determining destinations for drawn cards. Maybe should be moved
@@ -25,11 +28,9 @@ enum DrawDest {
 	DISCARD #send directly to discard
 }
 
-'''
-Only should activate via signal from battle manager. Actually pays upkeep cost
-'''
-func _pay_total_upkeep():
-	mana -= my_conc_circle.pay_circle_upkeep()
+#================================================
+# Public methods
+#================================================
 
 '''
 Notify all actors that caster is paying upkeep
@@ -133,6 +134,17 @@ func move_card_from_discard_pile(index: int, dest: DrawDest = DrawDest.HAND):
 		var card = card_manager.instantiate_card_from_id(grabbed_id, my_discard.global_transform.origin)
 		move_to_hand_card(card)
 		return true
+
+#================================================
+# Private methods
+#================================================
+
+'''
+Only should activate via signal from battle manager. Actually pays upkeep cost
+'''
+func _pay_total_upkeep():
+	mana -= my_conc_circle.pay_circle_upkeep()
+
 
 #TODO Remove this in place of actual input action
 # This is not a permanent function, it's merely to test things out
