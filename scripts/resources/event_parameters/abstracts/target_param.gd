@@ -15,7 +15,7 @@ var _targets: Array:
 #number of targets to select from, only shown if actor chooses target
 var num_targets_min: int = 1:
 	set(val): 
-		num_targets_min = max(val, 1)
+		num_targets_min = max(val, 0)
 		if num_targets_max < num_targets_min: num_targets_max = val
 
 #maximum number of targets to choose, if its a range

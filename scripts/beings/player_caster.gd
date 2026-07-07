@@ -14,10 +14,16 @@ func _ready():
 #================================================
 
 func _choose_being_from_range(param: BeingTargetParam):
-	pass
+	#Just copy if the range isn't big enough
+	if param.targets_range.size() <= param.num_targets_min:
+		param.targets = param.targets_range.duplicate()
+		return
 
 func _choose_card_from_range(param: CardTargetParam):
-	pass
+	#Just copy if the range isn't big enough
+	if param.targets_range.size() <= param.num_targets_min:
+		param.targets = param.targets_range.duplicate()
+		return
 
 #TODO Remove this in place of actual input action
 # This is not a permanent function, it's merely to test things out
