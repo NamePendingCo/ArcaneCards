@@ -19,9 +19,9 @@ extends Resource
 
 @export var art: Texture
 
-@export var effects_data: EffectsData
+@export var event_data: CardEventData
 
 func _ready():
 	if not Engine.is_editor_hint():
 		#Prepare params when in game, but not in editor
-		effects_data.prepare_params()
+		event_data.prepare_params()

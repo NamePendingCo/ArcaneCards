@@ -21,3 +21,7 @@ func disconnect_all_triggers():
 	for conn in connections:
 		if conn.callable == trigger:
 			conn.signal.disconnect(conn.callable)
+
+func _deactivate_event():
+	super()
+	disconnect_all_triggers()

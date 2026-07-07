@@ -137,7 +137,7 @@ func _activate_event():
 
 #In case its necessary--run when set to inactive (but not suppressed)
 func _deactivate_event():
-	pass
+	triggered_events.clear() #ensure no hanging references
 
 #In case its necessary--run when set to suppressed
 func _suppress_event():

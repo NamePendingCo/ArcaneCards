@@ -18,6 +18,8 @@ signal payment_declared(type) #Eventually set param type with an enum
 signal left_hand
 signal detatched_from_slot
 
+signal reset_event_data #notify if reloaded to reregister
+
 @export
 var card_owner: Caster
 #THIS SHOULD BE USED *ONLY* TO COMPARE OWNERS. NEVER CALL THIS
@@ -70,7 +72,6 @@ var card_owner: Caster
 		#Store a new set of the events
 		_reset_event_data()
 
-
 var activation_cost: Array[int]:
 	set(ac):
 		activation_cost = ac
@@ -85,7 +86,7 @@ var upkeep: int:
 		spell_face.get_node("UpkeepCost").text = str(val)
 
 #Dictionary of parameters attached to this card
-var params: Dictionary[String, EventParam]
+var parameters: Dictionary[String, EventParam]
 #Dictionary of events on this card
 var events: Dictionary[String, Event]
 
@@ -116,6 +117,10 @@ func _ready():
 	card_state = Enums.CardState.NULL
 	_reset_casting_data()
 
+#================================================
+# Public Methods
+#================================================
+
 '''
 Prepares to have the card's state changed. Sends any relevant signals, as well as
 sets the state to the new state
@@ -129,7 +134,11 @@ func ready_state_change(new_state: Enums.CardState):
 	
 	card_state = new_state
 
+'''
+Has the card object destroy itself. First disables all parameters and events.
+'''
 func self_destruct():
+	_disable_params_and_events()
 	self.queue_free()
 
 #TODO: Add flipping support here perhaps?
@@ -216,6 +225,10 @@ func pay_upkeep():
 	#TODO Add handling for cost counters
 	return upkeep
 
+#================================================
+# Private Methods
+#================================================
+
 '''
 Set all casting data back to 0.
 '''
@@ -224,15 +237,43 @@ func _reset_casting_data():
 	delay_amount = 0
 	quicken_amount = 0
 
+'''
+Resets the event data of this card to be based on the card data.
+'''
 func _reset_event_data():
-	var effects_data: EffectsData = card_data.effects_data.duplicate_deep(Resource.DEEP_DUPLICATE_ALL)
-	params = effects_data.params
-	events = effects_data.events
+	#Disable old data
+	_disable_params_and_events()
+	
+	#Create a copy of the base resource from card_data.
+	var event_data: CardEventData = card_data.event_data.duplicate_deep(Resource.DEEP_DUPLICATE_ALL)
+	
+	#Set up the events in the event_data
+	event_data.setup_events(card_owner, self)
+	
+	parameters = event_data.parameters
+	events = event_data.events
+	
 	#Subscribe to each invocation event so can declare when invoked
 	for key in events:
 		var event = events[key]
 		if event.is_invocation:
 			event.event_running.connect(_declare_invoked)
+
+'''
+Disables all parameters and events so they don't interact with
+the rest of the game. Allows for them to easily be deleted by
+garbage collection.
+'''
+func _disable_params_and_events():
+	if parameters != null:
+		#Disable all paremeters
+		for param_name in parameters:
+			parameters[param_name].disable()
+	
+	if events != null:
+		#Disable all events
+		for event_name in events:
+			events[event_name].event_state = Event.EventState.INACTIVE
 
 '''
 Sends a signal that this card was invoked.

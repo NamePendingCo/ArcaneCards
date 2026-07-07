@@ -20,3 +20,11 @@ func _set_property_visibility(property: Dictionary, condition: bool):
 
 func request_selection():
 	selection_requested.emit(self)
+
+'''
+Disables the parameter to ensure no further use.
+'''
+func disable():
+	var connections = get_incoming_connections()
+	for conn in connections:
+		conn.signal.disconnect(conn.callable)

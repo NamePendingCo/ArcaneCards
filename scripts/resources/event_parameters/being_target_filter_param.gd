@@ -17,7 +17,8 @@ var being_filter: BeingFilter
 When passed a list of beings, updates from these
 '''
 func update_range_from_list(all_beings: Array[Being]):
-	targets_range = all_beings.filter(_check_being)
+	targets_range.clear()
+	targets_range.append(all_beings.filter(_check_being))
 
 '''
 Sends a signal which should tell the actor to update its range using

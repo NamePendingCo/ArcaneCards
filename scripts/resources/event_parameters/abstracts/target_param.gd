@@ -25,12 +25,27 @@ var num_targets_max: int = 1:
 #Whether or not to automatically refresh the target selection
 var persistent: bool = false
 
+#================================================
+# Public methods
+#================================================
+
 '''
 Updates the range of potential targets for the parameter,
 based on whatever mechanism is expected for the param.
 '''
 @abstract
 func update_range()
+
+'''
+Overrides function. Calls super, then clears the targets list.
+'''
+func disable():
+	super()
+	_targets.clear()
+
+#================================================
+# Private methods
+#================================================
 
 #Setters and getters for range and target variables
 func _get_targets_range():

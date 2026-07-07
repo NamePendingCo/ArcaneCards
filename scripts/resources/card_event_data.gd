@@ -1,5 +1,5 @@
 @tool
-class_name EffectsData extends Resource
+class_name CardEventData extends Resource
 
 #fixed keys for event dict
 const ACTIVATION_KEY = "onActivation"
@@ -15,8 +15,10 @@ const DISCARD_KEY = "onDiscard"
 var events: Dictionary[String, Event] = {}
 
 func _init():
-	#on default, create an empty event for activation, as most cards will need it
-	events[ACTIVATION_KEY] = UnsignaledEvent.new()
+	# if one doesn't exist, create an empty event for activation if 
+	# opened in editor, as most cards will need it
+	if Engine.is_editor_hint():
+		events.get_or_add(ACTIVATION_KEY, UnsignaledEvent.new())
 
 func setup_events(actor: Actor, card: Card):
 	for event_name in events:
@@ -27,9 +29,6 @@ func setup_events(actor: Actor, card: Card):
 		event.parent_card = card
 		
 		_prepare_event_params(event, event_name)
-		
-		
-		
 
 #================================================
 # Private methods

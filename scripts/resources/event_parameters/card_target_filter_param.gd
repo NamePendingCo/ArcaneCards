@@ -23,7 +23,8 @@ var card_filter: CardFilter
 When passed a list of beings, updates from these
 '''
 func update_range_from_list(all_cards: Array[Card]):
-	targets_range = all_cards.filter(_check_card)
+	targets_range.clear()
+	targets_range.append(all_cards.filter(_check_card))
 
 '''
 Sends a signal which should tell the actor to update its range using
@@ -42,8 +43,7 @@ func _check_card(card: Card) -> bool:
 		return false
 
 func _validate_property(property: Dictionary) -> void:
-	if property.name == "_card_state_range":
-		
+	if property.name == "_card_state_range":	
 		#card range should be a flag list based on CardStates, but
 		#cannot be Null, Deck, or Discard Pile. Also creates a field flag
 		EventEnums.enumFlagProperty(property, EventEnums.enumToFlags(Enums.CardState,\
