@@ -139,29 +139,24 @@ func phaseEnd():
 #================================================
 
 '''
-Takes a card object and activates it, registering each
-event into its event list.
+Takes an event and connects with its trigger signal, as well
+as connecting it to any signals necessary.
 Params:
-	- card: a Card
+	- event: an event
 '''
-func _activate_card(card: Card):
-	for key in card.events:
-		var event: Event = card.events[key]
-		event.event_triggered.connect(_queue_event)
-		
-		if event is ActivationEvent:
-			#Activation event should do nothing here
-			continue
-		elif event is OnPhaseEvent:
-			var phase_signal: Signal
-			#Picks correct signal based on phase type
-			match event.phase:
-				RoundPhase.DRAW: phase_signal = draw_phase_began
-				RoundPhase.UPKEEP: phase_signal = upkeep_phase_began
-				RoundPhase.CASTING: phase_signal = casting_phase_began
-				RoundPhase.ADJUDICATION: phase_signal = adjudication_phase_began
-				RoundPhase.END: phase_signal = end_phase_began
-			phase_signal.connect(event.trigger)
+func _handle_activated_event(event: Event):
+	event.event_triggered.connect(_queue_event)
+	
+	if event is OnPhaseEvent:
+		var phase_signal: Signal
+		#Picks correct signal based on phase type
+		match event.phase:
+			RoundPhase.DRAW: phase_signal = draw_phase_began
+			RoundPhase.UPKEEP: phase_signal = upkeep_phase_began
+			RoundPhase.CASTING: phase_signal = casting_phase_began
+			RoundPhase.ADJUDICATION: phase_signal = adjudication_phase_began
+			RoundPhase.END: phase_signal = end_phase_began
+		phase_signal.connect(event.trigger)
 
 '''
 When passed a card object, registers a card for any
@@ -170,8 +165,9 @@ Params:
 	- card: a card object
 '''
 func _register_card(card: Card):
-	for event in card_listening_events:
-		print()
+	for event_name in card.events:
+		var event: Event = card.events[event_name]
+		event.event_triggered.connect(_handle_activated_event)
 
 '''
 Takes a list of events, sorts them based on the sort function, 
@@ -195,7 +191,7 @@ Returns:
 	- True if to_stack_list is empty after announcing event
 	- False if to_stack_list has items in it
 '''
-func _handled_triggered_events(event: Event) -> bool:
+func _process_triggered_events(event: Event) -> bool:
 	
 	#Updates the triggered events list for the event
 	event.triggered_events.append(to_stack_list)
@@ -216,8 +212,8 @@ func _handled_triggered_events(event: Event) -> bool:
 		return false
 
 '''
-While event stack not empty, get top then pass to pre-trigger. If true,
-pop from spell stack and trigger. If false, discard
+While event stack not empty, pop top then prepare to run and pass to
+process_triggered_events. If true, run event. If false, ignore and loop
 '''
 func _process_event_stack():
 	while not event_stack.is_empty():
@@ -230,7 +226,7 @@ func _process_event_stack():
 		
 		#TODO add function for checking effects
 		
-		if _handled_triggered_events(event):
+		if _process_triggered_events(event):
 			event.run()
 
 func _queue_event(event: Event):
