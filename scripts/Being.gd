@@ -24,6 +24,9 @@ func _ready():
 func take_damage(dmg: int):
 	health -= dmg
 
+func heal(health_regen: int):
+	health += health_regen
+
 #TODO convert to an event
 func attack_being(target: Being):
 	target.take_damage(attack_strength)

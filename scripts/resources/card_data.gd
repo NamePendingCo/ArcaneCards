@@ -1,3 +1,4 @@
+@tool
 class_name CardData
 
 extends Resource
@@ -11,7 +12,10 @@ extends Resource
 @export var tier: int
 
 @export_group("Costs")
-@export var activation_cost: Array[int]
+@export var activation_cost: Array[int]:
+	set(val):
+		activation_cost = val
+		if activation_cost.size() > 3: activation_cost.resize(3)
 @export var upkeep_cost: int
 
 @export_group("Details")
@@ -20,6 +24,10 @@ extends Resource
 @export var art: Texture
 
 @export var event_data: CardEventData
+
+func _init():
+	if Engine.is_editor_hint() and event_data == null:
+		event_data = CardEventData.new()
 
 func _ready():
 	if not Engine.is_editor_hint():

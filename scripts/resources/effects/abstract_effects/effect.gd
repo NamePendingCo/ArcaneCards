@@ -1,13 +1,15 @@
 @abstract
 class_name Effect extends Resource
 
-signal effect_running #Notify when this effect is about to run
+#signal effect_running #Notify when this effect is about to run
+
+const EffectID = EffectsEnum.EffectID
 
 @export var _val: int:
 	set(new_val): _val = clamp(new_val, _min_val, _max_val)
 
 #The internal id name of the effect type. Effectively a constant
-var effect_id: String:
+var effect_id: EffectID:
 	get: return _get_effect_id()
 	set(val): return
 
@@ -56,4 +58,4 @@ func run()
 
 #Should return a constant for each
 @abstract
-func _get_effect_id() -> String
+func _get_effect_id() -> EffectID

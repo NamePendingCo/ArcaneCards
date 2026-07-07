@@ -5,7 +5,7 @@ var min_health: int = 0:
 	set(val): max(val, 0)
 
 @export
-var max_health: int = 0:
+var max_health: int = Constants.INT_MAX:
 	set(val): clamp(val, min_health, Constants.INT_MAX)
 
 #TODO

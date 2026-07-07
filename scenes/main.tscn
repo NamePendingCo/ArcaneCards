@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://f54njeqyrcy5" path="res://assets/TEMP_table_texture.jpg" id="2_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://bf5hb8yrkmoyv" path="res://scenes/Caster.tscn" id="2_rvslj"]
 [ext_resource type="Script" uid="uid://1j0xvsw6uq7p" path="res://scripts/battle_manager.gd" id="3_0bbpv"]
+[ext_resource type="Script" uid="uid://67p6s6d66c5r" path="res://scripts/beings/player_caster.gd" id="3_rarhs"]
 
 [node name="Main" type="Node3D" unique_id=1819971996]
 
@@ -15,12 +16,14 @@ texture = ExtResource("2_0wfyh")
 
 [node name="Caster" parent="." unique_id=616650361 instance=ExtResource("2_rvslj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 10)
+script = ExtResource("3_rarhs")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=223600215]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 20, 0)
 
 [node name="Caster2" parent="." unique_id=1179766310 instance=ExtResource("2_rvslj")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.2, -10)
+script = null
 
 [node name="BattleManager" type="Node3D" parent="." unique_id=818788164]
 script = ExtResource("3_0bbpv")

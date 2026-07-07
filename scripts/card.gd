@@ -30,7 +30,8 @@ var card_owner: Caster
 		card_data = value
 		
 		# Set local variables from the card total so that data itself remains consistent
-		upkeep = card_data.upkeep_cost
+		upkeep = card_data.upkeep_cost \
+			if card_data.type != Enums.CardType.INSTANT else -1
 		activation_cost = card_data.activation_cost
 		
 		#set name in cardface
@@ -82,8 +83,11 @@ var activation_cost: Array[int]:
 var upkeep: int:
 	set(val):
 		#set upkeep cost on cardface
-		upkeep = val
-		spell_face.get_node("UpkeepCost").text = str(val)
+		upkeep = min(val, -1)
+		if upkeep == -1:
+			spell_face.get_node("UpkeepCost").text = str("")
+		else:
+			spell_face.get_node("UpkeepCost").text = str(val)
 
 #Dictionary of parameters attached to this card
 var parameters: Dictionary[String, EventParam]
