@@ -17,6 +17,9 @@ var _card_state_range: int:
 var card_state_range: Array[Enums.CardState]
 
 @export
+var exclude_self: bool = true
+
+@export
 var card_filter: CardFilter
 
 '''
@@ -37,10 +40,14 @@ func update_range():
 Check if a card is acceptable and meets parameters.
 '''
 func _check_card(card: Card) -> bool:
-	if card_filter and (card.card_state in card_state_range):
-		return true
-	else:
+	if exclude_self and (card == _card_parent):
 		return false
+	elif card.card_state not in card_state_range:
+		return false
+	elif not card_filter.card_valid(card):
+		return false
+	else:
+		return true
 
 func _validate_property(property: Dictionary) -> void:
 	if property.name == "_card_state_range":	

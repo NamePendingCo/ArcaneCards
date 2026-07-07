@@ -9,6 +9,9 @@ var is_chosen: bool = true:
 		is_chosen = val
 		notify_property_list_changed()
 
+var _being_parent: Being = null
+var _card_parent: Card = null
+
 func request_selection():
 	if is_chosen:
 		selection_requested.emit(self)

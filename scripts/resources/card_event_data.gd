@@ -20,12 +20,15 @@ func _init():
 	if Engine.is_editor_hint():
 		events.get_or_add(ACTIVATION_KEY, UnsignaledEvent.new())
 
-func setup_events(actor: Actor, card: Card):
+func setup_events(caster: Caster, card: Card):
+	for param_name in parameters:
+		parameters[param_name]._being_parent = caster
+		parameters[param_name]._card_parent = card
 	for event_name in events:
 		var event: Event = events[event_name]
 		
 		#Set the event to use the card's actor and card
-		event.actor = actor
+		event.actor = caster
 		event.parent_card = card
 		
 		_prepare_event_params(event, event_name)

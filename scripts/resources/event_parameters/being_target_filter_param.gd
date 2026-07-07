@@ -18,6 +18,12 @@ When passed a list of beings, updates from these
 '''
 func update_range_from_list(all_beings: Array[Being]):
 	targets_range.clear()
+	
+	if _being_parent != null:
+		match range_option:
+			EventEnums.BeingRangeOption.SELF: all_beings = [_being_parent]
+			EventEnums.BeingRangeOption.ALL_OTHERS: all_beings.erase(_being_parent)
+	
 	targets_range.append(all_beings.filter(_check_being))
 
 '''
