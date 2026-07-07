@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://qn8wmasljdgo"]
+
+[node name="TestingBattleUI" type="CanvasLayer" unique_id=2088716599]
+follow_viewport_enabled = true
+
+[node name="ItemList" type="ItemList" parent="." unique_id=1779650681]
+offset_right = 40.0
+
+[node name="Button" type="Button" parent="." unique_id=956354670]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Start Game"
