@@ -30,7 +30,11 @@ func _ready():
 	var casters = get_tree().get_nodes_in_group(Constants.GROUP_CASTER)
 	for caster: Caster in casters:
 		caster.card_manager.created_card.connect(_register_card)
-		_handle_activated_event(caster.initial_draw_event)
+		
+		#Loop through the basic events, connect to them all
+		for event_name in caster.basic_events.events:
+			var event = caster.basic_events.events[event_name]
+			_register_event(event)
 
 #================================================
 # Public methods
@@ -45,7 +49,7 @@ func startMatch():
 	
 	var casters = get_tree().get_nodes_in_group(Constants.GROUP_CASTER)
 	for caster: Caster in casters:
-		caster.initial_draw_event.trigger()
+		caster.on_game_start()
 	
 	_process_event_stack()
 	
@@ -178,13 +182,15 @@ Params:
 func _register_card(card: Card):
 	for event_name in card.events:
 		var event: Event = card.events[event_name]
-		event.event_activated.connect(_handle_activated_event)
+		_register_event(event)
 
 '''
-Might delete later. For non card stuff.
+Registers an event directly.
+Params:
+	- event: the event to register
 '''
-func _register_uncarded_event(event: Event):
-	event.event_activated.connect(_handle_activated_event)
+func _register_event(event: Event):
+	event.event_activated.connect(_handle_activated_event.bind(event))
 
 '''
 Takes a list of events, sorts them based on the sort function, 

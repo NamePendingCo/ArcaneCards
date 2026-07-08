@@ -25,3 +25,13 @@ Signal call only.
 func _pass_all_cards_to_param(param: CardTargetFilterParam):
 	var card_list = get_tree().get_nodes_in_group(Constants.GROUP_Card) as Array[Card]
 	param.update_range_from_list(card_list)
+
+#================================================
+# Private methods
+#================================================
+
+@abstract
+func _choose_being_from_range(param: BeingTargetParam)
+
+@abstract
+func _choose_card_from_range(param: CardTargetParam)

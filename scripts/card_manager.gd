@@ -2,6 +2,8 @@ class_name CardManager extends Node3D
 
 #sent to notify it created a card
 signal created_card(card: Card)
+#used to request the parent to mark themself as owner of card
+signal requested_card_owner(card: Card)
 
 const CARD_SCENE_PATH = "res://scenes/Card.tscn"
 
@@ -19,14 +21,16 @@ Return:
 	- new_card: the newly created card object
 '''
 func instantiate_card(data: CardData, start_pos: Vector3 = position):
-	print("Creating card from %s" % data.card_id)
 	var new_card: Card = card_scene.instantiate()
 	new_card.position = start_pos
 	add_child(new_card)
+	
+	#This needs to be after add child or the owner will get reset I guess
+	requested_card_owner.emit(new_card)
+	
 	new_card.card_data = data
 	#tell listeners a new card object has been made
 	created_card.emit(new_card)
-	print(new_card.card_data.cardName + " Created at " + str(new_card.position))
 	return new_card
 
 func instantiate_card_from_id(card_id: String, start_pos: Vector3 = position):

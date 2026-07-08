@@ -7,6 +7,9 @@ signal paying_upkeep #send out before paying upkeep
 
 signal created_event(event)
 
+const INITIAL_DRAW_KEY = "initial_draw"
+const STANDARD_DRAW_KEY = "standard_draw"
+
 #List of important children to track
 @onready var card_manager: CardManager = $CardManager
 @onready var my_hand: Hand = $Hand
@@ -14,6 +17,8 @@ signal created_event(event)
 @onready var my_discard: Discard = $Discard
 @onready var my_casting_well: CastingWell = $CastingWell
 @onready var my_conc_circle: ConcentrationCircle = $ConcentrationCircle
+
+@onready var basic_events: EventData = load("res://system_events/caster_basic_events.tres").duplicate_deep()
 
 var mana: int
 
@@ -25,8 +30,10 @@ func _ready():
 	
 	#Connect all newly created cards with the register function
 	card_manager.created_card.connect(_register_card)
+	#Register to set self as owner of card when card object is first made
+	card_manager.requested_card_owner.connect(_set_owner_of_card)
 	
-	_create_initial_draw_event()
+	basic_events.setup_events(self)
 
 #Enum for determining destinations for drawn cards. Maybe should be moved
 enum DrawDest {
@@ -38,6 +45,14 @@ enum DrawDest {
 #================================================
 # Public methods
 #================================================
+
+func on_game_start():
+	#Activate all basic event
+	for event_name in basic_events.events:
+		basic_events.events[event_name].event_state = Event.EventState.ACTIVE
+	
+	#Do standard draw
+	basic_events.events[INITIAL_DRAW_KEY].trigger()
 
 '''
 Notify all actors that caster is paying upkeep
@@ -151,37 +166,15 @@ func move_card_from_discard_pile(index: int, dest: DrawDest = DrawDest.HAND):
 # Private methods
 #================================================
 
-@abstract
-func _choose_being_from_range(param: BeingTargetParam)
-
-@abstract
-func _choose_card_from_range(param: CardTargetParam)
-
 '''
 Only should activate via signal from battle manager. Actually pays upkeep cost
 '''
 func _pay_total_upkeep():
 	mana -= my_conc_circle.pay_circle_upkeep()
 
-func _create_initial_draw_event():
-	var event: UnsignaledEvent = UnsignaledEvent.new()
-	event.actor = self
-	event.event_state = event.EventState.ACTIVE
-	
-	var draw_effect: DrawEffect = DrawEffect.new()
-	draw_effect._val = 8
-	
-	var target_param: BeingTargetFilterParam = BeingTargetFilterParam.new()
-	target_param._being_parent = self
-	target_param.range_option = EventEnums.BeingRangeOption.SELF
-	target_param.selection_requested.connect(_choose_being_from_range)
-	target_param.requested_beings_list.connect(_pass_all_beings_to_param)
-	
-	draw_effect.targets_param = target_param
-	
-	event.effects = [draw_effect]
-	event.choice_params.append(target_param)
-	
-	initial_draw_event = event
-	
-	print("Created initial draw event")
+'''
+This function is a hotfix for an order of operations issue regarding creating events.
+I think it will be removed if we can rework events not to need their owners listed.
+'''
+func _set_owner_of_card(card: Card):
+	card.card_owner = self

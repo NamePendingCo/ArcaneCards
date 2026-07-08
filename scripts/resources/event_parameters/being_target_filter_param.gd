@@ -1,7 +1,7 @@
 @tool
 class_name BeingTargetFilterParam extends BeingTargetParam
 
-signal requested_beings_list()
+signal requested_beings_list
 
 #The range of applicable targets
 @export

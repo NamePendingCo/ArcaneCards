@@ -20,7 +20,6 @@ signal detatched_from_slot
 
 signal reset_event_data #notify if reloaded to reregister
 
-@export
 var card_owner: Caster
 #THIS SHOULD BE USED *ONLY* TO COMPARE OWNERS. NEVER CALL THIS
 
@@ -251,6 +250,8 @@ func _reset_event_data():
 	
 	#Create a copy of the base resource from card_data.
 	var event_data: CardEventData = card_data.event_data.duplicate_deep(Resource.DEEP_DUPLICATE_ALL)
+	
+	print("Card owner in card %s" % card_owner)
 	
 	#Set up the events in the event_data
 	event_data.setup_events(card_owner, self)

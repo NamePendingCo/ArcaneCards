@@ -9,15 +9,15 @@ class_name EventData extends Resource
 @export
 var events: Dictionary[String, Event] = {}
 
-func setup_events(caster: Caster, card: Card = null):
+func setup_events(actor: Actor, card: Card = null):
 	for param_name in parameters:
-		parameters[param_name]._being_parent = caster
-		parameters[param_name]._card_parent = card
+		_set_up_parameter(parameters[param_name], actor, card)
+		
 	for event_name in events:
 		var event: Event = events[event_name]
 		
 		#Set the event to use the card's actor and card
-		event.actor = caster
+		event.actor = actor
 		event.parent_card = card
 		
 		_prepare_event_params(event, event_name)
@@ -25,6 +25,27 @@ func setup_events(caster: Caster, card: Card = null):
 #================================================
 # Private methods
 #================================================
+
+func _set_up_parameter(parameter: EventParam, actor: Actor, card: Card = null):
+	parameter._being_parent = actor
+	parameter._card_parent = card
+	
+	#Connect all relevant signals to parameter
+	if parameter is BeingTargetParam:
+		parameter.selection_requested.connect(actor._choose_being_from_range)
+		
+		#Allow for requesting the being list from actor
+		if parameter is BeingTargetFilterParam:
+			parameter = parameter as BeingTargetFilterParam
+			parameter.requested_beings_list.connect(actor._pass_all_beings_to_param)
+			
+	elif parameter is CardTargetParam:
+		parameter.selection_requested.connect(actor._choose_card_from_range)
+		
+		#Allow for requesting the cards list from actor
+		if parameter is CardTargetFilterParam:
+			parameter = parameter as CardTargetFilterParam
+			parameter.requested_cards_list.connect(actor._pass_all_cards_to_param)
 
 '''
 Prepares an event's parameters and makes sure they are all appropriately set.

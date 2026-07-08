@@ -1,3 +1,4 @@
+@abstract
 class_name Being extends Actor
 
 signal health_depleted
@@ -20,6 +21,9 @@ func _ready():
 	#silly base values, maybe change eventually
 	health = 40
 	attack_strength = 1
+
+@abstract
+func on_game_start()
 
 func take_damage(dmg: int):
 	health -= dmg
