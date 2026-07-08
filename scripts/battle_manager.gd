@@ -215,8 +215,8 @@ Returns:
 func _process_triggered_events(event: Event) -> bool:
 	
 	#Updates the triggered events list for the event
-	event.triggered_events.append(to_stack_list)
-	event.triggered_events.append(to_stack_after_list)
+	event.triggered_events.append_array(to_stack_list)
+	event.triggered_events.append_array(to_stack_after_list)
 	
 	if to_stack_list.is_empty():
 		#If no preceding event was triggered, add after events

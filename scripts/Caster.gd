@@ -55,6 +55,11 @@ func _register_card(card: Card):
 	#card.marked_for_discard.connect() TODO
 	card.marked_for_casting.connect(cast_card) #connects casting to card's signal
 	card.marked_for_conc_circle.connect(move_to_conc_circle_card) #connects conc circle to card's signal
+	
+	for param_name in card.parameters:
+		var param = card.parameters[param_name]
+		if param is BeingTargetParam:
+			param.selection_requested.connect(_choose_being_from_range)
 
 '''
 Adds a card to the hand
@@ -169,10 +174,13 @@ func _create_initial_draw_event():
 	var target_param: BeingTargetFilterParam = BeingTargetFilterParam.new()
 	target_param._being_parent = self
 	target_param.range_option = EventEnums.BeingRangeOption.SELF
+	target_param.selection_requested.connect(_choose_being_from_range)
+	target_param.requested_beings_list.connect(_pass_all_beings_to_param)
 	
 	draw_effect.targets_param = target_param
 	
 	event.effects = [draw_effect]
+	event.choice_params.append(target_param)
 	
 	initial_draw_event = event
 	

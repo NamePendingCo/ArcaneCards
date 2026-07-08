@@ -1,7 +1,7 @@
 @tool
 class_name BeingTargetFilterParam extends BeingTargetParam
 
-signal requested_beings_list
+signal requested_beings_list()
 
 #The range of applicable targets
 @export
@@ -24,20 +24,23 @@ func update_range_from_list(all_beings: Array[Being]):
 			EventEnums.BeingRangeOption.SELF: all_beings = [_being_parent]
 			EventEnums.BeingRangeOption.ALL_OTHERS: all_beings.erase(_being_parent)
 	
-	targets_range.append(all_beings.filter(_check_being))
+	targets_range.append_array(all_beings.filter(_check_being))
 
 '''
 Sends a signal which should tell the actor to update its range using
 update_range_from_list
 '''
 func update_range():
-	requested_beings_list.emit()
+	requested_beings_list.emit(self)
 
 '''
 Filter function used to see if a specific being matches the parameter filters.
 '''
 func _check_being(being: Being) -> bool:
-	return being_filter.check_being(being)
+	if being_filter != null:
+		return being_filter.check_being(being)
+	else:
+		return true
 
 func _validate_property(property: Dictionary) -> void:
 	if property.name == "is_chosen":

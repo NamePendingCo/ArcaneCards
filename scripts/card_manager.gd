@@ -19,6 +19,7 @@ Return:
 	- new_card: the newly created card object
 '''
 func instantiate_card(data: CardData, start_pos: Vector3 = position):
+	print("Creating card from %s" % data.card_id)
 	var new_card: Card = card_scene.instantiate()
 	new_card.position = start_pos
 	add_child(new_card)

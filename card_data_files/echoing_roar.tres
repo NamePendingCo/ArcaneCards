@@ -7,14 +7,15 @@
 [ext_resource type="Script" uid="uid://bm0rejlfkuuks" path="res://scripts/resources/event_parameters/abstracts/event_param.gd" id="4_42et8"]
 [ext_resource type="Script" uid="uid://bcy762hcj7wa7" path="res://scripts/resources/card_event_data.gd" id="5_p1kl5"]
 
-[sub_resource type="Resource" id="Resource_xb174"]
+[sub_resource type="Resource" id="Resource_72r2o"]
 script = ExtResource("2_kxa1e")
 
-[sub_resource type="Resource" id="Resource_8nvk5"]
+[sub_resource type="Resource" id="Resource_42et8"]
 script = ExtResource("5_p1kl5")
 events = Dictionary[String, ExtResource("1_72r2o")]({
-"onActivation": SubResource("Resource_xb174")
+"onActivation": SubResource("Resource_72r2o")
 })
+metadata/_custom_type_script = "uid://bcy762hcj7wa7"
 
 [resource]
 script = ExtResource("1_a40os")
@@ -25,5 +26,5 @@ subdomain = 33
 type = 1
 tier = 2
 activation_cost = Array[int]([2, 1])
-event_data = SubResource("Resource_8nvk5")
+event_data = SubResource("Resource_42et8")
 metadata/_custom_type_script = "uid://x0i1uyfprpdj"

@@ -23,6 +23,7 @@ func _chose_being_from_menu(choice_indices: PackedInt32Array, param: BeingTarget
 Overrides.
 '''
 func _choose_being_from_range(param: BeingTargetParam):
+	print("Choosing being")
 	#Just copy if the range isn't big enough
 	if param.targets_range.size() <= param.num_targets_min:
 		param.targets = param.targets_range.duplicate()

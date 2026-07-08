@@ -21,12 +21,12 @@ var modifiers: Array[EffectOperator]
 
 #Minimum allowed value for the effect
 #also used for ranges when making comparisons
-var _min_val: int:
+var _min_val: int = 0:
 	set(new_val): _val = max(new_val, 0)
 
 #Maximum allowed value for the effect
 #also used for ranges when making comparisons
-var _max_val: int:
+var _max_val: int = Constants.INT_MAX:
 	set(new_val): _val = max(_min_val, Constants.INT_MAX)
 
 #================================================

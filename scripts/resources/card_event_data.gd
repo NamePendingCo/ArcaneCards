@@ -76,11 +76,11 @@ func _prepare_target_param(effect: TargetedEffect, event_name: String):
 	
 	#check type for a targetedEffect
 	if effect is BeingEffect:
-		effect.targets = param if param is BeingTargetParam else null
+		effect.targets_param = param if param is BeingTargetParam else null
 	elif effect is CardEffect:
-		effect.targets = param if param is CardTargetParam else null
+		effect.targets_param = param if param is CardTargetParam else null
 	
-	assert(effect.targets != null, \
+	assert(effect.targets_param != null, \
 	"Event %s's effect %s target parameter %s is incorrect type"% \
 	[event_name, effect.effect_id, target_param_name])
 	
