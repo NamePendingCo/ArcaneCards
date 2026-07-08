@@ -22,8 +22,6 @@ const STANDARD_DRAW_KEY = "standard_draw"
 
 var mana: int
 
-var initial_draw_event: UnsignaledEvent
-
 func _ready():
 	super()
 	add_to_group(Constants.GROUP_CASTER)
@@ -61,20 +59,6 @@ func declare_paying_upkeep():
 	paying_upkeep.emit() #notify battle manager
 	my_conc_circle.prepare_pay_circle_upkeep() #notify cards in circle
 
-'''
-Connects a card's signals to the caster and also sets its owner to this caster
-Params:
-	- card: The card to connect with
-'''
-func _register_card(card: Card):
-	#card.marked_for_discard.connect() TODO
-	card.marked_for_casting.connect(cast_card) #connects casting to card's signal
-	card.marked_for_conc_circle.connect(move_to_conc_circle_card) #connects conc circle to card's signal
-	
-	for param_name in card.parameters:
-		var param = card.parameters[param_name]
-		if param is BeingTargetParam:
-			param.selection_requested.connect(_choose_being_from_range)
 
 '''
 Adds a card to the hand
@@ -165,6 +149,16 @@ func move_card_from_discard_pile(index: int, dest: DrawDest = DrawDest.HAND):
 #================================================
 # Private methods
 #================================================
+
+'''
+Connects a card's signals to the caster and also sets its owner to this caster
+Params:
+	- card: The card to connect with
+'''
+func _register_card(card: Card):
+	#card.marked_for_discard.connect() TODO
+	card.marked_for_casting.connect(cast_card) #connects casting to card's signal
+	card.marked_for_conc_circle.connect(move_to_conc_circle_card) #connects conc circle to card's signal
 
 '''
 Only should activate via signal from battle manager. Actually pays upkeep cost

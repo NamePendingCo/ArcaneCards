@@ -1,7 +1,9 @@
 class_name Deck extends CardStack
 
 func _ready():
-	stack = ["chilly_breeze", "echoing_roar", "echoing_roar", "chilly_breeze", "leech"] #TYPE TBD
+	stack = ["chilly_breeze", "echoing_roar", "echoing_roar", "chilly_breeze", "leech",
+	"chilly_breeze", "echoing_roar", "echoing_roar", "chilly_breeze", "leech",
+	"chilly_breeze", "echoing_roar", "echoing_roar", "chilly_breeze", "leech"] #TYPE TBD
 
 func _get_relevant_card_state():
 	return Enums.CardState.DECK

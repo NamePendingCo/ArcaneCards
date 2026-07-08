@@ -64,6 +64,12 @@ func advancePhase():
 	# next phase is either the next phase on the list, or if it is END resets to ROUND_LOAD
 	var next_phase = current_phase + 1 if current_phase < RoundPhase.END else RoundPhase.ROUND_LOAD
 	
+	var delay = 2
+	print("Advancing to phase %s after temporary delay of %d seconds" %\
+	 [RoundPhase.find_key(next_phase), delay])
+	#Temporary delay to separate phases 
+	await get_tree().create_timer(delay).timeout
+	
 	match next_phase:
 		RoundPhase.ROUND_LOAD: phaseRoundLoad()
 		RoundPhase.DRAW: phaseDraw()
