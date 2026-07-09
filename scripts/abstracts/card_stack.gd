@@ -2,17 +2,15 @@
 class_name CardStack extends Node3D
 
 #An array of card_ids. The top of the stack is the least index
-var stack : Array[String] #TYPE TBD
+var _stack : Array[String] #TYPE TBD
 
 var size: int:
-	get: return stack.size()
+	get: return _stack.size()
 	set(val): pass
 
-'''
-Just used to return the state a card should be changed to when attached
-'''
-@abstract
-func _get_relevant_card_state() -> Enums.CardState
+#================================================
+# Public methods
+#================================================
 
 '''
 Pops the top card of the stack.
@@ -20,7 +18,7 @@ Returns:
 	- Top card from stack
 '''
 func pop_top_card():
-	return stack.pop_back()
+	return _stack.pop_back()
 
 '''
 Pops an arbitrary number of cards from the stack. Pops remaining cards in stack if
@@ -33,39 +31,14 @@ Returns:
 func pop_top_cards(num_cards: int):
 	assert(num_cards >= 0, "Cannot pop negative cards")
 	
-	if num_cards > stack.size():
-		num_cards = stack.size()
+	if num_cards > _stack.size():
+		num_cards = _stack.size()
 	
 	var card_list = []
 	for i in range(num_cards):
 		card_list.append(pop_top_card())
 	
 	return card_list
-
-'''
-Places a card on the top or bottom of stack, defaulting to the top, as a card_id
-Params:
-	- card: The card to push
-	- bottom_stack: Boolean for if should place on bottom of stack. Defaults false
-'''
-func _add_card_to_stack(card: Card, bottom_stack: bool = false):
-	var card_id = card.card_data.card_id
-	card.ready_state_change(_get_relevant_card_state())
-	if bottom_stack:
-		stack.push_front(card_id)
-	else:
-		stack.push_back(card_id)
-	card.self_destruct()
-
-'''
-Places a list of cards on top or bottom of stack, defaulting to top
-Params:
-	- cards: The cards to push
-	- bottom_stack: Boolean for if should place on bottom of stack. Defaults false
-'''
-func _add_cards_to_stack(cards: Array[Card], bottom_stack: bool = false):
-	for card in cards:
-		_add_card_to_stack(card, bottom_stack)
 
 '''
 Gets a subset of the cards from the stack without removing from stack. Can count
@@ -79,11 +52,11 @@ Returns:
 '''
 func view_cards(num_cards: int, start_at_card = 0, from_bottom: bool = false):
 	if from_bottom:
-		return stack.slice(start_at_card, num_cards + start_at_card)
+		return _stack.slice(start_at_card, num_cards + start_at_card)
 	else:
-		var begin = stack.size() - (start_at_card + 1)
+		var begin = _stack.size() - (start_at_card + 1)
 		var end = begin - num_cards
-		return stack.slice(begin, end, -1)
+		return _stack.slice(begin, end, -1)
 
 '''
 Pops a card_id from the middle of the stack
@@ -94,9 +67,9 @@ Return: the card id
 '''
 func grab_card(index: int, from_bottom: bool = false):
 	if from_bottom:
-		return stack.pop_at(index)
+		return _stack.pop_at(index)
 	else:
-		return stack.pop_at(size - (index + 1))
+		return _stack.pop_at(size - (index + 1))
 
 '''
 Grabs cards based on a list of indices. 
@@ -116,3 +89,38 @@ func grab_cards(indices: Array[int], from_bottom: bool = false):
 		cardlist.append(grab_card(index, from_bottom))
 
 	return cardlist
+
+#================================================
+# Private methods
+#================================================
+
+'''
+Just used to return the state a card should be changed to when attached
+'''
+@abstract
+func _get_relevant_card_state() -> Enums.CardState
+
+'''
+Places a card on the top or bottom of stack, defaulting to the top, as a card_id
+Params:
+	- card: The card to push
+	- bottom_stack: Boolean for if should place on bottom of stack. Defaults false
+'''
+func _add_card_to_stack(card: Card, bottom_stack: bool = false):
+	var card_id = card.card_data.card_id
+	card.ready_state_change(_get_relevant_card_state())
+	if bottom_stack:
+		_stack.push_front(card_id)
+	else:
+		_stack.push_back(card_id)
+	card.self_destruct()
+
+'''
+Places a list of cards on top or bottom of stack, defaulting to top
+Params:
+	- cards: The cards to push
+	- bottom_stack: Boolean for if should place on bottom of stack. Defaults false
+'''
+func _add_cards_to_stack(cards: Array[Card], bottom_stack: bool = false):
+	for card in cards:
+		_add_card_to_stack(card, bottom_stack)

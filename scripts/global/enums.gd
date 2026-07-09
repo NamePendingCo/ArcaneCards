@@ -82,7 +82,8 @@ enum CardState {
 	NULL,
 	HAND,
 	CASTING_WELL,
+	ACTIVATED_IN_WELL,
 	CONCENTRATION_CIRCLE,
-	DECK, #UNUSABLE AS DOES NOT CONTAIN CARD OBJECTS
-	DISCARD #UNUSABLE AS DOES NOT CONTAIN CARD OBJECTS
+	DECK, #For cards just leaving or reentering the deck
+	DISCARD #For cards entering the discard or being taken out
 }

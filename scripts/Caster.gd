@@ -59,7 +59,6 @@ func declare_paying_upkeep():
 	paying_upkeep.emit() #notify battle manager
 	my_conc_circle.prepare_pay_circle_upkeep() #notify cards in circle
 
-
 '''
 Adds a card to the hand
 Params:

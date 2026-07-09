@@ -2,7 +2,7 @@ class_name Discard extends CardStack
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	stack = []
+	_stack = []
 
 func _get_relevant_card_state():
 	return Enums.CardState.DISCARD

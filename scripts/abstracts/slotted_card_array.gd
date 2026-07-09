@@ -16,6 +16,20 @@ var num_slots: int:
 	get: return card_slots.size()
 	set(val): pass
 
+#================================================
+# Public methods
+#================================================
+
+func get_first_card_in_array():
+	for slot in card_slots:
+		if slot.has_card_attached:
+			return slot.attached_card
+	return null
+
+#================================================
+# Private methods
+#================================================
+
 '''
 Helper function that attaches a card to a card slot
 Params:
@@ -51,9 +65,3 @@ func _add_card_to_array(card: Card, slot_num: int=-1):
 	elif slot_num >= 0 and slot_num < num_slots:
 		return _attach_card_to_slot(card, card_slots[slot_num])
 	return false
-
-func get_first_card_in_array():
-	for slot in card_slots:
-		if slot.has_card_attached:
-			return slot.attached_card
-	return null
