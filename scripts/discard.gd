@@ -4,8 +4,8 @@ class_name Discard extends CardStack
 func _ready():
 	_stack = []
 
-func _get_relevant_card_state():
-	return Card.CardState.DISCARD
+func _get_relevant_location():
+	return Card.Location.DISCARD
 
 '''
 Alias function specialized for _add_card_to_stack

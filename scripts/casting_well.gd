@@ -81,9 +81,17 @@ Params:
 '''
 func set_casting_cards(cards: Array[Card]):
 	
+	cards = cards.slice(0, card_slots.size())
+	
 	for index in range(card_slots.size()):
 		var slot = card_slots.get(index)
 		var card = cards.get(index)
 		
-		if card == null:
-			pass
+		if (card == null) and (card != slot.attached_card):
+			var detached_card: Card = slot.attached_card
+			
+			slot.detach_card()
+			add_card_to_well(card, index)
+			
+			if detached_card not in cards:
+				detached_card.mark_to_discard()
