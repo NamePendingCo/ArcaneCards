@@ -64,7 +64,7 @@ Adds a card to the hand
 Params:
 	- card: the card to move
 '''
-func move_to_hand_card(card):
+func move_to_hand_card(card: Card):
 	my_hand.add_card_to_hand(card)
 
 '''
@@ -85,7 +85,8 @@ Params:
 	- slot: the slot to move it to. If -1, does the first open move. 
 '''
 func move_to_conc_circle_card(card: Card, slot: int=-1):
-	my_conc_circle.add_card_to_conc_circle(card, slot)
+	if card.in_play:
+		my_conc_circle.add_card_to_conc_circle(card, slot)
 
 #TODO: Handle dest value
 '''
@@ -150,14 +151,43 @@ func move_card_from_discard_pile(index: int, dest: DrawDest = DrawDest.HAND):
 #================================================
 
 '''
-Connects a card's signals to the caster and also sets its owner to this caster
+Connects a card's signals to the caster
 Params:
 	- card: The card to connect with
 '''
 func _register_card(card: Card):
-	#card.marked_for_discard.connect() TODO
-	card.marked_for_casting.connect(cast_card) #connects casting to card's signal
-	card.marked_for_conc_circle.connect(move_to_conc_circle_card) #connects conc circle to card's signal
+	card.requested_loc_change.connect(_process_card_loc_change_request.bind(card))
+
+'''
+Only ever called by signal. Takes in a request from a card to have its
+location change and passes to the appropriate method.
+Params:
+	- location: the new location to change to
+	- args: optional. can be anything, usually an array. If usable, will be passed to appropriate func
+	- card: the card emitting the signal
+'''
+func _process_card_loc_change_request(location: Card.Location, args, card: Card):
+	match location: 
+		Card.Location.HAND:
+			move_to_hand_card(card)
+			
+		Card.Location.CASTING_WELL:
+			'''For casting well, args should be an int'''
+			var slot = args if args is int else -1
+			cast_card(card, slot)
+			
+		Card.Location.CONCENTRATION_CIRCLE:
+			'''For concentrtion circle, args should be an int'''
+			var slot = args if args is int else -1
+			move_to_conc_circle_card(card, slot)
+			
+		Card.Location.DECK:
+			'''For concentrtion circle, args should be a bool'''
+			var bottom_deck = args if args is bool else false
+			move_to_deck_card(card, bottom_deck)
+			
+		Card.Location.DISCARD:
+			discard_card(card)
 
 '''
 Only should activate via signal from battle manager. Actually pays upkeep cost

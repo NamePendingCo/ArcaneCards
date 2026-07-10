@@ -7,10 +7,8 @@ signal changed_location(new_state, old_state)
 signal activated
 signal invoked
 
-#signals to tell the caster to take actions on this card
-signal marked_for_discard
-signal marked_for_casting(card, slot: int)
-signal marked_for_conc_circle(card, slot: int)
+#signals to tell the caster to move this card's location
+signal requested_loc_change(new_loc: Location)
 
 signal payment_declared(type) #Eventually set param type with an enum
 
@@ -22,7 +20,9 @@ enum Location {
 	CASTING_WELL,
 	CONCENTRATION_CIRCLE,
 	DECK, #For cards just leaving or reentering the deck
-	DISCARD #For cards entering the discard or being taken out
+	DISCARD, #For cards entering the discard or being taken out
+	ANULLED,
+	ATTACHED
 }
 
 var card_owner: Caster
@@ -103,7 +103,10 @@ var location: Location:
 	set(val): _change_loc_state(val)
 
 # Whether the card is in play or not
-var in_play: bool
+var _in_play: bool
+var in_play: bool:
+	get: return _in_play
+	set(val): return
 
 #when true, card can be dragged around by player. When false, cannot move
 #for now, assume always can while in hand or state is null. Probably fix later
@@ -165,12 +168,11 @@ func progress_casting(progress_increment: int):
 		activate()
 
 '''
-Set all events to active.
-
-Finally, run the activation event.
+In play to true. Set all events to active. Then run the activation event. 
+Finally move to conc circle if concentration card.
 '''
 func activate():
-	in_play = true
+	_in_play = true
 	
 	for event_name in events:
 		var event = events[event_name]
@@ -183,7 +185,17 @@ func activate():
 	
 	#If a concentration card, also mark to move to concentration circle
 	if card_data.type in Enums.CONC_TYPES:
-		mark_conc_circle()
+		_request_loc_change(Location.CONCENTRATION_CIRCLE)
+
+'''
+Sets in play to false and deactivates all events.
+'''
+func deactivate():
+	_in_play = false
+	
+	for event_name in events:
+		var event = events[event_name]
+		event.event_state = Event.EventState.INACTIVE
 
 ### Below are functions for sending signals pre-events occuring
 
@@ -191,24 +203,16 @@ func activate():
 Called by other classes to tell the card it should be discarded. Used to signal
 to the caster it should be discarded.
 '''
-func mark_discard():
-	marked_for_discard.emit()
+func mark_to_discard():
+	_request_loc_change(Location.DISCARD)
 
 '''
 Called by other classes to tell the card to be cast. 
 Params:
 	- slot: the slot the card should be cast to. -1 means first open
 '''
-func mark_cast(slot: int=-1):
-	marked_for_casting.emit(self, slot)
-
-'''
-Called by other classes to tell the card to be moved to concentration circle 
-Params:
-	- slot: the slot the card should be cast to. -1 means first open
-'''
-func mark_conc_circle(slot: int=-1):
-	marked_for_conc_circle.emit(self, slot)
+func mark_to_cast():
+	_request_loc_change(Location.CASTING_WELL)
 
 #TODO merge with pay upkeep. Use awaits instead
 '''
@@ -245,7 +249,18 @@ func _change_loc_state(new_loc: Location):
 	
 	location = new_loc
 	
+	if location not in [Location.CONCENTRATION_CIRCLE, Location.ATTACHED]:
+		deactivate()
+	
 	changed_location.emit(new_loc, old_loc)
+
+'''
+Args allows for optional parameters to be passed if necessary,
+such as slot number, or whether to place in bottom of deck. By
+default will emit something empty the caster can ignore.
+'''
+func _request_loc_change(new_loc: Location, args=[]):
+	requested_loc_change.emit(new_loc, args)
 
 '''
 Set all casting data back to 0.
