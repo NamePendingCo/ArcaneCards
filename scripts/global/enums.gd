@@ -74,6 +74,8 @@ enum CardType {
 	COMPONENT
 }
 
+const CONC_TYPES = [CardType.ENCHANTMENT, CardType.WARD, CardType.CURSE]
+
 #Convert type to a string format
 static func typeString(type: CardType):
 	return String(CardType.keys()[CardType.keys().find(type)]).to_pascal_case()

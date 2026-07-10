@@ -180,6 +180,10 @@ func activate():
 	
 	#notifies card was activated
 	activated.emit()
+	
+	#If a concentration card, also mark to move to concentration circle
+	if card_data.type in Enums.CONC_TYPES:
+		mark_conc_circle()
 
 ### Below are functions for sending signals pre-events occuring
 
