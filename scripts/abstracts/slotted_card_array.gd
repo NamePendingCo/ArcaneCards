@@ -1,15 +1,9 @@
 @abstract
-class_name SlottedCardArray extends Node3D
+class_name SlottedCardArray extends CasterElementBase
 
 #actual tracker for card slots. Each hold reference to card in well
 @export
 var card_slots: Array[CardSlot]
-
-'''
-Just used to return the state a card should be changed to when attached
-'''
-@abstract
-func _get_relevant_card_state() -> Enums.CardState
 
 #easy variable for tracking size of card_slots
 var num_slots: int:
@@ -39,8 +33,8 @@ Returns: True on success, false on failure
 '''
 func _attach_card_to_slot(card: Card, slot: CardSlot):
 	if not slot.has_card_attached:
-		#must process that the card's state is changing first
-		card.ready_state_change(_get_relevant_card_state())
+		#must change the card's location first
+		card.location = _get_relevant_location()
 		#then attaches card, as 
 		slot.attach_card(card)
 		return true

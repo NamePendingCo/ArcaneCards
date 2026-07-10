@@ -3,7 +3,7 @@ class_name Card extends Node3D
 const COLOR = Enums.SpellColor
 
 #Core signals to denote state change
-signal casted
+signal changed_location(new_state, old_state)
 signal activated
 signal invoked
 
@@ -14,11 +14,16 @@ signal marked_for_conc_circle(card, slot: int)
 
 signal payment_declared(type) #Eventually set param type with an enum
 
-#signals for notifying state changes
-signal left_hand
-signal detatched_from_slot
-
 signal reset_event_data #notify if reloaded to reregister
+
+enum Location {
+	NULL,
+	HAND,
+	CASTING_WELL,
+	CONCENTRATION_CIRCLE,
+	DECK, #For cards just leaving or reentering the deck
+	DISCARD #For cards entering the discard or being taken out
+}
 
 var card_owner: Caster
 #THIS SHOULD BE USED *ONLY* TO COMPARE OWNERS. NEVER CALL THIS
@@ -94,12 +99,16 @@ var parameters: Dictionary[String, EventParam]
 var events: Dictionary[String, Event]
 
 #In game states
-var card_state: Enums.CardState
+var location: Location:
+	set(val): _change_loc_state(val)
+
+# Whether the card is in play or not
+var in_play: bool
 
 #when true, card can be dragged around by player. When false, cannot move
 #for now, assume always can while in hand or state is null. Probably fix later
 var position_locked: bool:
-	get: return card_state <= Enums.CardState.HAND
+	get: return location <= Location.HAND
 	set(val): pass
 
 @onready var spell_face: Control = $"Cardfront/SubViewport/CardFace"
@@ -117,25 +126,13 @@ func _ready():
 	add_to_group(Constants.GROUP_CARD)
 	
 	card_owner = null
-	card_state = Enums.CardState.NULL
+	location = Location.NULL
+	in_play = false
 	_reset_casting_data()
 
 #================================================
 # Public Methods
 #================================================
-
-'''
-Prepares to have the card's state changed. Sends any relevant signals, as well as
-sets the state to the new state
-'''
-func ready_state_change(new_state: Enums.CardState):
-	match card_state:
-		Enums.CardState.HAND:
-			left_hand.emit(self)
-		Enums.CardState.CASTING_WELL, Enums.CardState.CONCENTRATION_CIRCLE:
-			detatched_from_slot.emit()
-	
-	card_state = new_state
 
 '''
 Has the card object destroy itself. First disables all parameters and events.
@@ -153,13 +150,6 @@ Params:
 func animate_move_card(new_pos: Vector3):
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "global_position", new_pos, 0.2)
-
-'''
-Should only be called by caster. 
-'''
-func cast():
-	
-	casted.emit()
 
 '''
 Increases the casting stage. If it is ready to activate,
@@ -180,6 +170,7 @@ Set all events to active.
 Finally, run the activation event.
 '''
 func activate():
+	in_play = true
 	
 	for event_name in events:
 		var event = events[event_name]
@@ -234,6 +225,25 @@ func pay_upkeep():
 #================================================
 
 '''
+Prepares to have the card's state changed. Sends any relevant signals, as well as
+sets the state to the new state
+Params:
+	- new_state: the state to change to
+Returns:
+	- true if able to change state
+	- false if state cannot be changed
+'''
+func _change_loc_state(new_loc: Location):
+	var old_loc = location
+	
+	if old_loc == new_loc:
+		return
+	
+	location = new_loc
+	
+	changed_location.emit(new_loc, old_loc)
+
+'''
 Set all casting data back to 0.
 '''
 func _reset_casting_data():
@@ -284,7 +294,8 @@ func _disable_params_and_events():
 			events[event_name].event_state = Event.EventState.INACTIVE
 
 '''
-Sends a signal that this card was invoked.
+Sends a signal that this card was invoked. Only will occur if
+an invocation event on the card is triggered.
 '''
 func _declare_invoked():
 	invoked.emit()

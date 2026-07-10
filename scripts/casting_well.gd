@@ -17,8 +17,8 @@ func _ready():
 	for i in range(DEFAULT_SLOTS):
 		add_slot()
 
-func _get_relevant_card_state():
-	return Enums.CardState.CASTING_WELL
+func _get_relevant_location() -> Card.Location:
+	return Card.Location.CASTING_WELL
 
 '''
 Adds a slot to the casting well
@@ -64,11 +64,26 @@ func set_slots(new_num_slots: int):
 			add_slot()
 		else:
 			#removes slot if too many
-			remove_slot()	
+			remove_slot()
 
 '''
 Alias for add card to array for casting well
 '''
 func add_card_to_well(card: Card, slot_num: int=-1):
 	_add_card_to_array(card, slot_num)
+
+'''
+Takes a list of cards and arranges them into the available
+casting slots, in order. If there are not enough slots available,
+ignores the last parts of the list.
+Params:
+	- cards: The ordered list of cards to attach, no repeats
+'''
+func set_casting_cards(cards: Array[Card]):
 	
+	for index in range(card_slots.size()):
+		var slot = card_slots.get(index)
+		var card = cards.get(index)
+		
+		if card == null:
+			pass

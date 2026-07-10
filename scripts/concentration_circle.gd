@@ -1,7 +1,7 @@
 class_name ConcentrationCircle extends SlottedCardArray
 
-func _get_relevant_card_state():
-	return Enums.CardState.CONCENTRATION_CIRCLE
+func _get_relevant_location():
+	return Card.Location.CONCENTRATION_CIRCLE
 
 '''
 Alias for add card to array for concentration circle

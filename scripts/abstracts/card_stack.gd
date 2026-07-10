@@ -1,5 +1,5 @@
 @abstract
-class_name CardStack extends Node3D
+class_name CardStack extends CasterElementBase
 
 #An array of card_ids. The top of the stack is the least index
 var _stack : Array[String] #TYPE TBD
@@ -95,12 +95,6 @@ func grab_cards(indices: Array[int], from_bottom: bool = false):
 #================================================
 
 '''
-Just used to return the state a card should be changed to when attached
-'''
-@abstract
-func _get_relevant_card_state() -> Enums.CardState
-
-'''
 Places a card on the top or bottom of stack, defaulting to the top, as a card_id
 Params:
 	- card: The card to push
@@ -108,7 +102,7 @@ Params:
 '''
 func _add_card_to_stack(card: Card, bottom_stack: bool = false):
 	var card_id = card.card_data.card_id
-	card.ready_state_change(_get_relevant_card_state())
+	card.location = _get_relevant_location()
 	if bottom_stack:
 		_stack.push_front(card_id)
 	else:

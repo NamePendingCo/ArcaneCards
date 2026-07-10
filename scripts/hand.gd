@@ -1,7 +1,7 @@
-class_name Hand extends Node3D
+class_name Hand extends CasterElementBase
 
 #shorthand access to this enum val
-const IN_HAND = Enums.CardState.HAND
+const IN_HAND = Card.CardState.HAND
 
 var hand: Array[Card] = []
 
@@ -22,8 +22,8 @@ func list_cards_in_hand():
 
 func add_card_to_hand(card: Card):
 	if card not in hand:
-		card.left_hand.connect(remove_card_from_hand)
-		card.ready_state_change(Enums.CardState.HAND)
+		card.changed_state.connect(remove_card_from_hand.bind(card))
+		card.ready_state_change(IN_HAND)
 		hand.append(card)
 		_update_hand_positions()
 
@@ -63,3 +63,6 @@ func calculate_card_offset(index: int):
 	var offset = transform.basis.x * (index * card_space - int(total_width/2))
 	
 	return offset
+	
+func _get_relevant_card_state():
+	return IN_HAND
