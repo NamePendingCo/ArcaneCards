@@ -37,6 +37,12 @@ func update_range():
 Filter function used to see if a specific being matches the parameter filters.
 '''
 func _check_being(being: Being) -> bool:
+	if (range_option ^ EventEnums.BeingRangeOption.SELF == 0) \
+	and (being != _being_parent):
+		return false
+	elif (range_option ^ EventEnums.BeingRangeOption.ALL_OTHERS == 0) \
+	and (being == _being_parent):
+		return false
 	if being_filter != null:
 		return being_filter.check_being(being)
 	else:

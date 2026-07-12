@@ -46,6 +46,14 @@ func _set_up_parameter(parameter: EventParam, actor: Actor, card: Card = null):
 		if parameter is CardTargetFilterParam:
 			parameter = parameter as CardTargetFilterParam
 			parameter.requested_cards_list.connect(actor._pass_all_cards_to_param)
+			
+			var being_target_name: String = parameter.being_range_name
+			var being_param = parameters[being_target_name] if being_target_name in parameters else null
+			
+			assert(being_param != null, \
+			"CardTargetFilterParam %s wants parameter %s, but it is not in params list" % [parameter, being_target_name])
+			
+			parameter._being_range = parameters[being_target_name]
 
 '''
 Prepares an event's parameters and makes sure they are all appropriately set.

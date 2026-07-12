@@ -24,6 +24,8 @@ var mana: int
 
 var selected_cards_for_casting: Array[Card] = []
 
+var my_cards: CardTargetFilterParam
+
 func _ready():
 	super()
 	add_to_group(Constants.GROUP_CASTER)
@@ -184,6 +186,10 @@ I think it will be removed if we can rework events not to need their owners list
 '''
 func _set_owner_of_card(card: Card):
 	card.card_owner = self
+
+func _create_my_cards_range():
+	var self_range = BeingTargetFilterParam.new()
+	self_range.range_option = EventEnums.BeingRangeOption.SELF
 
 '''
 Only ever called by signal. Takes in a request from a card to have its
