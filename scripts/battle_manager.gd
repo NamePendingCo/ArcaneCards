@@ -119,13 +119,38 @@ func phaseUpkeep():
 	
 	_process_event_stack() #Handle any upkeep phase events/invocations
 
-#TODO: Add an await function (or two) waiting on casters to make their choices
 '''
-Should allow casters to pick their cards here
+Have casters choose their cards for casting any any other 
 '''
 func phaseCasting():
 	current_phase = RoundPhase.CASTING
 	casting_phase_began.emit()
+	
+	#in case any events were triggered, handle them. 
+	#Though there REALLY SHOULDN'T BE
+	_process_event_stack()
+	
+	#Get all beings in game
+	var beings = get_tree().get_nodes_in_group(Constants.GROUP_CASTER)
+	var casting_decision_coroutines: AwaitGroup = AwaitGroup.new()
+	
+	var decision_funcs: Array[Callable] = []
+	
+	#Gets the choose casting cards functions from each caster
+	for being in beings:
+		being = being as Being #Casts to ensure is a being
+		decision_funcs.append(being.make_casting_phase_decisions)
+	
+	#Waits for all decisions to be completed
+	await casting_decision_coroutines.multi_function(decision_funcs)
+	
+	#Reveal all decisions made once ready
+	for being in beings:
+		being = being as Being #Casts to ensure is a being
+		being.reveal_casting_phase_decisions()
+	
+	#in case any events were triggered, handle them
+	_process_event_stack()
 	
 	advancePhase()
 

@@ -22,6 +22,8 @@ const STANDARD_DRAW_KEY = "standard_draw"
 
 var mana: int
 
+var selected_cards_for_casting: Array[Card] = []
+
 func _ready():
 	super()
 	add_to_group(Constants.GROUP_CASTER)
@@ -147,10 +149,22 @@ func move_card_from_discard_pile(index: int, dest: DrawDest = DrawDest.HAND):
 		return true
 
 '''
+OVERRIDES
+For casters, the most important casting phase decision is to choose the cards.
 Make a selection for what cards should be cast during the casting phase.
+
+The default behavior is to choose randomly, but should always be overriden
+in every subclass of caster.
 '''
-@abstract 
-func choose_cards_casting_phase()
+func make_casting_phase_decisions():
+	pass
+
+'''
+OVERRIDES
+Takes the cards selected for the casting phase and actually casts them.
+'''
+func reveal_casting_phase_decisions():
+	my_casting_well.set_casting_cards(selected_cards_for_casting)
 
 #================================================
 # Private methods
@@ -163,6 +177,13 @@ Params:
 '''
 func _register_card(card: Card):
 	card.requested_loc_change.connect(_process_card_loc_change_request.bind(card))
+
+'''
+This function is a hotfix for an order of operations issue regarding creating events.
+I think it will be removed if we can rework events not to need their owners listed.
+'''
+func _set_owner_of_card(card: Card):
+	card.card_owner = self
 
 '''
 Only ever called by signal. Takes in a request from a card to have its
@@ -200,10 +221,3 @@ Only should activate via signal from battle manager. Actually pays upkeep cost
 '''
 func _pay_total_upkeep():
 	mana -= my_conc_circle.pay_circle_upkeep()
-
-'''
-This function is a hotfix for an order of operations issue regarding creating events.
-I think it will be removed if we can rework events not to need their owners listed.
-'''
-func _set_owner_of_card(card: Card):
-	card.card_owner = self

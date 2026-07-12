@@ -34,3 +34,17 @@ func heal(health_regen: int):
 #TODO convert to an event
 func attack_being(target: Being):
 	target.take_damage(attack_strength)
+
+'''
+Might unabstract later. But this is to allow for any being to make decisions
+in this phase, so non-casters can choose to attack and such.
+'''
+@abstract
+func make_casting_phase_decisions()
+
+'''
+Reveals all decisions made during casting phase, such as who the being is 
+attacking or, if a caster, what they cast.
+'''
+@abstract
+func reveal_casting_phase_decisions()
