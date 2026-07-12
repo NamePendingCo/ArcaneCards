@@ -5,6 +5,9 @@ class_name NPCCaster extends Caster
 func _ready():
 	pass # Replace with function body.
 
+func choose_cards_casting_phase():
+	pass
+
 func _choose_being_from_range(param: BeingTargetParam):
 	pass
 

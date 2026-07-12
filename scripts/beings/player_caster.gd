@@ -7,6 +7,9 @@ class_name PlayerCaster extends Caster
 # Public methods
 #================================================
 
+func choose_cards_casting_phase():
+	print()
+
 #================================================
 # Private methods
 #================================================

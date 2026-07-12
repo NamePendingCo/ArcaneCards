@@ -146,6 +146,12 @@ func move_card_from_discard_pile(index: int, dest: DrawDest = DrawDest.HAND):
 		move_to_hand_card(card)
 		return true
 
+'''
+Make a selection for what cards should be cast during the casting phase.
+'''
+@abstract 
+func choose_cards_casting_phase()
+
 #================================================
 # Private methods
 #================================================
