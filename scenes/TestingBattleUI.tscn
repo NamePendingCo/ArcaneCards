@@ -1,17 +1,27 @@
 [gd_scene format=3 uid="uid://qn8wmasljdgo"]
 
 [ext_resource type="Script" uid="uid://bwbvv0qi2a38y" path="res://scripts/misc/testing_battle_ui.gd" id="1_aer3r"]
+[ext_resource type="Script" uid="uid://ccd27f4bgg20i" path="res://scripts/misc/ui_options_list.gd" id="2_vieom"]
 
 [node name="TestingBattleUI" type="CanvasLayer" unique_id=2088716599]
 follow_viewport_enabled = true
 script = ExtResource("1_aer3r")
 
-[node name="ItemList" type="ItemList" parent="." unique_id=1779650681]
+[node name="OptionsList" type="ItemList" parent="." unique_id=1779650681]
 offset_left = 2.0
-offset_top = 189.0
+offset_top = 190.0
 offset_right = 216.0
-offset_bottom = 505.0
-select_mode = 1
+offset_bottom = 506.0
+select_mode = 2
+allow_reselect = true
+script = ExtResource("2_vieom")
+
+[node name="SelectedItems" type="ItemList" parent="OptionsList" unique_id=1552651637]
+layout_mode = 0
+offset_left = 232.0
+offset_right = 368.0
+offset_bottom = 102.0
+allow_reselect = true
 
 [node name="StartButton" type="Button" parent="." unique_id=956354670]
 offset_left = 960.0
