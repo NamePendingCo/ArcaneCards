@@ -1,7 +1,7 @@
 class_name Hand extends CasterElementBase
 
 #shorthand access to this enum val
-const IN_HAND = Card.CardState.HAND
+const IN_HAND = Card.Location.HAND
 
 var hand: Array[Card] = []
 
@@ -23,7 +23,7 @@ func list_cards_in_hand():
 func add_card_to_hand(card: Card):
 	if card not in hand:
 		card.changed_state.connect(remove_card_from_hand.bind(card))
-		card.ready_state_change(IN_HAND)
+		card.location = IN_HAND
 		hand.append(card)
 		_update_hand_positions()
 
@@ -64,5 +64,5 @@ func calculate_card_offset(index: int):
 	
 	return offset
 	
-func _get_relevant_card_state():
+func _get_relevant_location() -> Card.Location:
 	return IN_HAND
