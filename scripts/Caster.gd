@@ -22,9 +22,7 @@ const STANDARD_DRAW_KEY = "standard_draw"
 
 var mana: int
 
-var selected_cards_for_casting: Array[Card] = []
-
-var my_cards: CardTargetFilterParam
+var _casting_selection: CardTargetFilterParam
 
 func _ready():
 	super()
@@ -34,6 +32,8 @@ func _ready():
 	card_manager.created_card.connect(_register_card)
 	#Register to set self as owner of card when card object is first made
 	card_manager.requested_card_owner.connect(_set_owner_of_card)
+	
+	_create_casting_selection_range()
 	
 	basic_events.setup_events(self)
 
@@ -166,7 +166,7 @@ OVERRIDES
 Takes the cards selected for the casting phase and actually casts them.
 '''
 func reveal_casting_phase_decisions():
-	my_casting_well.set_casting_cards(selected_cards_for_casting)
+	my_casting_well.set_casting_cards(_casting_selection.targets)
 
 #================================================
 # Private methods
@@ -187,9 +187,18 @@ I think it will be removed if we can rework events not to need their owners list
 func _set_owner_of_card(card: Card):
 	card.card_owner = self
 
-func _create_my_cards_range():
+'''
+Creates a range that covers all the cards owned by the player. Useful for
+the casting selection.
+'''
+func _create_casting_selection_range():
 	var self_range = BeingTargetFilterParam.new()
 	self_range.range_option = EventEnums.BeingRangeOption.SELF
+	self_range._being_parent = self
+	
+	_casting_selection = CardTargetFilterParam.new()
+	_casting_selection._being_range = self_range
+	_casting_selection._being_parent = self
 
 '''
 Only ever called by signal. Takes in a request from a card to have its

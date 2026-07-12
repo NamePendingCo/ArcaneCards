@@ -37,7 +37,7 @@ Params:
 Returns:
 	- the decision's decision_made signal
 '''
-func request_decision(caster: Caster, options: Array[String]):
+func request_decision(caster: Caster, options: Array[String]) -> Signal:
 	var new_decision: CasterDecision = CasterDecision.new(caster, options)
 	
 	#Add decision to the list
