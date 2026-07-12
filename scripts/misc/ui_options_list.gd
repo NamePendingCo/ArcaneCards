@@ -3,7 +3,7 @@ class_name UIOptionsList extends ItemList
 signal option_chosen(index)
 signal option_unchosen(index)
 
-@onready var ui_selected_items: ItemList = $SelectedItems
+@onready var ui_selected_items: ItemList = $"../SelectedItems"
 
 #Two dictionaries for converting indices between each list
 var _selected_to_option: Dictionary[int, int] = {}

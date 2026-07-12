@@ -2,8 +2,11 @@ class_name TestingBattleUI extends CanvasLayer
 
 signal selection_made(selections)
 
-@onready var options_list: UIOptionsList = $OptionsList
 @onready var start_button: Button = $StartButton
+
+@onready var selection_wrapper: Control = $Selection
+@onready var options_list: UIOptionsList = $Selection/OptionsList
+@onready var selection_prompt: Label = $Selection/SelectionPrompt
 
 @export var battle_manager: BattleManager
 
@@ -49,8 +52,8 @@ func request_decision(caster: Caster, options: Array[String]):
 Set whether or not the options list should be visible, allowing the player
 to make selections.
 '''
-func toggle_decision_mode(is_decision_time: bool):
-	options_list.visible = is_decision_time
+func set_decision_mode(is_decision_time: bool):
+	selection_wrapper.visible = is_decision_time
 
 '''
 Sets the current acting player for the UI.
@@ -61,7 +64,10 @@ func set_acting_player(caster: Caster):
 
 func get_next_decision():
 	if _decisions[acting_player].size() > 0:
+		set_decision_mode(true)
 		active_decision = _decisions[acting_player][0]
+	else:
+		set_decision_mode(false)
 
 #================================================
 # Private methods
@@ -80,6 +86,7 @@ func _set_active_decision(decision: CasterDecision):
 	
 	active_decision = decision
 	options_list.multi_selected.connect(decision._handle_toggled_selection)
+	selection_prompt.text = decision.prompt
 	
 	_set_item_list_items(decision._options)
 
@@ -99,11 +106,15 @@ class CasterDecision:
 	#the choices the caster can make
 	var _options: Array[String]
 	var _selections: Array[int]
+	var prompt: String
 	
-	func _init(deciding_caster: Caster, options: Array[String]):
+	func _init(deciding_caster: Caster, options: Array[String], 
+		prompt_input: String = ""):
 		caster = deciding_caster
 		_options = options
 		_selections = []
+		
+		prompt = prompt_input
 	
 	'''
 	Makes the final decision for the caster decision
