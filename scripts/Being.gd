@@ -1,6 +1,8 @@
 @abstract
 class_name Being extends Actor
 
+signal health_updated(new_val)
+
 signal health_depleted
 
 var being_name: String
@@ -11,6 +13,7 @@ var _health: int
 var health = _health:
 	set(val): 
 		_health = max(0, val)
+		health_updated.emit(_health)
 		health_depleted.emit()
 
 var attack_strength: int

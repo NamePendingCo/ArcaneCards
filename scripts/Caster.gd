@@ -3,6 +3,8 @@ class_name Caster
 
 extends Being
 
+signal mana_updated(new_val)
+
 signal paying_upkeep #send out before paying upkeep
 
 signal created_event(event)
@@ -20,7 +22,8 @@ const STANDARD_DRAW_KEY = "standard_draw"
 
 @onready var basic_events: EventData = load("res://system_events/caster_basic_events.tres").duplicate_deep()
 
-var mana: int
+var mana: int:
+	set(val): mana = val; mana_updated.emit(mana)
 
 var _casting_selection: CardTargetFilterParam
 
@@ -36,6 +39,12 @@ func _ready():
 	_create_casting_selection_range()
 	
 	basic_events.setup_events(self)
+	
+	health_updated.connect(func(val: int): _update_label("Health: %d" % val, $CasterCardImage/HpLabel))
+	mana_updated.connect(func(val: int): _update_label("Mana: %d" % val, $CasterCardImage/ManaLabel))
+	
+	health = 40
+	mana = 100
 
 #Enum for determining destinations for drawn cards. Maybe should be moved
 enum DrawDest {
@@ -297,3 +306,7 @@ func _random_target_selection(target_param: TargetParam):
 
 	
 	target_param.targets = final_selections
+
+#TODO VERY TEMPORARY. REPLACE THESE
+func _update_label(new_text: String, label: Label3D):
+	label.text = new_text
