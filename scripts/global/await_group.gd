@@ -28,14 +28,14 @@ func multi_function(functions: Array[Callable]) -> void:
 	in_progress = true
 	_counter = functions.size()
 	
-	var func_wrappers = []
+	var fired_coroutines: Array[CoroutineWrapper]
 	
-	for func_item in functions:
-		var wrapper = FunctionWrapper.new(func_item)
-		wrapper.func_finished.connect(_on_signal_completed, CONNECT_ONE_SHOT)
-		wrapper.call_func()
-	
-	await _all_completed
+	for func_item: Callable in functions:
+		var wrapper: CoroutineWrapper = CoroutineWrapper.new(func_item)
+		fired_coroutines.append(wrapper)
+		
+	for item: CoroutineWrapper in fired_coroutines:
+		await item.is_complete()
 
 func _on_signal_completed() -> void:
 	_counter -= 1
@@ -43,14 +43,23 @@ func _on_signal_completed() -> void:
 		_all_completed.emit()
 		in_progress = false
 
-class FunctionWrapper extends RefCounted:
+class CoroutineWrapper extends RefCounted:
 	signal func_finished
 	
-	var wrapped_func: Callable
+	var coroutine: Callable
+	var _is_done: bool = false
+	var result: Variant
 	
-	func _init(new_func: Callable):
-		wrapped_func = new_func
+	func _init(passed_func: Callable):
+		coroutine = passed_func
+		call_func()
 	
 	func call_func():
-		await wrapped_func
+		result = await coroutine.call()
+		_is_done = true
 		func_finished.emit()
+	
+	func is_complete():
+		if not _is_done:
+			await func_finished
+		return result

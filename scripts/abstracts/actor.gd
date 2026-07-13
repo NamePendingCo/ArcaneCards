@@ -23,8 +23,14 @@ Used to allow CardTargetFilterParams to access the node tree to get group list.
 Signal call only.
 '''
 func _pass_all_cards_to_param(param: CardTargetFilterParam):
-	var card_list = get_tree().get_nodes_in_group(Constants.GROUP_Card) as Array[Card]
-	param.update_range_from_list(card_list)
+	var card_list = get_tree().get_nodes_in_group(Constants.GROUP_CARD) as Array[Card]
+	
+	var card_array: Array[Card] = []
+	
+	for card in card_list:
+		card_array.append(card as Card)
+	
+	param.update_range_from_list(card_array)
 
 #================================================
 # Private methods

@@ -70,6 +70,7 @@ func set_slots(new_num_slots: int):
 Alias for add card to array for casting well
 '''
 func add_card_to_well(card: Card, slot_num: int=-1):
+	card.location = Card.Location.CASTING_WELL
 	_add_card_to_array(card, slot_num)
 
 '''
@@ -85,13 +86,11 @@ func set_casting_cards(cards: Array[Card]):
 	
 	for index in range(card_slots.size()):
 		var slot = card_slots.get(index)
-		var card = cards.get(index)
+		var card = cards.get(index) if cards.size() > index else null
 		
-		if (card == null) and (card != slot.attached_card):
-			var detached_card: Card = slot.attached_card
-			
-			slot.detach_card()
+		if (card != null) and (card != slot.attached_card):
+			var detached_card: Card = slot.detach_card()
 			add_card_to_well(card, index)
 			
-			if detached_card not in cards:
+			if (detached_card != null) and (detached_card not in cards):
 				detached_card.mark_to_discard()

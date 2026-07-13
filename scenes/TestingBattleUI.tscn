@@ -34,10 +34,13 @@ text = "Selected:"
 custom_minimum_size = Vector2(200, 275)
 layout_mode = 2
 select_mode = 2
-allow_reselect = true
 script = ExtResource("2_vieom")
 
 [node name="SelectedItems" type="ItemList" parent="Selection" unique_id=1552651637]
 custom_minimum_size = Vector2(100, 275)
 layout_mode = 2
 allow_reselect = true
+
+[node name="Submit" type="Button" parent="Selection" unique_id=1226376679]
+layout_mode = 2
+text = "Enter"

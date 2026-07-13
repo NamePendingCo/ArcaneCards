@@ -30,14 +30,14 @@ When passed a list of beings, updates from these
 '''
 func update_range_from_list(all_cards: Array[Card]):
 	targets_range.clear()
-	targets_range.append(all_cards.filter(_check_card))
+	targets_range.append_array(all_cards.filter(_check_card))
 
 '''
 Sends a signal which should tell the actor to update its range using
 update_range_from_list
 '''
 func update_range():
-	requested_cards_list.emit()
+	requested_cards_list.emit(self)
 
 '''
 Check if a card is acceptable and meets parameters.
@@ -45,11 +45,11 @@ Check if a card is acceptable and meets parameters.
 func _check_card(card: Card) -> bool:
 	if exclude_self and (card == _card_parent):
 		return false
-	elif card.owner not in _being_range.targets_range:
+	elif card.card_caster not in _being_range.targets_range:
 		return false
 	elif card.location not in location_range:
 		return false
-	elif not card_filter.card_valid(card):
+	elif (card_filter != null) and (not card_filter.card_valid(card)):
 		return false
 	else:
 		return true

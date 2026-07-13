@@ -49,6 +49,8 @@ enum DrawDest {
 #================================================
 
 func on_game_start():
+	print("Running game start events for %s" % self)
+	
 	#Activate all basic event
 	for event_name in basic_events.events:
 		basic_events.events[event_name].event_state = Event.EventState.ACTIVE
@@ -159,7 +161,25 @@ The default behavior is to choose randomly, but should always be overriden
 in every subclass of caster.
 '''
 func make_casting_phase_decisions():
-	pass
+	#Creates a random unique seed just for this moment
+	var random = RandomNumberGenerator.new()
+	random.randomize()
+	
+	_casting_selection._being_range.update_range()
+	_casting_selection.update_range()
+	
+	var index_array: Array[int] = range(_casting_selection.targets_range.size())
+	
+	var final_selections: Array[Card] = []
+	
+	for i in range(my_casting_well.num_slots):
+		var rand_choice = random.randi_range(0, index_array.size() - 1)
+		
+		var rand_index = index_array.pop_at(rand_choice)
+		
+		final_selections.append(_casting_selection.targets_range[rand_index])
+	
+	_casting_selection.targets = final_selections
 
 '''
 OVERRIDES
@@ -185,7 +205,7 @@ This function is a hotfix for an order of operations issue regarding creating ev
 I think it will be removed if we can rework events not to need their owners listed.
 '''
 func _set_owner_of_card(card: Card):
-	card.card_owner = self
+	card.card_caster = self
 
 '''
 Creates a range that covers all the cards owned by the player. Useful for
@@ -195,10 +215,13 @@ func _create_casting_selection_range():
 	var self_range = BeingTargetFilterParam.new()
 	self_range.range_option = EventEnums.BeingRangeOption.SELF
 	self_range._being_parent = self
+	self_range.requested_beings_list.connect(_pass_all_beings_to_param)
 	
 	_casting_selection = CardTargetFilterParam.new()
 	_casting_selection._being_range = self_range
 	_casting_selection._being_parent = self
+	_casting_selection.location_range = [Card.Location.HAND, Card.Location.CASTING_WELL]
+	_casting_selection.requested_cards_list.connect(_pass_all_cards_to_param)
 
 '''
 Only ever called by signal. Takes in a request from a card to have its

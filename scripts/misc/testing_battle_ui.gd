@@ -1,28 +1,28 @@
 class_name TestingBattleUI extends CanvasLayer
 
-signal selection_made(selections)
-
 @onready var start_button: Button = $StartButton
 
-@onready var selection_wrapper: Control = $Selection
+@onready var selection_wrapper: GridContainer = $Selection
 @onready var options_list: UIOptionsList = $Selection/OptionsList
 @onready var selection_prompt: Label = $Selection/SelectionPrompt
+@onready var enter_button: Button = $Selection/Submit
 
 @export var battle_manager: BattleManager
 
 @export var acting_player: PlayerCaster:
-	set(val): set_acting_player(val)
+	set = set_acting_player
 
 var active_decision: CasterDecision:
-	set(val): _set_active_decision(val)
+	set = _set_active_decision
 
 #List of every decision by each player
-var _decisions: Dictionary[Caster, Array]
+var _decisions: Dictionary[PlayerCaster, Array]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	start_button.pressed.connect(_start_game)
 	_decisions = {}
+	enter_button.pressed.connect(submit_decision)
 
 #================================================
 # Public methods
@@ -37,11 +37,14 @@ Params:
 Returns:
 	- the decision's decision_made signal
 '''
-func request_decision(caster: Caster, options: Array[String]) -> Signal:
-	var new_decision: CasterDecision = CasterDecision.new(caster, options)
+func request_decision(caster: Caster, options: Array[String],
+	min_selections: int = 1, max_selections: int = Constants.INT_MAX,
+	prompt: String = "") -> Signal:
+	var new_decision: CasterDecision = CasterDecision.new(
+		caster, options, min_selections, max_selections, prompt)
 	
 	#Add decision to the list
-	_decisions[caster].append(new_decision)
+	_decisions.get_or_add(caster, []).append(new_decision)
 	
 	if caster == acting_player:
 		get_next_decision()
@@ -53,13 +56,15 @@ Set whether or not the options list should be visible, allowing the player
 to make selections.
 '''
 func set_decision_mode(is_decision_time: bool):
-	selection_wrapper.visible = is_decision_time
+	if selection_wrapper != null:
+		selection_wrapper.visible = is_decision_time
 
 '''
 Sets the current acting player for the UI.
 '''
-func set_acting_player(caster: Caster):
+func set_acting_player(caster: PlayerCaster):
 	acting_player = caster
+	_decisions.get_or_add(acting_player, [])
 	get_next_decision()
 
 func get_next_decision():
@@ -68,6 +73,25 @@ func get_next_decision():
 		active_decision = _decisions[acting_player][0]
 	else:
 		set_decision_mode(false)
+
+'''
+Submits current decision, if allowed
+'''
+func submit_decision():
+	if active_decision.selections.size() >= active_decision.min_selections:
+		active_decision.make_decision()
+		
+		#reset the current decision
+		active_decision = null
+		_decisions[acting_player].pop_front()
+		get_next_decision()
+	else:
+		var text = enter_button.text
+		enter_button.text = "Too few items selected"
+		enter_button.disabled = true
+		await get_tree().create_timer(0.05).timeout
+		enter_button.text = text
+		enter_button.disabled = false
 
 #================================================
 # Private methods
@@ -85,13 +109,19 @@ func _set_active_decision(decision: CasterDecision):
 		options_list.multi_selected.disconnect(active_decision._handle_toggled_selection)
 	
 	active_decision = decision
+	
+	if active_decision == null:
+		return
+		
 	options_list.multi_selected.connect(decision._handle_toggled_selection)
 	selection_prompt.text = decision.prompt
 	
-	_set_item_list_items(decision._options)
+	_set_item_list_items(decision)
 
-func _set_item_list_items(items: Array[String]):
-	for item in items:
+func _set_item_list_items(decision: CasterDecision):
+	options_list.max_selections = decision.max_selections
+	
+	for item in decision.options:
 		options_list.add_item(item)
 
 '''Class that allows the UI to track multiple caster decisions at once, 
@@ -103,18 +133,24 @@ class CasterDecision:
 	
 	var caster: Caster
 	
+	var max_selections: int
+	var min_selections: int
+	
 	#the choices the caster can make
-	var _options: Array[String]
-	var _selections: Array[int]
+	var options: Array[String]
+	var selections: Array[int]
 	var prompt: String
 	
-	func _init(deciding_caster: Caster, options: Array[String], 
+	func _init(deciding_caster: Caster, options_list: Array[String], 
+		min_choices: int = 1, max_choices: int = Constants.INT_MAX,
 		prompt_input: String = ""):
 		caster = deciding_caster
-		_options = options
-		_selections = []
+		options = options_list
+		selections = []
 		
 		prompt = prompt_input
+		max_selections = max_choices
+		min_selections = min_choices
 	
 	'''
 	Makes the final decision for the caster decision
@@ -122,7 +158,7 @@ class CasterDecision:
 		selections: a list of indices from the options that were chosen
 	'''
 	func make_decision():
-		decision_made.emit(_options, _selections)
+		decision_made.emit(options, selections)
 	
 	func _handle_toggled_selection(choice: int, selected: bool):
 		if selected:
@@ -131,8 +167,8 @@ class CasterDecision:
 			_remove_selection(choice)
 	
 	func _add_selection(choice: int):
-		if choice not in _selections:
-			_selections.append(choice)
+		if choice not in selections:
+			selections.append(choice)
 	
 	func _remove_selection(choice: int):
-		_selections.erase(choice)
+		selections.erase(choice)

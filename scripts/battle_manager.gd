@@ -64,8 +64,8 @@ func advancePhase():
 	# next phase is either the next phase on the list, or if it is END resets to ROUND_LOAD
 	var next_phase = current_phase + 1 if current_phase < RoundPhase.END else RoundPhase.ROUND_LOAD
 	
-	var delay = 2
-	print("Advancing to phase %s after temporary delay of %d seconds" %\
+	var delay = 0.3
+	print("Advancing to phase %s after temporary delay of %f seconds" %\
 	 [RoundPhase.find_key(next_phase), delay])
 	#Temporary delay to separate phases 
 	await get_tree().create_timer(delay).timeout
@@ -118,6 +118,8 @@ func phaseUpkeep():
 	upkeep_phase_began.emit()
 	
 	_process_event_stack() #Handle any upkeep phase events/invocations
+	
+	advancePhase()
 
 '''
 Have casters choose their cards for casting any any other 
@@ -141,8 +143,12 @@ func phaseCasting():
 		being = being as Being #Casts to ensure is a being
 		decision_funcs.append(being.make_casting_phase_decisions)
 	
+	print("Preparing to await")
+	
 	#Waits for all decisions to be completed
 	await casting_decision_coroutines.multi_function(decision_funcs)
+	
+	print("After await")
 	
 	#Reveal all decisions made once ready
 	for being in beings:
@@ -276,7 +282,7 @@ process_triggered_events. If true, run event. If false, ignore and loop
 func _process_event_stack():
 	_initial_stack_setup()
 	while not event_stack.is_empty():
-		print("Event stack...")
+		print("Processing event stack...")
 		#checks the top item on stack. If no new events stacked, run it
 		var event = event_stack.pop_back()
 		

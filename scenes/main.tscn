@@ -31,6 +31,6 @@ script = ExtResource("4_c01mt")
 [node name="BattleManager" type="Node3D" parent="." unique_id=818788164]
 script = ExtResource("3_0bbpv")
 
-[node name="TestingBattleUI" parent="." unique_id=2088716599 node_paths=PackedStringArray("battle_manager", "acting_caster") instance=ExtResource("5_vcsgt")]
+[node name="TestingBattleUI" parent="." unique_id=2088716599 node_paths=PackedStringArray("battle_manager", "acting_player") instance=ExtResource("5_vcsgt")]
 battle_manager = NodePath("../BattleManager")
-acting_caster = NodePath("../Caster")
+acting_player = NodePath("../Caster")

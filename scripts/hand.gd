@@ -22,14 +22,14 @@ func list_cards_in_hand():
 
 func add_card_to_hand(card: Card):
 	if card not in hand:
-		card.changed_state.connect(remove_card_from_hand.bind(card))
+		card.changed_location.connect(_handle_card_leaving.bind(card))
 		card.location = IN_HAND
 		hand.append(card)
 		_update_hand_positions()
 
 func remove_card_from_hand(card: Card):
 	if card in hand:
-		card.left_hand.disconnect(remove_card_from_hand)
+		card.changed_location.disconnect(_handle_card_leaving)
 		hand.erase(card)
 		_update_hand_positions()
 
@@ -63,6 +63,9 @@ func calculate_card_offset(index: int):
 	var offset = transform.basis.x * (index * card_space - int(total_width/2))
 	
 	return offset
-	
+
+func _handle_card_leaving(old_loc, new_loc, card: Card):
+	remove_card_from_hand(card)
+
 func _get_relevant_location() -> Card.Location:
 	return IN_HAND

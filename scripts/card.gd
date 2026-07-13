@@ -12,8 +12,6 @@ signal requested_loc_change(new_loc: Location)
 
 signal payment_declared(type) #Eventually set param type with an enum
 
-signal reset_event_data #notify if reloaded to reregister
-
 enum Location {
 	NULL,
 	HAND,
@@ -25,7 +23,7 @@ enum Location {
 	ATTACHED
 }
 
-var card_owner: Caster
+var card_caster: Caster
 #THIS SHOULD BE USED *ONLY* TO COMPARE OWNERS. NEVER CALL THIS
 
 @export var card_data: CardData:
@@ -99,8 +97,20 @@ var parameters: Dictionary[String, EventParam]
 var events: Dictionary[String, Event]
 
 #In game states
-var location: Location:
-	set(val): _change_loc_state(val)
+var location: Location: 
+	set(new_loc):
+		#This setter should be its own function, but Godot refused to cooperate
+		var old_loc = location
+	
+		if location == new_loc:
+			return
+		
+		location = new_loc
+		
+		if location not in [Location.CONCENTRATION_CIRCLE, Location.ATTACHED]:
+			deactivate()
+		
+		changed_location.emit(new_loc, old_loc)
 
 # Whether the card is in play or not
 var _in_play: bool
@@ -128,7 +138,7 @@ func _ready():
 	#Add to the card group
 	add_to_group(Constants.GROUP_CARD)
 	
-	card_owner = null
+	card_caster = null
 	location = Location.NULL
 	in_play = false
 	_reset_casting_data()
@@ -233,28 +243,6 @@ func pay_upkeep():
 #================================================
 
 '''
-Prepares to have the card's state changed. Sends any relevant signals, as well as
-sets the state to the new state
-Params:
-	- new_state: the state to change to
-Returns:
-	- true if able to change state
-	- false if state cannot be changed
-'''
-func _change_loc_state(new_loc: Location):
-	var old_loc = location
-	
-	if old_loc == new_loc:
-		return
-	
-	location = new_loc
-	
-	if location not in [Location.CONCENTRATION_CIRCLE, Location.ATTACHED]:
-		deactivate()
-	
-	changed_location.emit(new_loc, old_loc)
-
-'''
 Args allows for optional parameters to be passed if necessary,
 such as slot number, or whether to place in bottom of deck. By
 default will emit something empty the caster can ignore.
@@ -280,21 +268,21 @@ func _reset_event_data():
 	#Create a copy of the base resource from card_data.
 	var event_data: CardEventData = card_data.event_data.duplicate_deep(Resource.DEEP_DUPLICATE_ALL)
 	
-	print("Card owner in card %s" % card_owner)
+	print("Card owner in card: %s" % card_caster)
 	
 	#Set up the events in the event_data
-	event_data.setup_events(card_owner, self)
+	event_data.setup_events(card_caster, self)
 	
 	parameters = event_data.parameters
 	events = event_data.events
+	
+	print("Key key loop")
 	
 	#Subscribe to each invocation event so can declare when invoked
 	for key in events:
 		var event = events[key]
 		if event.is_invocation:
 			event.event_running.connect(_declare_invoked)
-	
-	reset_event_data.emit()
 
 '''
 Disables all parameters and events so they don't interact with

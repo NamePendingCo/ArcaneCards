@@ -1,3 +1,4 @@
+@tool
 @abstract
 class_name ListenerEvent extends Event
 
