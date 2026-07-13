@@ -196,6 +196,8 @@ func activate():
 	#If a concentration card, also mark to move to concentration circle
 	if card_data.type in Enums.CONC_TYPES:
 		_request_loc_change(Location.CONCENTRATION_CIRCLE)
+	elif card_data.type == Enums.CardType.INSTANT:
+		mark_to_discard()
 
 '''
 Sets in play to false and deactivates all events.
