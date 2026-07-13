@@ -89,6 +89,10 @@ Params:
 '''
 func set_casting_cards(cards: Array[Card]):
 	
+	print("selected cards to cast:")
+	for card in cards:
+		print(card.card_data.cardName)
+	
 	cards = cards.slice(0, card_slots.size())
 	
 	for index in range(card_slots.size()):
@@ -97,7 +101,7 @@ func set_casting_cards(cards: Array[Card]):
 		
 		if card == slot.attached_card:
 			continue
-		elif card.location == Card.Location.CASTING_WELL:
+		elif (card != null) and (card.location == Card.Location.CASTING_WELL):
 			for other_slot in card_slots:
 				if other_slot.attached_card == card:
 					_move_between_slots(other_slot, slot)

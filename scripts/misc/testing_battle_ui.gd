@@ -155,9 +155,6 @@ class CasterDecision:
 		prompt = prompt_input
 		max_selections = max_choices
 		min_selections = min_choices
-		
-		print("Created decision %s for %s for %d-%d choices with options %s" % 
-		[prompt_input, caster, min_choices, max_choices, options_list])
 	
 	'''
 	Makes the final decision for the caster decision

@@ -21,7 +21,7 @@ func make_casting_phase_decisions():
 			if card_a.location != Card.Location.CASTING_WELL:
 				return false
 			else:
-				return my_casting_well.get_cards_slot(card_a) > \
+				return my_casting_well.get_cards_slot(card_a) < \
 				my_casting_well.get_cards_slot(card_b)
 		return true
 	
@@ -49,9 +49,13 @@ func make_casting_phase_decisions():
 	
 	var decision_return = await decision_finished_signal
 	
+	var new_targets: Array[Card] = []
+	
 	#loop through list of selections and put them into the casting list selection
 	for index in decision_return[1]:
-		_casting_selection.targets.append(_casting_selection.targets_range[index])
+		new_targets.append(_casting_selection.targets_range[index])
+
+	_casting_selection.targets = new_targets
 
 #================================================
 # Private methods
