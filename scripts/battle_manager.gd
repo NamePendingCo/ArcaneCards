@@ -8,8 +8,17 @@ signal casting_phase_began
 signal adjudication_phase_began
 signal end_phase_began
 
-const RoundPhase = Enums.RoundPhase
+enum RoundPhase {
+	NULL,
+	ROUND_LOAD,
+	DRAW,
+	UPKEEP,
+	CASTING,
+	ADJUDICATION,
+	END
+}
 
+var match_in_progress: bool
 var round_num: int
 var current_phase: RoundPhase
 
@@ -25,6 +34,7 @@ var card_listening_events: Array[Event]
 func _ready():
 	current_phase = RoundPhase.NULL
 	event_stack = []
+	match_in_progress = false
 	
 	#Connect all card creation to _register_card
 	var casters = get_tree().get_nodes_in_group(Constants.GROUP_CASTER)
@@ -48,6 +58,7 @@ All game start and setup stuff should be done here
 func startMatch():
 	print("Starting match...")
 	round_num = 0 #starts at zero so it can increase every round
+	match_in_progress = true
 	
 	var casters = get_tree().get_nodes_in_group(Constants.GROUP_CASTER)
 	for caster: Caster in casters:
@@ -55,7 +66,23 @@ func startMatch():
 	
 	_process_event_stack()
 	
-	phaseRoundLoad()
+	runMatch()
+
+'''
+Loops through and perpetually runs the game, acting as the main source of
+runtime instead of a series of infinitely recursive calls by the phases.
+'''
+func runMatch():
+	
+	'''
+	Loops through all phases. Tbh, might eventually be worth
+	merging runMatch and advancePhase together.
+	'''
+	while match_in_progress:
+		#Needs an await because of the delay in advance phase atm
+		await advancePhase()
+	
+	print("Game has ended.")
 
 '''
 Advances to the next phase based on the current phase. Use this by default so that
@@ -73,12 +100,12 @@ func advancePhase():
 	await get_tree().create_timer(delay).timeout
 	
 	match next_phase:
-		RoundPhase.ROUND_LOAD: phaseRoundLoad()
-		RoundPhase.DRAW: phaseDraw()
-		RoundPhase.UPKEEP: phaseUpkeep()
-		RoundPhase.CASTING: phaseCasting()
-		RoundPhase.ADJUDICATION: phaseAdjudication()
-		RoundPhase.END: phaseEnd()
+		RoundPhase.ROUND_LOAD: await phaseRoundLoad()
+		RoundPhase.DRAW: await phaseDraw()
+		RoundPhase.UPKEEP: await phaseUpkeep()
+		RoundPhase.CASTING: await phaseCasting()
+		RoundPhase.ADJUDICATION: await phaseAdjudication()
+		RoundPhase.END: await phaseEnd()
 		_: assert(false, "Next phase was not an accepted phase.")
 
 '''
@@ -89,6 +116,9 @@ func phaseRoundLoad():
 	round_load_phase_began.emit()
 	
 	round_num += 1 #Increases the round number
+	print("==============")
+	print("Round %d" % round_num)
+	print("==============")
 	
 	advancePhase()
 
@@ -103,8 +133,6 @@ func phaseDraw():
 	draw_phase_began.emit()
 	
 	_process_event_stack() #Handle any draw phase events/invocations
-	
-	advancePhase()
 
 '''
 Runs the upkeep phase of the game.
@@ -113,15 +141,13 @@ func phaseUpkeep():
 	current_phase = RoundPhase.UPKEEP
 	if round_num == 1:
 		#skip upkeep phase for first round
-		advancePhase()
+		return
 	
 	#Notify that the phase has begun. Should trigger
 	#casters to create their gain mana income and pay upkeep events
 	upkeep_phase_began.emit()
 	
 	_process_event_stack() #Handle any upkeep phase events/invocations
-	
-	advancePhase()
 
 '''
 Have casters choose their cards for casting any any other 
@@ -159,8 +185,6 @@ func phaseCasting():
 	
 	#in case any events were triggered, handle them
 	_process_event_stack()
-	
-	advancePhase()
 
 '''
 Resolution of actions. Most important for having the effect stack here.
@@ -174,8 +198,6 @@ func phaseAdjudication():
 	for card in casting_list:
 		card.progress_casting(1) #progress card
 		_process_event_stack() #process all triggered events
-	
-	advancePhase()
 
 '''
 All end phase mechanics triggered here
@@ -185,8 +207,6 @@ func phaseEnd():
 	end_phase_began.emit()
 	
 	_process_event_stack() #Handle any end phase events/invocations
-	
-	advancePhase()
 
 #================================================
 # Private methods

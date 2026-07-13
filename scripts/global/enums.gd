@@ -1,15 +1,5 @@
 class_name Enums extends Node
 
-enum RoundPhase {
-	NULL,
-	ROUND_LOAD,
-	DRAW,
-	UPKEEP,
-	CASTING,
-	ADJUDICATION,
-	END
-}
-
 enum SpellColor {
 	NULL = 0,
 	RED = 1,
