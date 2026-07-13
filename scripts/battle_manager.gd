@@ -99,14 +99,19 @@ func advancePhase():
 	#Temporary delay to separate phases 
 	await get_tree().create_timer(delay).timeout
 	
+	var phase_func: Callable
+	
 	match next_phase:
-		RoundPhase.ROUND_LOAD: await phaseRoundLoad()
-		RoundPhase.DRAW: await phaseDraw()
-		RoundPhase.UPKEEP: await phaseUpkeep()
-		RoundPhase.CASTING: await phaseCasting()
-		RoundPhase.ADJUDICATION: await phaseAdjudication()
-		RoundPhase.END: await phaseEnd()
+		RoundPhase.ROUND_LOAD: phase_func = phaseRoundLoad
+		RoundPhase.DRAW: phase_func = phaseDraw
+		RoundPhase.UPKEEP: phase_func = phaseUpkeep
+		RoundPhase.CASTING: phase_func = phaseCasting
+		RoundPhase.ADJUDICATION: phase_func = phaseAdjudication
+		RoundPhase.END: phase_func = phaseEnd
 		_: assert(false, "Next phase was not an accepted phase.")
+		
+	if phase_func != null:
+		await phase_func.call()
 
 '''
 Any events that should occur technical wise but not mechanically go here.
