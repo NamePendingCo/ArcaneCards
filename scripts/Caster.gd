@@ -271,6 +271,8 @@ func _random_target_selection(target_param: TargetParam):
 	var index_array: Array[int] = []
 	
 	for i in range(target_param.targets_range.size()):
+		if target_param.targets_range[i] in target_param.targets:
+			continue
 		index_array.append(i)
 	
 	var final_selections = []
@@ -284,7 +286,9 @@ func _random_target_selection(target_param: TargetParam):
 		var setup_arr: Array[Card] = []
 		final_selections = setup_arr
 	
-	for i in range(target_param.num_targets_max):
+	final_selections.append_array(target_param.targets)
+	
+	for i in range(target_param.num_targets_max - final_selections.size()):
 		var rand_choice = random.randi_range(0, index_array.size() - 1)
 		
 		var rand_index = index_array.pop_at(rand_choice)
