@@ -28,6 +28,7 @@ func _ready():
 	
 	#Connect all card creation to _register_card
 	var casters = get_tree().get_nodes_in_group(Constants.GROUP_CASTER)
+	print(casters)
 	for caster: Caster in casters:
 		caster.card_manager.created_card.connect(_register_card)
 		
@@ -35,6 +36,7 @@ func _ready():
 		for event_name in caster.basic_events.events:
 			var event = caster.basic_events.events[event_name]
 			_register_event(event)
+			print("%s: %s" % [event_name, event.actor])
 
 #================================================
 # Public methods
@@ -239,7 +241,7 @@ func _stack_event_list(event_list: Array[Event]):
 	func(a: Event, b: Event):
 		return a.calculate_priority() > b.calculate_priority())
 		
-	event_stack.append_array(to_stack_list)
+	event_stack.append_array(event_list)
 	event_list.clear()
 
 func _initial_stack_setup():
@@ -283,6 +285,10 @@ func _process_event_stack():
 	_initial_stack_setup()
 	while not event_stack.is_empty():
 		print("Processing event stack...")
+		print("events:")
+		for event in event_stack:
+			print("%s: %s" % [event.actor, event])
+		
 		#checks the top item on stack. If no new events stacked, run it
 		var event = event_stack.pop_back()
 		

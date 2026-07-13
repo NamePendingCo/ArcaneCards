@@ -27,7 +27,8 @@ func make_casting_phase_decisions():
 		target_list.append("%s. %s" % [prefix, card.card_data.cardName])
 	
 	var decision_finished_signal: Signal = ui.request_decision(
-		self, target_list, 0, my_casting_well.num_slots, "Choose cards to cast")
+		self, target_list, _casting_selection.num_targets_min, 
+		_casting_selection.num_targets_max, "Choose cards to cast")
 	
 	var decision_return = await decision_finished_signal
 	

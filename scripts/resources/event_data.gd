@@ -1,6 +1,8 @@
 @tool
 class_name EventData extends Resource
 
+var debug_log: bool = false
+
 #@export_subgroup("Events and Effects")
 #list of targeting parameters which are used by effects
 @export var parameters: Dictionary[String, EventParam] = {}
@@ -11,11 +13,11 @@ var events: Dictionary[String, Event] = {}
 
 func setup_events(actor: Actor, card: Card = null):
 	for param_name in parameters:
-		print("Setting up parameter: %s" % param_name)
+		if debug_log: print("Setting up parameter: %s" % param_name)
 		_set_up_parameter(parameters[param_name], actor, card)
 		
 	for event_name in events:
-		print("Setting up event: %s" % event_name)
+		if debug_log: print("Setting up event: %s" % event_name)
 		var event: Event = events[event_name]
 		
 		#Set the event to use the card's actor and card
@@ -61,7 +63,7 @@ func _set_up_parameter(parameter: EventParam, actor: Actor, card: Card = null):
 Prepares an event's parameters and makes sure they are all appropriately set.
 '''
 func _prepare_event_params(event: Event, event_name: String):
-	print("Preparing event params for event %s" % event_name)
+	if debug_log: print("Preparing event params for event %s" % event_name)
 	#Populate param list from names
 	for param_name in event.choice_param_names:
 		var param = parameters[param_name] if param_name in parameters else null

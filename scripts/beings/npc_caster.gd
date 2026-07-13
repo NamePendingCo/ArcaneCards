@@ -4,7 +4,8 @@ func make_casting_phase_decisions():
 	super()
 
 func _choose_being_from_range(param: BeingTargetParam):
-	pass
+	_random_target_selection(param)
+	
 
 func _choose_card_from_range(param: CardTargetParam):
-	pass
+	_random_target_selection(param)

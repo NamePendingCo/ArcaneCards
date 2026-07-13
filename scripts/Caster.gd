@@ -106,6 +106,8 @@ Returns:
 	True on successful draw. False if failed
 '''
 func draw(num_drawn: int = 1, dest: DrawDest = DrawDest.HAND):
+	print("%s drawing %d cards" % [self, num_drawn])
+	
 	if num_drawn <= 0:
 		print("Cannot draw " + str(num_drawn) + " Cards")
 		return false
@@ -161,32 +163,9 @@ The default behavior is to choose randomly, but should always be overriden
 in every subclass of caster.
 '''
 func make_casting_phase_decisions():
-	if _casting_selection.targets_range.size() < my_casting_well.num_slots:
-		_casting_selection.targets = _casting_selection.targets_range
-		return
-	
-	#Creates a random unique seed just for this moment
-	var random = RandomNumberGenerator.new()
-	random.randomize()
-	
 	_casting_selection._being_range.update_range()
-	_casting_selection.update_range()
 	
-	var index_array: Array[int] = []
-	
-	for i in range(_casting_selection.targets_range.size()):
-		index_array.append(i)
-	
-	var final_selections: Array[Card] = []
-	
-	for i in range(my_casting_well.num_slots):
-		var rand_choice = random.randi_range(0, index_array.size() - 1)
-		
-		var rand_index = index_array.pop_at(rand_choice)
-		
-		final_selections.append(_casting_selection.targets_range[rand_index])
-	
-	_casting_selection.targets = final_selections
+	_random_target_selection(_casting_selection)
 
 '''
 OVERRIDES
@@ -215,7 +194,7 @@ func _set_owner_of_card(card: Card):
 	card.card_caster = self
 
 '''
-Creates a range that covers all the cards owned by the player. Useful for
+Creates a range that covers all the cards owned by the player. Used for
 the casting selection.
 '''
 func _create_casting_selection_range():
@@ -228,6 +207,12 @@ func _create_casting_selection_range():
 	_casting_selection._being_range = self_range
 	_casting_selection._being_parent = self
 	_casting_selection.location_range = [Card.Location.HAND, Card.Location.CASTING_WELL]
+	
+	_casting_selection.num_targets_min = 0
+	#Max casting should always match number of slots
+	_casting_selection.num_targets_max = my_casting_well.num_slots
+	my_casting_well.num_slots_updated.connect(func(num): _casting_selection.num_targets_max = num)
+	
 	_casting_selection.requested_cards_list.connect(_pass_all_cards_to_param)
 
 '''
@@ -266,3 +251,45 @@ Only should activate via signal from battle manager. Actually pays upkeep cost
 '''
 func _pay_total_upkeep():
 	mana -= my_conc_circle.pay_circle_upkeep()
+
+'''
+Make a random selection of targets.
+Param:
+	
+'''
+func _random_target_selection(target_param: TargetParam):
+	target_param.update_range()
+	
+	if target_param.targets_range.size() < target_param.num_targets_max:
+		target_param.targets = target_param.targets_range
+		return
+	
+	#Creates a random unique seed just for this moment
+	var random = RandomNumberGenerator.new()
+	random.randomize()
+	
+	var index_array: Array[int] = []
+	
+	for i in range(target_param.targets_range.size()):
+		index_array.append(i)
+	
+	var final_selections = []
+	
+	#For some really stupid reason this works for the typing issue
+	#to make it so we can handle any type of array here
+	if target_param is BeingTargetParam:
+		var setup_arr: Array[Being] = []
+		final_selections = setup_arr
+	elif target_param is CardTargetParam:
+		var setup_arr: Array[Card] = []
+		final_selections = setup_arr
+	
+	for i in range(target_param.num_targets_max):
+		var rand_choice = random.randi_range(0, index_array.size() - 1)
+		
+		var rand_index = index_array.pop_at(rand_choice)
+		
+		final_selections.append(target_param.targets_range[rand_index])
+
+	
+	target_param.targets = final_selections

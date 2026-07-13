@@ -12,7 +12,6 @@ var _colors: int:
 	set(val):
 		_colors = val
 		colors = EventEnums.flagIntToEnum(val)
-		print(colors)
 var colors: Array[Enums.SpellColor]
 
 #Subdomains to filter, set with flags
@@ -20,7 +19,6 @@ var _subdomains: int:
 	set(val):
 		_subdomains = val
 		subdomains = EventEnums.flagIntToEnum(val, Enums.Subdomain)
-		print(subdomains)
 var subdomains: Array[Enums.Subdomain]
 
 #Types to filter, set with flags

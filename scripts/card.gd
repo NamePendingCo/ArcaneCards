@@ -276,8 +276,6 @@ func _reset_event_data():
 	parameters = event_data.parameters
 	events = event_data.events
 	
-	print("Key key loop")
-	
 	#Subscribe to each invocation event so can declare when invoked
 	for key in events:
 		var event = events[key]

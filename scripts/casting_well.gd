@@ -1,5 +1,7 @@
 class_name CastingWell extends SlottedCardArray
 
+signal num_slots_updated(new_num_slots) #Announce when slot num changes
+
 const SPACE_BETWEEN_SLOTS = 0.8
 
 #constants for number of slots
@@ -37,6 +39,7 @@ func add_slot():
 	add_child(new_slot)
 	#adds to list
 	card_slots.push_back(new_slot)
+	num_slots_updated.emit(num_slots)
 
 '''
 Removes the last slot from the slots list and destroys it.
@@ -54,6 +57,7 @@ func remove_slot():
 	remove_child(removed_slot)
 	#clear from memory
 	removed_slot.queue_free()
+	num_slots_updated.emit(num_slots)
 
 func set_slots(new_num_slots: int):
 	#make sure not to go outside of slot range
