@@ -33,7 +33,6 @@ text = "Selected:"
 [node name="OptionsList" type="ItemList" parent="Selection" unique_id=1779650681]
 custom_minimum_size = Vector2(200, 275)
 layout_mode = 2
-select_mode = 2
 script = ExtResource("2_vieom")
 
 [node name="SelectedItems" type="ItemList" parent="Selection" unique_id=1552651637]

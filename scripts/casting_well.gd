@@ -71,7 +71,10 @@ Alias for add card to array for casting well
 '''
 func add_card_to_well(card: Card, slot_num: int=-1):
 	card.location = Card.Location.CASTING_WELL
-	_add_card_to_array(card, slot_num)
+	return _add_card_to_array(card, slot_num)
+
+func move_card_in_well(slot_num_from: int, slot_num_to: int):
+	_move_between_slots(card_slots[slot_num_from], card_slots[slot_num_to])
 
 '''
 Takes a list of cards and arranges them into the available
@@ -85,12 +88,26 @@ func set_casting_cards(cards: Array[Card]):
 	cards = cards.slice(0, card_slots.size())
 	
 	for index in range(card_slots.size()):
-		var slot = card_slots.get(index)
-		var card = cards.get(index) if cards.size() > index else null
+		var slot: CardSlot = card_slots.get(index)
+		var card: Card = cards.get(index) if cards.size() > index else null
 		
-		if (card != null) and (card != slot.attached_card):
-			var detached_card: Card = slot.detach_card()
-			add_card_to_well(card, index)
+		if card == slot.attached_card:
+			continue
+		elif card.location == Card.Location.CASTING_WELL:
+			for other_slot in card_slots:
+				if other_slot.attached_card == card:
+					_move_between_slots(other_slot, slot)
+					continue
+		var detached_card: Card = slot.detach_card()
 			
-			if (detached_card != null) and (detached_card not in cards):
-				detached_card.mark_to_discard()
+		if (detached_card != null) and (detached_card not in cards):
+			detached_card.mark_to_discard()
+		
+		if card != null:
+			add_card_to_well(card, index)
+
+func _move_between_slots(slot_from: CardSlot, slot_to: CardSlot):
+	var card = slot_from.detach_card()
+	
+	if not _attach_card_to_slot(card, slot_to):
+		_attach_card_to_slot(card, slot_from)

@@ -13,8 +13,18 @@ func make_casting_phase_decisions():
 	_casting_selection._being_range.update_range()
 	_casting_selection.update_range()
 	
+	var hand_counter = 1
+	var well_counter = 1
+	var prefix: String
 	for card in _casting_selection.targets_range:
-		target_list.append(card.card_data.cardName)
+		if card.location == card.Location.HAND:
+			prefix = "H%d" % hand_counter
+			hand_counter += 1
+		else:
+			prefix = "W%d" % well_counter
+			well_counter += 1
+		
+		target_list.append("%s. %s" % [prefix, card.card_data.cardName])
 	
 	var decision_finished_signal: Signal = ui.request_decision(
 		self, target_list, 0, my_casting_well.num_slots, "Choose cards to cast")

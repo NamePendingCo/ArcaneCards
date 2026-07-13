@@ -49,7 +49,7 @@ enum DrawDest {
 #================================================
 
 func on_game_start():
-	print("Running game start events for %s" % self)
+	print("Running game start events for %s" % name)
 	
 	#Activate all basic event
 	for event_name in basic_events.events:
@@ -161,6 +161,10 @@ The default behavior is to choose randomly, but should always be overriden
 in every subclass of caster.
 '''
 func make_casting_phase_decisions():
+	if _casting_selection.targets_range.size() < my_casting_well.num_slots:
+		_casting_selection.targets = _casting_selection.targets_range
+		return
+	
 	#Creates a random unique seed just for this moment
 	var random = RandomNumberGenerator.new()
 	random.randomize()
@@ -168,7 +172,10 @@ func make_casting_phase_decisions():
 	_casting_selection._being_range.update_range()
 	_casting_selection.update_range()
 	
-	var index_array: Array[int] = range(_casting_selection.targets_range.size())
+	var index_array: Array[int] = []
+	
+	for i in range(_casting_selection.targets_range.size()):
+		index_array.append(i)
 	
 	var final_selections: Array[Card] = []
 	

@@ -81,6 +81,7 @@ func submit_decision():
 	if active_decision.selections.size() >= active_decision.min_selections:
 		active_decision.make_decision()
 		
+		options_list.clean_up()
 		#reset the current decision
 		active_decision = null
 		_decisions[acting_player].pop_front()
@@ -106,19 +107,20 @@ func _start_game():
 
 func _set_active_decision(decision: CasterDecision):
 	if active_decision != null:
-		options_list.multi_selected.disconnect(active_decision._handle_toggled_selection)
+		options_list.item_updated.disconnect(active_decision._handle_toggled_selection)
 	
 	active_decision = decision
 	
 	if active_decision == null:
 		return
 		
-	options_list.multi_selected.connect(decision._handle_toggled_selection)
+	options_list.item_updated.connect(decision._handle_toggled_selection)
 	selection_prompt.text = decision.prompt
 	
 	_set_item_list_items(decision)
 
 func _set_item_list_items(decision: CasterDecision):
+	options_list.clean_up()
 	options_list.max_selections = decision.max_selections
 	
 	for item in decision.options:
