@@ -20,6 +20,10 @@ func clean_up():
 	ui_selected_items.clear()
 	_selected_list.clear()
 
+func append_selected(selected_list: Array[int]):
+	for index in selected_list:
+		_add_selected_item(index)
+
 '''
 Params:
 	- Option index: the index from the option list toggled

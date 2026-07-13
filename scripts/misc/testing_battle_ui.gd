@@ -39,9 +39,9 @@ Returns:
 '''
 func request_decision(caster: Caster, options: Array[String],
 	min_selections: int = 1, max_selections: int = Constants.INT_MAX,
-	prompt: String = "") -> Signal:
+	prompt: String = "", preselected: Array[int] = []) -> Signal:
 	var new_decision: CasterDecision = CasterDecision.new(
-		caster, options, min_selections, max_selections, prompt)
+		caster, options, min_selections, max_selections, prompt, preselected)
 	
 	#Add decision to the list
 	_decisions.get_or_add(caster, []).append(new_decision)
@@ -125,6 +125,8 @@ func _set_item_list_items(decision: CasterDecision):
 	
 	for item in decision.options:
 		options_list.add_item(item)
+	
+	options_list.append_selected(decision.selections)
 
 '''Class that allows the UI to track multiple caster decisions at once, 
 and queue them up as necessary.
@@ -145,10 +147,10 @@ class CasterDecision:
 	
 	func _init(deciding_caster: Caster, options_list: Array[String], 
 		min_choices: int = 1, max_choices: int = Constants.INT_MAX,
-		prompt_input: String = ""):
+		prompt_input: String = "", preselected: Array[int] = []):
 		caster = deciding_caster
 		options = options_list
-		selections = []
+		selections = preselected
 		
 		prompt = prompt_input
 		max_selections = max_choices

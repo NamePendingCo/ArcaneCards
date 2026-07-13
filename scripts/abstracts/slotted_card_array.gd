@@ -20,6 +20,22 @@ func get_first_card_in_array():
 			return slot.attached_card
 	return null
 
+'''
+Gets the slot a card is in. Or -1 if its not in a slot.
+Params:
+	card: the card to check
+Returns:
+	the slot number of the card, or -1 if not present
+'''
+func get_cards_slot(card: Card):
+	var slot_num = 0
+	for slot in card_slots:
+		if slot.attached_card == card:
+			return slot_num
+		slot_num += 1
+	
+	return -1
+
 #================================================
 # Private methods
 #================================================

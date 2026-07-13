@@ -13,22 +13,39 @@ func make_casting_phase_decisions():
 	_casting_selection._being_range.update_range()
 	_casting_selection.update_range()
 	
-	var hand_counter = 1
-	var well_counter = 1
+	'''
+	Inner lambda to use to compare two cards for sorting the list more easily.
+	'''
+	var comp_casting_cards = func(card_a: Card, card_b: Card):
+		if card_b.location == Card.Location.CASTING_WELL:
+			if card_a.location != Card.Location.CASTING_WELL:
+				return false
+			else:
+				return my_casting_well.get_cards_slot(card_a) > \
+				my_casting_well.get_cards_slot(card_b)
+		return true
+	
+	_casting_selection.targets_range.sort_custom(comp_casting_cards)
+	
+	var in_well_indices: Array[int] = []
+	
+	var hand_counter = 0
+	var well_counter = 0
 	var prefix: String
 	for card in _casting_selection.targets_range:
 		if card.location == card.Location.HAND:
-			prefix = "H%d" % hand_counter
 			hand_counter += 1
+			prefix = "H%d" % hand_counter
 		else:
-			prefix = "W%d" % well_counter
+			in_well_indices.append(well_counter)
 			well_counter += 1
+			prefix = "W%d" % well_counter
 		
 		target_list.append("%s. %s" % [prefix, card.card_data.cardName])
 	
 	var decision_finished_signal: Signal = ui.request_decision(
 		self, target_list, _casting_selection.num_targets_min, 
-		_casting_selection.num_targets_max, "Choose cards to cast")
+		_casting_selection.num_targets_max, "Choose cards to cast", in_well_indices)
 	
 	var decision_return = await decision_finished_signal
 	
@@ -46,7 +63,6 @@ func _chose_being_from_menu(choice_indices: PackedInt32Array, param: BeingTarget
 		choices.append(param.targets_range[index])
 	
 	param.targets = choices
-	
 
 '''
 Overrides.
