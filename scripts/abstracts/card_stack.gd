@@ -103,6 +103,8 @@ Params:
 func _add_card_to_stack(card: Card, bottom_stack: bool = false):
 	var card_id = card.card_data.card_id
 	card.location = _get_relevant_location()
+	#Wait for it to move before destroying it
+	await card.animate_move_card(global_transform.origin)
 	if bottom_stack:
 		_stack.push_front(card_id)
 	else:

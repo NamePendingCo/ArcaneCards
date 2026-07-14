@@ -172,8 +172,6 @@ The default behavior is to choose randomly, but should always be overriden
 in every subclass of caster.
 '''
 func make_casting_phase_decisions():
-	_casting_selection._being_range.update_range()
-	
 	_random_target_selection(_casting_selection)
 
 '''
@@ -295,6 +293,11 @@ func _random_target_selection(target_param: TargetParam):
 		var setup_arr: Array[Card] = []
 		final_selections = setup_arr
 	
+	print("Target param targets:")
+	print(target_param._targets)
+	print("Target param targets rage:")
+	print(target_param._targets_range)
+	
 	final_selections.append_array(target_param.targets)
 	
 	for i in range(target_param.num_targets_max - final_selections.size()):
@@ -304,6 +307,7 @@ func _random_target_selection(target_param: TargetParam):
 		
 		final_selections.append(target_param.targets_range[rand_index])
 
+	print(final_selections)
 	
 	target_param.targets = final_selections
 

@@ -24,7 +24,7 @@ func attach_card(card: Card):
 	card.animate_move_card(card_pos)
 	
 	#When the card has its state changed again, this will make it automatically detatch
-	card.changed_location.connect(detach_card)
+	card.changed_location.connect(_handle_card_moving)
 
 '''
 Detatches the card in the slot, if present. Returns true if there was a card, false if not
@@ -34,9 +34,12 @@ func detach_card() -> Card:
 		var removed_card = _attached_card
 		
 		#disconnect the signal as card won't be attached anymore
-		_attached_card.changed_location.disconnect(detach_card)
+		_attached_card.changed_location.disconnect(_handle_card_moving)
 		_attached_card = null
 		has_card_attached = false
 		return removed_card
 	else:
 		return null
+
+func _handle_card_moving(old_loc, new_loc):
+	detach_card()

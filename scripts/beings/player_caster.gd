@@ -10,7 +10,6 @@ class_name PlayerCaster extends Caster
 func make_casting_phase_decisions():
 	var target_list: Array[String] = []
 	
-	_casting_selection._being_range.update_range()
 	_casting_selection.update_range()
 	
 	'''

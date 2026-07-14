@@ -22,6 +22,7 @@ var match_in_progress: bool
 var round_num: int
 var current_phase: RoundPhase
 
+var caster_priority_order: Array[Caster] #Order that caster cards should be resolved in
 var casting_list: Array[Card] #list of cards that are being cast, sorted for processing order
 
 var event_stack: Array[Event] #stack used for event processing
@@ -60,9 +61,12 @@ func startMatch():
 	round_num = 0 #starts at zero so it can increase every round
 	match_in_progress = true
 	
+	caster_priority_order = []
+	
 	var casters = get_tree().get_nodes_in_group(Constants.GROUP_CASTER)
 	for caster: Caster in casters:
 		caster.on_game_start()
+		caster_priority_order.append(caster)
 	
 	_process_event_stack()
 	
@@ -124,6 +128,10 @@ func phaseRoundLoad():
 	print("==============")
 	print("Round %d" % round_num)
 	print("==============")
+	
+	if round_num > 1:
+		#Moves first priority to end of priority
+		caster_priority_order.push_back(caster_priority_order.pop_front())
 	
 	advancePhase()
 
@@ -190,6 +198,20 @@ func phaseCasting():
 	
 	#in case any events were triggered, handle them
 	_process_event_stack()
+	
+	#counts the slots iterated through when arranging the cards
+	var slot_counter: int = 0
+	var adding_to_list: bool = true
+	while adding_to_list:
+		adding_to_list = false #Set to false at start, must be reenabled each loop
+		for caster in caster_priority_order:
+			if caster.my_casting_well.num_slots <= slot_counter:
+				continue
+			adding_to_list = true #Made an addition, so keep looping
+			var card: Card = caster.my_casting_well.cards[slot_counter]
+			if card != null:
+				casting_list.append(card)
+		slot_counter += 1
 
 '''
 Resolution of actions. Most important for having the effect stack here.
@@ -203,6 +225,8 @@ func phaseAdjudication():
 	for card in casting_list:
 		card.progress_casting(1) #progress card
 		_process_event_stack() #process all triggered events
+	
+	casting_list.clear()
 
 '''
 All end phase mechanics triggered here

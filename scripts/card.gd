@@ -7,6 +7,8 @@ signal changed_location(new_state, old_state)
 signal activated
 signal invoked
 
+signal marked_to_destroy
+
 #signals to tell the caster to move this card's location
 signal requested_loc_change(new_loc: Location)
 
@@ -151,6 +153,7 @@ func _ready():
 Has the card object destroy itself. First disables all parameters and events.
 '''
 func self_destruct():
+	marked_to_destroy.emit()
 	_disable_params_and_events()
 	self.queue_free()
 
@@ -163,6 +166,7 @@ Params:
 func animate_move_card(new_pos: Vector3):
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "global_position", new_pos, 0.2)
+	await tween.finished
 
 '''
 Increases the casting stage. If it is ready to activate,
@@ -174,7 +178,10 @@ func progress_casting(progress_increment: int):
 	var progress_total = _rounds_spent_casting + _quicken_amount
 	var wait_total = card_data.tier + _delay_amount
 	
+	print("Casting for card %s progressed to %d" % [card_data.cardName, progress_total])
+	
 	if progress_total >= wait_total:
+		print("Activating!")
 		activate()
 
 '''
@@ -188,7 +195,7 @@ func activate():
 		var event = events[event_name]
 		event.event_state = Event.EventState.ACTIVE
 		
-	events[Constants.ACTIVATION_KEY].trigger()
+	events[CardEventData.ACTIVATION_KEY].trigger()
 	
 	#notifies card was activated
 	activated.emit()

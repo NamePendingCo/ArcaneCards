@@ -10,6 +10,13 @@ var num_slots: int:
 	get: return card_slots.size()
 	set(val): pass
 
+var cards: Array[Card]:
+	get:
+		var cards_array: Array[Card] 
+		cards_array.assign(card_slots.map(func(slot: CardSlot): return slot.attached_card))
+		return cards_array
+	set(val): pass
+
 #================================================
 # Public methods
 #================================================

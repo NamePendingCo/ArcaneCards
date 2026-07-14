@@ -37,6 +37,8 @@ Sends a signal which should tell the actor to update its range using
 update_range_from_list
 '''
 func update_range():
+	if _being_range != null:
+		_being_range.update_range()
 	requested_cards_list.emit(self)
 
 '''
