@@ -48,20 +48,16 @@ func disable():
 #================================================
 
 #Setters and getters for range and target variables
-func _get_targets_range():
-	return _targets_range
+@abstract
+func _get_targets_range()
 
 func _set_targets_range(arr: Array[Variant]):
-	_targets_range.clear()
-	_targets_range.append_array(arr)
 	updated_range.emit() #notify of update
 
-func _get_targets():
-	return _targets
+@abstract
+func _get_targets()
 
 func _set_targets(arr: Array[Variant]):
-	_targets.clear()
-	_targets.append_array(arr)
 	updated_targets.emit() #notify of update
 
 func _remove_from_lists(item: Variant):
