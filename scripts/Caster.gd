@@ -293,11 +293,6 @@ func _random_target_selection(target_param: TargetParam):
 		var setup_arr: Array[Card] = []
 		final_selections = setup_arr
 	
-	print("Target param targets:")
-	print(target_param._targets)
-	print("Target param targets rage:")
-	print(target_param._targets_range)
-	
 	final_selections.append_array(target_param.targets)
 	
 	for i in range(target_param.num_targets_max - final_selections.size()):

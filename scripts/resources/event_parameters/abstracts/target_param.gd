@@ -61,8 +61,5 @@ func _set_targets(arr: Array[Variant]):
 	updated_targets.emit() #notify of update
 
 func _remove_from_lists(item: Variant):
-	print("Removing %s" % item)
 	_targets_range.erase(item)
-	print(_targets_range)
 	_targets.erase(item)
-	print(_targets)

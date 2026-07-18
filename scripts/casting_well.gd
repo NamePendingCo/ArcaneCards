@@ -87,17 +87,17 @@ ignores the last parts of the list.
 Params:
 	- cards: The ordered list of cards to attach, no repeats
 '''
-func set_casting_cards(cards: Array[Card]):
+func set_casting_cards(passed_cards: Array[Card]):
 	
 	print("selected cards to cast:")
-	for card in cards:
+	for card in passed_cards:
 		print(card.card_data.cardName)
 	
-	cards = cards.slice(0, card_slots.size())
+	passed_cards = passed_cards.slice(0, card_slots.size())
 	
 	for index in range(card_slots.size()):
 		var slot: CardSlot = card_slots.get(index)
-		var card: Card = cards.get(index) if cards.size() > index else null
+		var card: Card = passed_cards.get(index) if passed_cards.size() > index else null
 		
 		if card == slot.attached_card:
 			continue
@@ -108,7 +108,7 @@ func set_casting_cards(cards: Array[Card]):
 					continue
 		var detached_card: Card = slot.detach_card()
 			
-		if (detached_card != null) and (detached_card not in cards):
+		if (detached_card != null) and (detached_card not in passed_cards):
 			detached_card.mark_to_discard()
 		
 		if card != null:

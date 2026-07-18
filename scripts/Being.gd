@@ -11,9 +11,13 @@ var being_name: String
 var _health: int
 #main health variable. Can't go below 0
 var health = _health:
-	set(val): 
+	get: return _health
+	set(val):
+		print("old health: %d" % _health) 
+		print("change val: %d" % val)
 		_health = max(0, val)
 		health_updated.emit(_health)
+		print("new health: %d" % _health)
 		health_depleted.emit()
 
 var attack_strength: int

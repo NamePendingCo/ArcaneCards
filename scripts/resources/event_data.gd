@@ -76,7 +76,6 @@ func _prepare_event_params(event: Event, event_name: String):
 		
 		event.choice_params.append(parameters[param_name])
 	
-	
 	for effect in event.effects:
 		if effect is TargetedEffect:
 			_prepare_target_param(effect, event_name)

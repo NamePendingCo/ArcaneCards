@@ -19,7 +19,7 @@ metadata/_custom_type_script = "uid://bwnp248xicgpu"
 [sub_resource type="Resource" id="Resource_dj7kv"]
 script = ExtResource("4_x7dly")
 choice_param_names = Array[String](["target"])
-effects = Array[ExtResource("2_0m7pk")]([SubResource("Resource_qxh5r"), null])
+effects = Array[ExtResource("2_0m7pk")]([SubResource("Resource_qxh5r")])
 
 [sub_resource type="Resource" id="Resource_rj4xy"]
 script = ExtResource("6_05xuk")

@@ -33,6 +33,8 @@ var card_caster: Caster
 		#set the new data as the data for this card
 		card_data = value
 		
+		print("new_card: %s" % card_data.cardName)
+		
 		# Set local variables from the card total so that data itself remains consistent
 		upkeep = card_data.upkeep_cost \
 			if card_data.type != Enums.CardType.INSTANT else -1
@@ -203,8 +205,6 @@ func activate():
 	#If a concentration card, also mark to move to concentration circle
 	if card_data.type in Enums.CONC_TYPES:
 		_request_loc_change(Location.CONCENTRATION_CIRCLE)
-	elif card_data.type == Enums.CardType.INSTANT:
-		mark_to_discard()
 
 '''
 Sets in play to false and deactivates all events.
@@ -277,8 +277,6 @@ func _reset_event_data():
 	#Create a copy of the base resource from card_data.
 	var event_data: CardEventData = card_data.event_data.duplicate_deep(Resource.DEEP_DUPLICATE_ALL)
 	
-	print("Card owner in card: %s" % card_caster)
-	
 	#Set up the events in the event_data
 	event_data.setup_events(card_caster, self)
 	
@@ -290,6 +288,9 @@ func _reset_event_data():
 		var event = events[key]
 		if event.is_invocation:
 			event.event_running.connect(_declare_invoked)
+	
+	if card_data.type == Enums.CardType.INSTANT:
+		events[CardEventData.ACTIVATION_KEY].effects.append(_create_discard_self_effect())
 
 '''
 Disables all parameters and events so they don't interact with
@@ -306,6 +307,14 @@ func _disable_params_and_events():
 		#Disable all events
 		for event_name in events:
 			events[event_name].event_state = Event.EventState.INACTIVE
+
+func _create_discard_self_effect():
+	var target_card_self: CardTargetFilterParam = CardTargetFilterParam.new()
+	target_card_self.targets = [self]
+	var discard_effect: DiscardEffect = DiscardEffect.new()
+	discard_effect.targets_param = target_card_self
+	
+	return discard_effect
 
 '''
 Sends a signal that this card was invoked. Only will occur if

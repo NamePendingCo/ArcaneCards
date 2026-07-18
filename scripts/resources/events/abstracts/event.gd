@@ -39,7 +39,7 @@ var is_system_event: bool = false
 var is_invocation: bool = true
 
 #Tracks the current state of the event
-var event_state: EventState = EventState.INACTIVE:
+var event_state: EventState:
 	set(val):
 		if event_state == val:
 			#return if event doesn't change
@@ -64,6 +64,7 @@ var parent_card: Card = null
 func _ready():
 	event_state = EventState.INACTIVE
 	triggered_events = []
+	print("my effects %s" % effects)
 
 #================================================
 # Public methods
@@ -74,7 +75,7 @@ Usually connected with a signal. When called, signals to the battle_manager
 to be added to the event stack.
 '''
 func trigger():
-	print("Triggered Event for %s" % actor.name)
+	print("Triggered Event %s for %s which is %s" % [self, actor.name, EventState.keys()[event_state]])
 	#Only can trigger if active
 	if event_state == EventState.ACTIVE:
 		print("Event is active")
@@ -105,12 +106,16 @@ Runs the event and all effects that should occur as part of it. Does not
 run if the event is not active.
 '''
 func run():
-	print("Running event")
+	print("Running event: %s which is %s" % [self, EventState.keys()[event_state]])
 	#Should not run if inactive or suppressed.
 	if event_state != EventState.ACTIVE:
 		return
 	
+	print("-> Event is active")
+	#print("%s" % effects.map(func(a: Effect): a.effect_id))
+	
 	for effect in effects:
+		print(Effect.EffectID.keys()[effect.effect_id])
 		effect.run()
 
 '''

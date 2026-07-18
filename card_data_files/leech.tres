@@ -17,7 +17,7 @@ target_param_name = "target"
 _val = 2
 metadata/_custom_type_script = "uid://bwnp248xicgpu"
 
-[sub_resource type="Resource" id="Resource_i1qx6"]
+[sub_resource type="Resource" id="Resource_1b3e2"]
 script = ExtResource("4_f8xwr")
 target_param_name = "self"
 _val = 1
@@ -25,8 +25,8 @@ metadata/_custom_type_script = "uid://br71qxrnafy7b"
 
 [sub_resource type="Resource" id="Resource_f8xwr"]
 script = ExtResource("3_1xhvr")
-choice_param_names = Array[String](["target"])
-effects = Array[ExtResource("2_vuwc2")]([SubResource("Resource_bv1pq"), SubResource("Resource_i1qx6")])
+choice_param_names = Array[String](["target", "self"])
+effects = Array[ExtResource("2_vuwc2")]([SubResource("Resource_bv1pq"), SubResource("Resource_1b3e2")])
 
 [sub_resource type="Resource" id="Resource_bkeia"]
 script = ExtResource("7_ajmu6")

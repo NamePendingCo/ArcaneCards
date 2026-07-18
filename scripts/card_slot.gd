@@ -41,5 +41,5 @@ func detach_card() -> Card:
 	else:
 		return null
 
-func _handle_card_moving(old_loc, new_loc):
+func _handle_card_moving(_old_loc, _new_loc):
 	detach_card()
