@@ -1,7 +1,10 @@
 class_name DrawEffect extends BeingEffect
 
+'''
+Has all targets draw cards equal to the value.
+'''
+
 func run():
-	print("Draw effect running...")
 	var targets: Array[Being] = targets_param.targets as Array[Being]
 	
 	for target in targets:

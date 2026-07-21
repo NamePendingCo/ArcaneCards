@@ -25,4 +25,4 @@ func apply_op(to_mod: int):
 		OpType.ADDITION: return to_mod + val
 		OpType.SUBTRACTION: return to_mod - val
 		OpType.MULTIPLICATION: return to_mod * val
-		OpType.DIVISION: return int(to_mod / val)
+		OpType.DIVISION: return int(float(to_mod) / float(val))

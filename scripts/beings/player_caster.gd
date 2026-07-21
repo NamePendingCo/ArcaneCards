@@ -7,7 +7,17 @@ class_name PlayerCaster extends Caster
 # Public methods
 #================================================
 
+'''
+Has the player make the card selection during casting phase.
+
+Utilizes the UI to make the selection. VERY TEMPORARY UI system,
+so all of this should be replaced once we have a more proper functionality.
+'''
 func make_casting_phase_decisions():
+	if ui == null:
+		#Choose randomly if no UI is set
+		super()
+	
 	var target_list: Array[String] = []
 	
 	_casting_selection.update_range()
@@ -24,6 +34,7 @@ func make_casting_phase_decisions():
 				my_casting_well.get_cards_slot(card_b)
 		return true
 	
+	#Sort the list such that cards in the casting well are listed first
 	_casting_selection.targets_range.sort_custom(comp_casting_cards)
 	
 	var in_well_indices: Array[int] = []
@@ -31,6 +42,8 @@ func make_casting_phase_decisions():
 	var hand_counter = 0
 	var well_counter = 0
 	var prefix: String
+	
+	#Mark cards as in hand or in the casting well
 	for card in _casting_selection.targets_range:
 		if card.location == card.Location.HAND:
 			hand_counter += 1
@@ -40,12 +53,15 @@ func make_casting_phase_decisions():
 			well_counter += 1
 			prefix = "W%d" % well_counter
 		
+		#Add to target list to be passed to UI
 		target_list.append("%s. %s" % [prefix, card.card_data.cardName])
 	
+	#Creates a decision from the UI
 	var decision_finished_signal: Signal = ui.request_decision(
 		self, target_list, _casting_selection.num_targets_min, 
 		_casting_selection.num_targets_max, "Choose cards to cast", in_well_indices)
 	
+	#Waits for the decision to be made
 	var decision_return = await decision_finished_signal
 	
 	var new_targets: Array[Card] = []
@@ -54,12 +70,14 @@ func make_casting_phase_decisions():
 	for index in decision_return[1]:
 		new_targets.append(_casting_selection.targets_range[index])
 
+	#Sets the actual targets
 	_casting_selection.targets = new_targets
 
 #================================================
 # Private methods
 #================================================
 
+#TODO, actually interface with the selection screen
 func _chose_being_from_menu(choice_indices: PackedInt32Array, param: BeingTargetParam):
 	var choices: Array[Being] = []
 	for index in choice_indices:
@@ -96,6 +114,7 @@ func _choose_being_from_range(param: BeingTargetParam):
 '''
 Overrides.
 '''
+#TODO: Actually interface with current UI
 func _choose_card_from_range(param: CardTargetParam):
 	#Just copy if the range isn't big enough
 	if param.targets_range.size() <= param.num_targets_min:

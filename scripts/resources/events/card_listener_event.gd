@@ -41,6 +41,10 @@ func reset_connections():
 	for card in triggering_cards.card_targets:
 		_connect_to_card(card)
 
+'''
+Used for improved use of resource on backend side. Sets which properties are
+visible and what params they take.
+'''
 func _validate_property(property: Dictionary) -> void:
 	if property.name == "is_run_after":
 		#is run after should be shown if activate or invoke is true

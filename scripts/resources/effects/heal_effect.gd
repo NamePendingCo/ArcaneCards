@@ -1,5 +1,9 @@
 class_name HealEffect extends BeingEffect
 
+'''
+Has all targets heal equal to the value.
+'''
+
 func run():
 	var targets: Array[Being] = targets_param.targets
 	

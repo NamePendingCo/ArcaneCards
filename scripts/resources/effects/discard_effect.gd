@@ -1,5 +1,9 @@
 class_name DiscardEffect extends CardEffect
 
+'''
+Discards the selected card. Value N/A
+'''
+
 func run():
 	var targets: Array[Card] = targets_param.targets
 	

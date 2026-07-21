@@ -1,12 +1,12 @@
 @abstract
 class_name CardStack extends CasterElementBase
 
-#An array of card_ids. The top of the stack is the least index
-var _stack : Array[String] #TYPE TBD
-
 var size: int:
 	get: return _stack.size()
 	set(val): pass
+
+#An array of card_ids. The top of the stack is the least index
+var _stack : Array[String] #TYPE TBD
 
 #================================================
 # Public methods

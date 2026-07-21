@@ -1,11 +1,19 @@
 class_name ToolFuncs extends Node
 
-#Collection of functions that are generally useful
+'''
+Collection of functions that are generally useful
+'''
 
 const INTERSECTION = "intersection"
 const DIFFERENCE = "difference"
 const UNION = "union"
 
+'''
+Runs all three comparisons at once, intersection, difference, and union
+as doing so basically requires the same amount of computing power.
+Can unprivate if necessary later to be able to allow for getting multiple
+of the operation results at once.
+'''
 static func _arr_comp_all(arr1, arr2):
 	var arr2_dict = {}
 	for val in arr2:

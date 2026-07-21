@@ -22,6 +22,9 @@ func disconnect_all_triggers():
 		if conn.callable == trigger:
 			conn.signal.disconnect(conn.callable)
 
+'''
+OVERRIDES
+'''
 func _deactivate_event():
 	super()
 	disconnect_all_triggers()

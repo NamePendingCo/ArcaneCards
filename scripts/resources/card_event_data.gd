@@ -1,6 +1,11 @@
 @tool
 class_name CardEventData extends EventData
 
+'''
+Wrapper for a collection of events and params, specifically for
+a card.
+'''
+
 #fixed keys for event dict
 const ACTIVATION_KEY = "onActivation"
 const CAST_KEY = "onCast"

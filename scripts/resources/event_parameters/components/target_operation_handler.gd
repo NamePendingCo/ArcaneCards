@@ -29,11 +29,13 @@ var param_b_name: String
 
 var range: Array = []
 
+#The first list of targets to be tracking
 var targets_arr_a: Array = []:
 	set(val):
 		targets_arr_a = val
 		update_range_output()
 
+#The second list of targets to be tracking
 var targets_arr_b: Array = []:
 	set(val):
 		targets_arr_b = val

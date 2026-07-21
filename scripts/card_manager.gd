@@ -19,6 +19,7 @@ Params:
 	- data: the card data to use for the card object
 Return:
 	- new_card: the newly created card object
+	- start_pos: the global location for the card
 '''
 func instantiate_card(data: CardData, start_pos: Vector3 = position):
 	var new_card: Card = card_scene.instantiate()
@@ -33,6 +34,14 @@ func instantiate_card(data: CardData, start_pos: Vector3 = position):
 	created_card.emit(new_card)
 	return new_card
 
+'''
+Takes a card id and returns a newly created card.
+Params:
+	- card_id: a card id to look up in the table.
+	- start_pos: the global location for the card
+Return:
+	- new_card: the newly created card object
+'''
 func instantiate_card_from_id(card_id: String, start_pos: Vector3 = position):
 	var card_data = CardDatabase.get_card_data(card_id)
 	return instantiate_card(card_data, start_pos)

@@ -350,5 +350,9 @@ func _process_event_stack():
 		if _process_triggered_events(event):
 			event.run()
 
+'''
+Adds an event to the queue so it can be triggered in order.
+Gets connected to an event's trigger when it is activated.
+'''
 func _queue_event(event: Event):
 	to_stack_list.append(event)

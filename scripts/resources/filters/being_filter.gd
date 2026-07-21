@@ -10,7 +10,7 @@ var max_health: int = Constants.INT_MAX:
 
 #TODO
 func check_being(being: Being) -> bool:
-	if (being.health < min_health) or (being.health > max_health):
+	if not ((being.health > min_health) or (being.health < max_health)):
 		return false
 	
 	return true

@@ -58,3 +58,5 @@ func _validate_property(property: Dictionary) -> void:
 		#target numbers only shown if is chosen is relevant
 		_set_property_visibility(property,\
 		(is_chosen  and (range_option & EventEnums.BeingRangeOption.ALL_OTHERS) != 0))
+	elif property.name == "persistent":
+		_set_property_visibility(property, true)

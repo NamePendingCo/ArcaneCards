@@ -3,6 +3,10 @@ class_name CardData
 
 extends Resource
 
+'''
+Wrapper for all data for a specific card type.
+'''
+
 @export var card_id: String # Unique ID for database stuff
 
 @export var cardName: String

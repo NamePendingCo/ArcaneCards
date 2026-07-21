@@ -114,6 +114,9 @@ func set_casting_cards(passed_cards: Array[Card]):
 		if card != null:
 			add_card_to_well(card, index)
 
+'''
+Moves a card from one slot to another.
+'''
 func _move_between_slots(slot_from: CardSlot, slot_to: CardSlot):
 	var card = slot_from.detach_card()
 	

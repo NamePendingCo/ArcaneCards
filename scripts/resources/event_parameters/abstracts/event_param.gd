@@ -12,6 +12,9 @@ var is_chosen: bool = true:
 var _being_parent: Being = null
 var _card_parent: Card = null
 
+'''
+Asks the actor to make the choices for its parameters.
+'''
 func request_selection():
 	if is_chosen:
 		selection_requested.emit(self)

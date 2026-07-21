@@ -1,5 +1,9 @@
 class_name CardDict extends Node
 
+'''
+Stores the dictionary of all card data to be easily accessed.
+'''
+
 var fail_card_data: CardData
 
 var card_db: Dictionary[String, CardData] = {}

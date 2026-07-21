@@ -1,6 +1,11 @@
 @tool
 class_name EventData extends Resource
 
+'''
+Wrapper for a collection of events and parameters. Useful for
+storing on a player.
+'''
+
 var debug_log: bool = false
 
 #@export_subgroup("Events and Effects")
@@ -11,6 +16,12 @@ var debug_log: bool = false
 @export
 var events: Dictionary[String, Event] = {}
 
+'''
+Sets up the collection of the events
+Params:
+	- actor: the actor who controls the events
+	- card: optional param. If present, card the event is associated with
+'''
 func setup_events(actor: Actor, card: Card = null):
 	for param_name in parameters:
 		if debug_log: print("Setting up parameter: %s" % param_name)
@@ -30,6 +41,9 @@ func setup_events(actor: Actor, card: Card = null):
 # Private methods
 #================================================
 
+'''
+Sets up the parameters to be ready for the game.
+'''
 func _set_up_parameter(parameter: EventParam, actor: Actor, card: Card = null):
 	parameter._being_parent = actor
 	parameter._card_parent = card
@@ -75,6 +89,11 @@ func _prepare_event_params(event: Event, event_name: String):
 		"Event %s wants to choose parameter %s, but it is not chosen" % [event_name, param_name])
 		
 		event.choice_params.append(parameters[param_name])
+		
+		#Auto set initial value for param if it is not chosen
+		if not param.is_chosen:
+			param.update_range()
+			
 	
 	for effect in event.effects:
 		if effect is TargetedEffect:

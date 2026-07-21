@@ -1,5 +1,9 @@
 class_name DamageEffect extends BeingEffect
 
+'''
+Has all targets take damage equal to the value.
+'''
+
 func run():
 	var targets: Array[Being] = targets_param.targets
 	

@@ -51,15 +51,25 @@ func disable():
 @abstract
 func _get_targets_range()
 
+'''
+Designed to be overriden.
+'''
 func _set_targets_range(arr: Array[Variant]):
 	updated_range.emit() #notify of update
 
 @abstract
 func _get_targets()
 
+'''
+Designed to be overriden.
+'''
 func _set_targets(arr: Array[Variant]):
 	updated_targets.emit() #notify of update
 
+'''
+Removes an item from both lists. Mainly useful to connect with object's
+self destruct signal to remove references to it.
+'''
 func _remove_from_lists(item: Variant):
 	_targets_range.erase(item)
 	_targets.erase(item)

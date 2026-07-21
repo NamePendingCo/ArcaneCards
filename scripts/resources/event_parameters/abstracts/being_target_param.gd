@@ -8,16 +8,20 @@ var targets_range: Array[Being]:
 var targets: Array[Being]:
 	get = _get_targets, set = _set_targets
 
+#OVERRIDES
 func _get_targets():
 	return targets
 
+#OVERRIDES
 func _get_targets_range():
 	return targets_range
 
+#OVERRIDES
 func _set_targets(arr: Array[Being]):
 	targets.assign(arr)
 	super(arr)
 
+#OVERRIDES
 func _set_targets_range(arr: Array[Being]):
 	targets_range.assign(arr)
 	super(arr)

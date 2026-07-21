@@ -1,5 +1,9 @@
 class_name TestingBattleUI extends CanvasLayer
 
+'''
+Test UI used for running battle simulation. Not at all a final product.
+'''
+
 @onready var start_button: Button = $StartButton
 
 @onready var selection_wrapper: GridContainer = $Selection
@@ -7,15 +11,18 @@ class_name TestingBattleUI extends CanvasLayer
 @onready var selection_prompt: Label = $Selection/SelectionPrompt
 @onready var enter_button: Button = $Selection/Submit
 
+# the battle manager for the game
 @export var battle_manager: BattleManager
 
+# The current player whose stuff is being interacted with
 @export var acting_player: PlayerCaster:
 	set = set_acting_player
 
+# The current active decision the UI is processing
 var active_decision: CasterDecision:
 	set = _set_active_decision
 
-#List of every decision by each player
+# List of every decision by each player
 var _decisions: Dictionary[PlayerCaster, Array]
 
 # Called when the node enters the scene tree for the first time.
@@ -54,6 +61,8 @@ func request_decision(caster: Caster, options: Array[String],
 '''
 Set whether or not the options list should be visible, allowing the player
 to make selections.
+Params:
+- is_decision_time: whether or not it is time to make a decision
 '''
 func set_decision_mode(is_decision_time: bool):
 	if selection_wrapper != null:
@@ -61,12 +70,16 @@ func set_decision_mode(is_decision_time: bool):
 
 '''
 Sets the current acting player for the UI.
+- caster: the player who should be the foundation for the UI
 '''
 func set_acting_player(caster: PlayerCaster):
 	acting_player = caster
 	_decisions.get_or_add(acting_player, [])
 	get_next_decision()
 
+'''
+Get the next decision on the queue list relative to the active player.
+'''
 func get_next_decision():
 	if _decisions[acting_player].size() > 0:
 		set_decision_mode(true)
@@ -98,6 +111,9 @@ func submit_decision():
 # Private methods
 #================================================
 
+'''
+Starts the game. Triggered by button press.
+'''
 func _start_game():
 	if battle_manager != null:
 		start_button.hide()
@@ -105,6 +121,9 @@ func _start_game():
 	else:
 		print("No battle manager found.")
 
+'''
+Sets the active decision being made. Is a setter
+'''
 func _set_active_decision(decision: CasterDecision):
 	if active_decision != null:
 		options_list.item_updated.disconnect(active_decision._handle_toggled_selection)
@@ -119,6 +138,11 @@ func _set_active_decision(decision: CasterDecision):
 	
 	_set_item_list_items(decision)
 
+'''
+Sets the list of items to choose between.
+Param:
+	- decision: the decision from which options should be gotten
+'''
 func _set_item_list_items(decision: CasterDecision):
 	options_list.clean_up()
 	options_list.max_selections = decision.max_selections
@@ -164,15 +188,24 @@ class CasterDecision:
 	func make_decision():
 		decision_made.emit(options, selections)
 	
+	'''
+	Signal handler. Processes when a choice is toggled.
+	'''
 	func _handle_toggled_selection(choice: int, selected: bool):
 		if selected:
 			_add_selection(choice)
 		else:
 			_remove_selection(choice)
 	
+	'''
+	Adds a choice to the list of selections
+	'''
 	func _add_selection(choice: int):
 		if choice not in selections:
 			selections.append(choice)
 	
+	'''
+	Removes a selection from the list of choices
+	'''
 	func _remove_selection(choice: int):
 		selections.erase(choice)

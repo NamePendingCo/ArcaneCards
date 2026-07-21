@@ -1,5 +1,14 @@
 class_name AwaitGroup extends RefCounted
 
+'''
+A utility class that allows for running multiple signals
+or multiple functions at once. 
+
+Might eventually split this into two, one for signals and one for functions,
+so that it can use the _init() constructor to define the things to wait on.
+But not for now.
+'''
+
 signal _all_completed
 
 var _counter: int = 0
