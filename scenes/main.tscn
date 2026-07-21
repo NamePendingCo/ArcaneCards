@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://bwvqyh847tf4k"]
+[gd_scene format=3 uid="uid://cdead6mxekkfm"]
 
 [ext_resource type="Texture2D" uid="uid://f54njeqyrcy5" path="res://assets/TEMP_table_texture.jpg" id="2_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://bf5hb8yrkmoyv" path="res://scenes/Caster.tscn" id="2_rvslj"]
