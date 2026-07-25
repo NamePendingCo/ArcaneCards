@@ -32,6 +32,10 @@ func make_casting_phase_decisions():
 			else:
 				return my_casting_well.get_cards_slot(card_a) < \
 				my_casting_well.get_cards_slot(card_b)
+		elif (card_b.location == Card.Location.HAND) and\
+		 (card_a.location == Card.Location.HAND):
+			return my_hand.hand.find(card_a) < my_hand.hand.find(card_b)
+			
 		return true
 	
 	#Sort the list such that cards in the casting well are listed first
