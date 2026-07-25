@@ -5,8 +5,8 @@ var min_health: int = 0:
 	set(val): max(val, 0)
 
 @export
-var max_health: int = Constants.INT_MAX:
-	set(val): clamp(val, min_health, Constants.INT_MAX)
+var max_health: int = INT32_MAX:
+	set(val): clamp(val, min_health, INT32_MAX)
 
 #TODO
 func check_being(being: Being) -> bool:

@@ -13,7 +13,7 @@ var max_selections: int
 func _ready():
 	item_activated.connect(_on_item_activated)
 	ui_selected_items.item_activated.connect(_unselect_via_selection_list)
-	max_selections = Constants.INT_MAX
+	max_selections = INT32_MIN
 
 func clean_up():
 	clear()

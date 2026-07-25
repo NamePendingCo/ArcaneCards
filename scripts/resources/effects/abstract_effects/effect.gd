@@ -26,8 +26,8 @@ var _min_val: int = 0:
 
 #Maximum allowed value for the effect
 #also used for ranges when making comparisons
-var _max_val: int = Constants.INT_MAX:
-	set(new_val): _val = max(_min_val, Constants.INT_MAX)
+var _max_val: int = INT32_MAX:
+	set(new_val): _val = max(_min_val, INT32_MAX)
 
 #================================================
 # Public methods

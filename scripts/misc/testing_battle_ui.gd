@@ -45,7 +45,7 @@ Returns:
 	- the decision's decision_made signal
 '''
 func request_decision(caster: Caster, options: Array[String],
-	min_selections: int = 1, max_selections: int = Constants.INT_MAX,
+	min_selections: int = 1, max_selections: int = INT32_MAX,
 	prompt: String = "", preselected: Array[int] = []) -> Signal:
 	var new_decision: CasterDecision = CasterDecision.new(
 		caster, options, min_selections, max_selections, prompt, preselected)
@@ -170,7 +170,7 @@ class CasterDecision:
 	var prompt: String
 	
 	func _init(deciding_caster: Caster, options_list: Array[String], 
-		min_choices: int = 1, max_choices: int = Constants.INT_MAX,
+		min_choices: int = 1, max_choices: int = INT32_MAX,
 		prompt_input: String = "", preselected: Array[int] = []):
 		caster = deciding_caster
 		options = options_list
