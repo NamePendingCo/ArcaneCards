@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://d2n5shcpvrktb"]
 
 [ext_resource type="Script" uid="uid://x0i1uyfprpdj" path="res://scripts/resources/card_data.gd" id="1_vcjca"]
-[ext_resource type="Script" uid="uid://c3lsne5qhwrmf" path="res://scripts/resources/effects/abstract_effects/effect.gd" id="2_0m7pk"]
+[ext_resource type="Script" uid="uid://c3lsne5qhwrmf" path="res://scripts/resources/effects/abstract_effects/base_effect/effect.gd" id="2_0m7pk"]
 [ext_resource type="Script" uid="uid://bm0rejlfkuuks" path="res://scripts/resources/event_parameters/abstracts/event_param.gd" id="2_dj1eg"]
 [ext_resource type="Script" uid="uid://bcy762hcj7wa7" path="res://scripts/resources/card_event_data.gd" id="3_atrgt"]
 [ext_resource type="Script" uid="uid://bwnp248xicgpu" path="res://scripts/resources/effects/damage_effect.gd" id="3_foe1e"]

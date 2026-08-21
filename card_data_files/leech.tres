@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dedl4t18oxaef" path="res://scripts/resources/events/abstracts/event.gd" id="1_yihlo"]
 [ext_resource type="Script" uid="uid://x0i1uyfprpdj" path="res://scripts/resources/card_data.gd" id="1_ywhuq"]
-[ext_resource type="Script" uid="uid://c3lsne5qhwrmf" path="res://scripts/resources/effects/abstract_effects/effect.gd" id="2_vuwc2"]
+[ext_resource type="Script" uid="uid://c3lsne5qhwrmf" path="res://scripts/resources/effects/abstract_effects/base_effect/effect.gd" id="2_vuwc2"]
 [ext_resource type="Script" uid="uid://bwnp248xicgpu" path="res://scripts/resources/effects/damage_effect.gd" id="3_1b3e2"]
 [ext_resource type="Script" uid="uid://66qrd6hx72oi" path="res://scripts/resources/events/unsignaled_event.gd" id="3_1xhvr"]
 [ext_resource type="Script" uid="uid://bm0rejlfkuuks" path="res://scripts/resources/event_parameters/abstracts/event_param.gd" id="4_8c8tv"]

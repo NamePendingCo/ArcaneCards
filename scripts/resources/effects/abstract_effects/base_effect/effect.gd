@@ -1,12 +1,9 @@
 @abstract
-class_name Effect extends Resource
+class_name Effect extends RefCounted
 
 #signal effect_running #Notify when this effect is about to run
 
 const EffectID = EffectsEnum.EffectID
-
-@export var _val: int:
-	set(new_val): _val = clamp(new_val, _min_val, _max_val)
 
 #The internal id name of the effect type. Effectively a constant
 var effect_id: EffectID:
@@ -19,6 +16,9 @@ var modifiers: Array[EffectOperator]
 # Private vars
 #================================================
 
+var _val: int:
+	set(new_val): _val = clamp(new_val, _min_val, _max_val)
+
 #Minimum allowed value for the effect
 #also used for ranges when making comparisons
 var _min_val: int = 0:
@@ -28,6 +28,15 @@ var _min_val: int = 0:
 #also used for ranges when making comparisons
 var _max_val: int = INT32_MAX:
 	set(new_val): _val = max(_min_val, INT32_MAX)
+
+#================================================
+# General methods
+#================================================
+
+func _init(val: int, min_val: int = 0, max_val: int = INT32_MAX):
+	_min_val = min_val
+	_max_val = max_val
+	_val = val
 
 #================================================
 # Public methods
