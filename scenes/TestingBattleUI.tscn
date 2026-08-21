@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://qn8wmasljdgo"]
+
+[ext_resource type="Script" uid="uid://bwbvv0qi2a38y" path="res://scripts/misc/testing_battle_ui.gd" id="1_aer3r"]
+[ext_resource type="Script" uid="uid://ccd27f4bgg20i" path="res://scripts/misc/ui_options_list.gd" id="2_vieom"]
+
+[node name="TestingBattleUI" type="CanvasLayer" unique_id=2088716599]
+follow_viewport_enabled = true
+script = ExtResource("1_aer3r")
+
+[node name="StartButton" type="Button" parent="." unique_id=956354670]
+offset_left = 960.0
+offset_top = 106.0
+offset_right = 1056.0
+offset_bottom = 137.0
+text = "Start Game"
+
+[node name="Selection" type="GridContainer" parent="." unique_id=1669406425]
+visible = false
+layout_direction = 2
+offset_top = 121.0
+offset_right = 300.0
+offset_bottom = 421.0
+columns = 2
+
+[node name="SelectionPrompt" type="Label" parent="Selection" unique_id=899136596]
+layout_mode = 2
+text = "Default Text"
+
+[node name="Selected" type="Label" parent="Selection" unique_id=96472172]
+layout_mode = 2
+text = "Selected:"
+
+[node name="OptionsList" type="ItemList" parent="Selection" unique_id=1779650681]
+custom_minimum_size = Vector2(200, 275)
+layout_mode = 2
+script = ExtResource("2_vieom")
+
+[node name="SelectedItems" type="ItemList" parent="Selection" unique_id=1552651637]
+custom_minimum_size = Vector2(100, 275)
+layout_mode = 2
+allow_reselect = true
+
+[node name="Submit" type="Button" parent="Selection" unique_id=1226376679]
+layout_mode = 2
+text = "Enter"

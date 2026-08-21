@@ -11,8 +11,18 @@ config_version=5
 [application]
 
 config/name="ArcaneCombat"
+run/main_scene="uid://bwvqyh847tf4k"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+CardDatabase="*uid://caon2cryk78lo"
+Constants="*uid://tfl8pj0goeaw"
+
+[display]
+
+window/size/mode=3
 
 [dotnet]
 

@@ -1,0 +1,62 @@
+@tool
+class_name BeingTargetFilterParam extends BeingTargetParam
+
+signal requested_beings_list
+
+#The range of applicable targets
+@export
+var range_option: EventEnums.BeingRangeOption:
+	set(val): 
+		range_option = val
+		notify_property_list_changed()
+
+@export
+var being_filter: BeingFilter
+
+'''
+When passed a list of beings, updates from these
+'''
+func update_range_from_list(all_beings: Array[Being]):
+	targets_range.clear()
+	
+	if _being_parent != null:
+		match range_option:
+			EventEnums.BeingRangeOption.SELF: all_beings = [_being_parent]
+			EventEnums.BeingRangeOption.ALL_OTHERS: all_beings.erase(_being_parent)
+	
+	targets_range.append_array(all_beings.filter(_check_being))
+
+'''
+Sends a signal which should tell the actor to update its range using
+update_range_from_list
+'''
+func update_range():
+	requested_beings_list.emit(self)
+
+'''
+Filter function used to see if a specific being matches the parameter filters.
+'''
+func _check_being(being: Being) -> bool:
+	if (range_option ^ EventEnums.BeingRangeOption.SELF == 0) \
+	and (being != _being_parent):
+		return false
+	elif (range_option ^ EventEnums.BeingRangeOption.ALL_OTHERS == 0) \
+	and (being == _being_parent):
+		return false
+	if being_filter != null:
+		return being_filter.check_being(being)
+	else:
+		return true
+
+func _validate_property(property: Dictionary) -> void:
+	if property.name == "is_chosen":
+		# Chosen only shown if range isn't null or self
+		_set_property_visibility(property,\
+		(range_option & EventEnums.BeingRangeOption.ALL_OTHERS) != 0)
+	elif property.name == "num_targets_min" \
+	or property.name == "num_targets_max":
+		#target numbers only shown if is chosen is relevant
+		_set_property_visibility(property,\
+		(is_chosen  and (range_option & EventEnums.BeingRangeOption.ALL_OTHERS) != 0))
+	elif property.name == "persistent":
+		_set_property_visibility(property, true)
