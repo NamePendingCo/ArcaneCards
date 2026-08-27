@@ -14,7 +14,7 @@ var debug_log: bool = false
 
 #dictionary of events on this card
 @export
-var events: Dictionary[String, Event] = {}
+var events: Dictionary[String, EventResource] = {}
 
 '''
 Sets up the collection of the events
@@ -88,7 +88,7 @@ func _prepare_event_params(event: Event, event_name: String):
 		assert(param.is_chosen, \
 		"Event %s wants to choose parameter %s, but it is not chosen" % [event_name, param_name])
 		
-		event.choice_params.append(parameters[param_name])
+		event.params_to_update.append(parameters[param_name])
 		
 		#Auto set initial value for param if it is not chosen
 		if not param.is_chosen:
