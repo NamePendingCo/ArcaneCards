@@ -33,6 +33,12 @@ var _max_val: int = INT32_MAX:
 # Public methods
 #================================================
 
+@abstract
+func build_effect(params: Dictionary[String, EventParam]) -> Effect
+
+@abstract
+func get_effect_parameters() -> Dictionary[String, String];
+
 #================================================
 # Private methods
 #================================================
