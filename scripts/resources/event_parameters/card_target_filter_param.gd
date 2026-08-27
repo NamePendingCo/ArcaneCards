@@ -25,27 +25,24 @@ var exclude_self: bool = true
 @export
 var card_filter: CardFilter
 
-'''
-When passed a list of beings, updates from these
-'''
-func update_range_from_list(all_cards: Array[Card]):
-	targets_range.clear()
-	targets_range.append_array(all_cards.filter(_check_card))
 
 '''
 Sends a signal which should tell the actor to update its range using
 update_range_from_list
 '''
 func update_range():
+	var all_cards = get_tree().get_nodes_in_group(Constants.GROUP_CARD) as Array[Card]
+	
+	targets_range = all_cards.filter(_check_card)
+	
 	if _being_range != null:
 		_being_range.update_range()
-	requested_cards_list.emit(self)
 
 '''
 Check if a card is acceptable and meets parameters.
 '''
 func _check_card(card: Card) -> bool:
-	if exclude_self and (card == _card_parent):
+	if exclude_self and (card == _parent_card):
 		return false
 	elif card.card_caster not in _being_range.targets_range:
 		return false

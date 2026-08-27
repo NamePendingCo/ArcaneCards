@@ -8,17 +8,6 @@ such as weather effects.
 '''
 
 '''
-Used to allow BeingTargetFilterParams to access the node tree to get group list.
-Signal call only.
-'''
-func _pass_all_beings_to_param(param: BeingTargetFilterParam):
-	var list = get_tree().get_nodes_in_group(Constants.GROUP_BEING)
-	var being_list: Array[Being] = []
-	for item in list:
-		being_list.append(item as Being)
-	param.update_range_from_list(being_list)
-
-'''
 Used to allow CardTargetFilterParams to access the node tree to get group list.
 Signal call only.
 '''

@@ -14,39 +14,33 @@ var _colors: int:
 	set(val):
 		_colors = val
 		colors = EventEnums.flagIntToEnum(val)
-var colors: Array[Enums.SpellColor]
+var colors: Array[Enums.SpellColor] = []
 
 #Subdomains to filter, set with flags
 var _subdomains: int:
 	set(val):
 		_subdomains = val
 		subdomains = EventEnums.flagIntToEnum(val, Enums.Subdomain)
-var subdomains: Array[Enums.Subdomain]
+var subdomains: Array[Enums.Subdomain] = []
 
 #Types to filter, set with flags
 var _types: int:
 	set(val):
 		_types = val
 		types = EventEnums.flagIntToEnum(val)
-var types: Array[Enums.CardType]
+var types: Array[Enums.CardType] = []
 
 #Tiers to filter, set with flags
 var _tiers: int:
 	set(val):
 		_tiers = val
 		tiers = EventEnums.flagIntToEnum(val)
-var tiers: Array[int]
+var tiers: Array[int] = []
 
 #could do activation cost and upkeep but for now we don't
 #need it so like. Why bother.
 
 #TODO: Add flags
-
-func _ready():
-	colors = []
-	subdomains = []
-	types = []
-	tiers = []
 
 #================================================
 # Public functions

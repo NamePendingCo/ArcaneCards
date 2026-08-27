@@ -1,7 +1,5 @@
 @abstract
-class_name EventParam extends Resource
-
-signal selection_requested #sent when asking actor to make a choice
+class_name EventParam extends Node
 
 #Whether a selection is made by the player
 var is_chosen: bool = true:
@@ -9,15 +7,8 @@ var is_chosen: bool = true:
 		is_chosen = val
 		notify_property_list_changed()
 
-var _being_parent: Being = null
-var _card_parent: Card = null
-
-'''
-Asks the actor to make the choices for its parameters.
-'''
-func request_selection():
-	if is_chosen:
-		selection_requested.emit(self)
+var _actor: Actor = null
+var _parent_card: Card = null
 
 '''
 Disables the parameter to ensure no further use.

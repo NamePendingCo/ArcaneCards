@@ -1,8 +1,6 @@
 @tool
 class_name BeingTargetFilterParam extends BeingTargetParam
 
-signal requested_beings_list
-
 #The range of applicable targets
 @export
 var range_option: EventEnums.BeingRangeOption:
@@ -14,34 +12,27 @@ var range_option: EventEnums.BeingRangeOption:
 var being_filter: BeingFilter
 
 '''
-When passed a list of beings, updates from these
-'''
-func update_range_from_list(all_beings: Array[Being]):
-	targets_range.clear()
-	
-	if _being_parent != null:
-		match range_option:
-			EventEnums.BeingRangeOption.SELF: all_beings = [_being_parent]
-			EventEnums.BeingRangeOption.ALL_OTHERS: all_beings.erase(_being_parent)
-	
-	targets_range.append_array(all_beings.filter(_check_being))
-
-'''
-Sends a signal which should tell the actor to update its range using
-update_range_from_list
+Gets the list of targets
 '''
 func update_range():
-	requested_beings_list.emit(self)
+	var all_beings: Array[Being] = get_tree().get_nodes_in_group(Constants.GROUP_BEING).map(func(a): a as Being)
+	
+	if _actor != null and is_instance_of(_actor, Being):
+		match range_option:
+			EventEnums.BeingRangeOption.SELF: all_beings = [_actor]
+			EventEnums.BeingRangeOption.ALL_OTHERS: all_beings.erase(_actor)
+	
+	targets_range = all_beings.filter(_check_being)
 
 '''
 Filter function used to see if a specific being matches the parameter filters.
 '''
 func _check_being(being: Being) -> bool:
 	if (range_option ^ EventEnums.BeingRangeOption.SELF == 0) \
-	and (being != _being_parent):
+	and (being != _actor):
 		return false
 	elif (range_option ^ EventEnums.BeingRangeOption.ALL_OTHERS == 0) \
-	and (being == _being_parent):
+	and (being == _actor):
 		return false
 	if being_filter != null:
 		return being_filter.check_being(being)
