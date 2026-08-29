@@ -1,3 +1,4 @@
+@tool
 @abstract
 class_name CardTargetResource extends TargetResource
 

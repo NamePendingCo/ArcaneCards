@@ -1,5 +1,4 @@
-@tool
-class_name TargetOperationHandler extends Resource
+class_name TargetOperationHandler extends RefCounted
 
 '''
 Perform an operation between one or
