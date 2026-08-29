@@ -13,17 +13,23 @@ var _targets: Array[Variant]:
 	get = _get_targets, set = _set_targets
 
 #number of targets to select from, only shown if actor chooses target
-var num_targets_min: int = 1:
+var num_targets_min: int:
 	set(val): 
 		num_targets_min = max(val, 0)
 		if num_targets_max < num_targets_min: num_targets_max = val
 
 #maximum number of targets to choose, if its a range
-var num_targets_max: int = 1:
+var num_targets_max: int:
 	set(val): num_targets_max = max(val, num_targets_min)
 
 #Whether or not to automatically refresh the target selection
-var persistent: bool = false
+var persistent: bool
+
+func _init(chosen: bool, targets_min: int=1, targets_max: int=1, persist=false):
+	super(chosen)
+	num_targets_min = targets_min
+	num_targets_max = targets_max
+	persistent = persist
 
 #================================================
 # Public methods
