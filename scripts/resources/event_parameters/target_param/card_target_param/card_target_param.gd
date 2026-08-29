@@ -32,6 +32,10 @@ func _set_targets_range(arr: Array[Card]):
 		_register_card(card)
 	super(arr)
 
+#================================================
+# Private methods
+#================================================
+
 '''
 Registers if a card was ever in the range for this listener. This way it
 can delete the reference to the card if the card object is deleted.
