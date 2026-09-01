@@ -25,7 +25,7 @@ const STANDARD_DRAW_KEY = "standard_draw"
 var mana: int:
 	set(val): mana = val; mana_updated.emit(mana)
 
-var _casting_selection: CardTargetFilterParam
+var _casting_selection: CardTargetFilterResource.CardTargetFilterParam
 
 func _ready():
 	super()
@@ -62,7 +62,7 @@ func on_game_start():
 	
 	#Activate all basic event
 	for event_name in basic_events.events:
-		basic_events.events[event_name].event_state = Event.EventState.ACTIVE
+		basic_events.events[event_name].event_state = EventLauncher.EventLauncherState.ACTIVE
 	
 	#Do standard draw
 	basic_events.events[INITIAL_DRAW_KEY].trigger()
@@ -205,22 +205,20 @@ Creates a range that covers all the cards owned by the player. Used for
 the casting selection.
 '''
 func _create_casting_selection_range():
-	var self_range = BeingTargetFilterParam.new()
+	var self_range = BeingTargetFilterResource.BeingTargetFilterParam.new(
+		EventEnums.BeingRangeOption.SELF, null, false)
 	self_range.range_option = EventEnums.BeingRangeOption.SELF
 	self_range._beingparent = self
-	self_range.requested_beings_list.connect(_pass_all_beings_to_param)
 	
-	_casting_selection = CardTargetFilterParam.new()
+	_casting_selection = CardTargetFilterResource.CardTargetFilterParam.new(
+		EventEnums.CardRangeOption.HAND + EventEnums.CardRangeOption.CASTING_WELL,
+		null, false, 0, my_casting_well.num_slots)
+	#Max casting should always match number of slots
+	
 	_casting_selection._being_range = self_range
 	_casting_selection.being_parent = self
-	_casting_selection.location_range = [Card.Location.HAND, Card.Location.CASTING_WELL]
 	
-	_casting_selection.num_targets_min = 0
-	#Max casting should always match number of slots
-	_casting_selection.num_targets_max = my_casting_well.num_slots
 	my_casting_well.num_slots_updated.connect(func(num): _casting_selection.num_targets_max = num)
-	
-	_casting_selection.requested_cards_list.connect(_pass_all_cards_to_param)
 
 '''
 Only ever called by signal. Takes in a request from a card to have its
