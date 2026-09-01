@@ -60,10 +60,10 @@ class BeingTargetFilterParam extends BeingTargetParam:
 	func update_range():
 		var all_beings: Array[Being] = get_tree().get_nodes_in_group(Constants.GROUP_BEING).map(func(a): a as Being)
 		
-		if _actor != null and is_instance_of(_actor, Being):
+		if actor != null and is_instance_of(actor, Being):
 			match range_option:
-				EventEnums.BeingRangeOption.SELF: all_beings = [_actor]
-				EventEnums.BeingRangeOption.ALL_OTHERS: all_beings.erase(_actor)
+				EventEnums.BeingRangeOption.SELF: all_beings = [actor]
+				EventEnums.BeingRangeOption.ALL_OTHERS: all_beings.erase(actor)
 		
 		targets_range = all_beings.filter(_check_being)
 
@@ -76,10 +76,10 @@ class BeingTargetFilterParam extends BeingTargetParam:
 	'''
 	func _check_being(being: Being) -> bool:
 		if (range_option ^ EventEnums.BeingRangeOption.SELF == 0) \
-		and (being != _actor):
+		and (being != actor):
 			return false
 		elif (range_option ^ EventEnums.BeingRangeOption.ALL_OTHERS == 0) \
-		and (being == _actor):
+		and (being == actor):
 			return false
 		if being_filter != null:
 			return being_filter.check_being(being)

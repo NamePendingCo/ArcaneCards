@@ -1,56 +1,28 @@
 [gd_resource type="Resource" script_class="EventData" format=3 uid="uid://bv1sq3maly5k8"]
 
-[ext_resource type="Script" uid="uid://dedl4t18oxaef" path="res://scripts/resources/events/abstracts/event.gd" id="1_fbxjc"]
-[ext_resource type="Script" uid="uid://c3lsne5qhwrmf" path="res://scripts/resources/effects/abstract_effects/base_effect/effect.gd" id="2_civcs"]
-[ext_resource type="Script" uid="uid://bm0rejlfkuuks" path="res://scripts/resources/event_parameters/event_param.gd" id="2_synmn"]
+[ext_resource type="Script" uid="uid://d4jf752axi6qo" path="res://scripts/resources/events/abstracts/event_resource.gd" id="1_synmn"]
+[ext_resource type="Script" uid="uid://dyaefiaplcn8n" path="res://scripts/resources/event_parameters/event_param_resource.gd" id="2_6wpbj"]
 [ext_resource type="Script" uid="uid://cedy1d2wx5g2u" path="res://scripts/resources/event_data.gd" id="3_6wpbj"]
-[ext_resource type="Script" uid="uid://cfm3r7ie5r2jg" path="res://scripts/resources/effects/draw_effect.gd" id="3_nptt7"]
-[ext_resource type="Script" uid="uid://66qrd6hx72oi" path="res://scripts/resources/events/unsignaled_event.gd" id="4_e1o0t"]
-[ext_resource type="Script" uid="uid://frwkbynydm4o" path="res://scripts/resources/events/on_phase_event.gd" id="5_cf7b0"]
-[ext_resource type="Script" uid="uid://dlmu0f2of70ak" path="res://scripts/resources/filters/being_filter.gd" id="6_e1o0t"]
+[ext_resource type="Script" uid="uid://chu660wrfnmcc" path="res://scripts/resources/event_parameters/target_param/card_target_param/card_target_filter_param.gd" id="4_6wpbj"]
 [ext_resource type="Script" uid="uid://l66kvw1qw48c" path="res://scripts/resources/event_parameters/target_param/being_target_param/being_target_filter_param.gd" id="7_cf7b0"]
 
-[sub_resource type="Resource" id="Resource_cf7b0"]
-script = ExtResource("3_nptt7")
-target_param_name = "self"
-_val = 8
-metadata/_custom_type_script = "uid://cfm3r7ie5r2jg"
-
-[sub_resource type="Resource" id="Resource_mc0xd"]
-script = ExtResource("4_e1o0t")
-choice_param_names = Array[String](["self"])
-effects = Array[ExtResource("2_civcs")]([SubResource("Resource_cf7b0")])
-metadata/_custom_type_script = "uid://66qrd6hx72oi"
-
-[sub_resource type="Resource" id="Resource_txlty"]
-script = ExtResource("3_nptt7")
-target_param_name = "self"
-_val = 1
-metadata/_custom_type_script = "uid://cfm3r7ie5r2jg"
-
-[sub_resource type="Resource" id="Resource_7xirm"]
-script = ExtResource("5_cf7b0")
-choice_param_names = Array[String](["self"])
-effects = Array[ExtResource("2_civcs")]([SubResource("Resource_txlty")])
-metadata/_custom_type_script = "uid://frwkbynydm4o"
-
-[sub_resource type="Resource" id="Resource_cny5l"]
-script = ExtResource("6_e1o0t")
-metadata/_custom_type_script = "uid://dlmu0f2of70ak"
-
-[sub_resource type="Resource" id="Resource_f6oxu"]
+[sub_resource type="Resource" id="Resource_c01mt"]
 script = ExtResource("7_cf7b0")
 range_option = 1
-being_filter = SubResource("Resource_cny5l")
 metadata/_custom_type_script = "uid://l66kvw1qw48c"
+
+[sub_resource type="Resource" id="Resource_nxtc6"]
+script = ExtResource("4_6wpbj")
+being_range_name = "self"
+num_targets_min = 0
+num_targets_max = 3
+metadata/_custom_type_script = "uid://chu660wrfnmcc"
 
 [resource]
 script = ExtResource("3_6wpbj")
-parameters = Dictionary[String, ExtResource("2_synmn")]({
-"self": SubResource("Resource_f6oxu")
+parameters_list = Dictionary[String, ExtResource("2_6wpbj")]({
+"casting_selection": SubResource("Resource_nxtc6"),
+"self": SubResource("Resource_c01mt")
 })
-events = Dictionary[String, ExtResource("1_fbxjc")]({
-"initial_draw": SubResource("Resource_mc0xd"),
-"standard_draw": SubResource("Resource_7xirm")
-})
+events_list = Dictionary[String, ExtResource("1_synmn")]({})
 metadata/_custom_type_script = "uid://cedy1d2wx5g2u"
