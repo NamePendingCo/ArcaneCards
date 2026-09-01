@@ -37,3 +37,11 @@ func set_card(card: Card):
 		var param = parameters[key]
 		param.actor = card.card_caster
 		param.parent_card = card
+
+func activate_all():
+	for event_name in event_launchers:
+		event_launchers[event_name].launcher_state = EventLauncher.EventLauncherState.ACTIVE
+
+func deactivate_all():
+	for event_name in event_launchers:
+		event_launchers[event_name].launcher_state = EventLauncher.EventLauncherState.INACTIVE

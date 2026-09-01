@@ -1,7 +1,5 @@
 @abstract
-class_name Caster
-
-extends Being
+class_name Caster extends Being
 
 signal mana_updated(new_val)
 
@@ -9,8 +7,10 @@ signal paying_upkeep #send out before paying upkeep
 
 signal created_event(event)
 
+const CASTER_EVENTS_PATH = "res://system_events/caster_basic_events.tres"
 const INITIAL_DRAW_KEY = "initial_draw"
 const STANDARD_DRAW_KEY = "standard_draw"
+const CASTING_SELECTION_KEY = "casting_selection"
 
 #List of important children to track
 @onready var card_manager: CardManager = $CardManager
@@ -20,12 +20,11 @@ const STANDARD_DRAW_KEY = "standard_draw"
 @onready var my_casting_well: CastingWell = $CastingWell
 @onready var my_conc_circle: ConcentrationCircle = $ConcentrationCircle
 
-@onready var basic_events: EventData = load("res://system_events/caster_basic_events.tres").duplicate_deep()
-
 var mana: int:
 	set(val): mana = val; mana_updated.emit(mana)
 
-var _casting_selection: CardTargetFilterResource.CardTargetFilterParam
+var caster_events_wrapper: EventsWrapper
+var _casting_selection: CardTargetParam
 
 func _ready():
 	super()
@@ -36,9 +35,11 @@ func _ready():
 	#Register to set self as owner of card when card object is first made
 	card_manager.requested_card_owner.connect(_set_owner_of_card)
 	
-	_create_casting_selection_range()
+	#_create_casting_selection_range()
 	
-	basic_events.setup_events(self)
+	var events_resource: EventData = load(CASTER_EVENTS_PATH)
+	caster_events_wrapper = events_resource.get_new_events_wrapper(self)
+	_casting_selection = caster_events_wrapper.parameters[CASTING_SELECTION_KEY]
 	
 	health_updated.connect(func(val: int): _update_label("Health: %d" % val, $CasterCardImage/HpLabel))
 	mana_updated.connect(func(val: int): _update_label("Mana: %d" % val, $CasterCardImage/ManaLabel))
@@ -61,11 +62,10 @@ func on_game_start():
 	print("Running game start events for %s" % name)
 	
 	#Activate all basic event
-	for event_name in basic_events.events:
-		basic_events.events[event_name].event_state = EventLauncher.EventLauncherState.ACTIVE
+	caster_events_wrapper.activate_all()
 	
 	#Do standard draw
-	basic_events.events[INITIAL_DRAW_KEY].trigger()
+	caster_events_wrapper.event_launchers[INITIAL_DRAW_KEY].trigger()
 
 '''
 Notify all actors that caster is paying upkeep
@@ -199,26 +199,6 @@ I think it will be removed if we can rework events not to need their owners list
 '''
 func _set_owner_of_card(card: Card):
 	card.card_caster = self
-
-'''
-Creates a range that covers all the cards owned by the player. Used for
-the casting selection.
-'''
-func _create_casting_selection_range():
-	var self_range = BeingTargetFilterResource.BeingTargetFilterParam.new(
-		EventEnums.BeingRangeOption.SELF, null, false)
-	self_range.range_option = EventEnums.BeingRangeOption.SELF
-	self_range._beingparent = self
-	
-	_casting_selection = CardTargetFilterResource.CardTargetFilterParam.new(
-		EventEnums.CardRangeOption.HAND + EventEnums.CardRangeOption.CASTING_WELL,
-		null, false, 0, my_casting_well.num_slots)
-	#Max casting should always match number of slots
-	
-	_casting_selection._being_range = self_range
-	_casting_selection.being_parent = self
-	
-	my_casting_well.num_slots_updated.connect(func(num): _casting_selection.num_targets_max = num)
 
 '''
 Only ever called by signal. Takes in a request from a card to have its

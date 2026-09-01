@@ -1,6 +1,7 @@
 class_name Card extends Node3D
 
 const COLOR = Enums.SpellColor
+const BASIC_EVENTS: EventData = preload("res://system_events/basic_card_functions.tres")
 
 #Core signals to denote state change
 signal changed_location(new_state, old_state)
@@ -25,8 +26,12 @@ enum Location {
 	ATTACHED
 }
 
-var card_caster: Caster
 #THIS SHOULD BE USED *ONLY* TO COMPARE OWNERS. NEVER CALL THIS
+var card_caster: Caster:
+	set(val):
+		card_caster = val
+		basic_events.set_actor(val)
+		events_wrapper.set_actor(val)
 
 @export var card_data: CardData:
 	set(value):
@@ -95,7 +100,10 @@ var upkeep: int:
 		else:
 			spell_face.get_node("UpkeepCost").text = str(val)
 
-#A wrapper for all event and parameter info
+#A wrapper for all universal card events
+var basic_events: EventsWrapper
+
+#A wrapper for all event and parameter info unique to this card
 var events_wrapper: EventsWrapper = null:
 	set = _set_events
 
@@ -140,11 +148,12 @@ var _quicken_amount: int:
 func _ready():
 	#Add to the card group
 	add_to_group(Constants.GROUP_CARD)
-	
 	card_caster = null
 	location = Location.NULL
 	in_play = false
 	_reset_casting_data()
+	
+	basic_events = BASIC_EVENTS.get_new_events_wrapper(card_caster, self)
 
 #================================================
 # Public Methods
