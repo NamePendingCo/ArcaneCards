@@ -11,8 +11,13 @@ var effects: Array[EffectResource]
 
 '''
 Creates the event launcher for the event the resource defines
+Params:
+	- param_dict: the parameters to assign to the effects in the card
+	- actor: optional for setting the actor of the event
+	- card: optional for setting the card this event is for
 '''
-func set_up_event_launcher(param_dict: Dictionary[String, EventParam]) -> EventLauncher:
+func set_up_event_launcher(param_dict: Dictionary[String, EventParam], 
+actor: Actor = null, card: Card = null) -> EventLauncher:
 	
 	#Create the list of effects
 	var event_effects: Array[Effect] = []
@@ -28,6 +33,6 @@ func set_up_event_launcher(param_dict: Dictionary[String, EventParam]) -> EventL
 	#Create the actual event to duplicate
 	var event_template: Event = Event.new(event_effects, updating_params_list)
 	
-	var launcher = EventLauncher.new(event_template)
+	var launcher = EventLauncher.new(event_template, actor, card)
 	
 	return launcher

@@ -18,12 +18,14 @@ Sets up the collection of the events
 Params:
 	- actor: the actor who controls the events
 	- card: optional param. If present, card the event is associated with
+Returns:
+	An EventWrapper built around these events
 '''
-func setup_events(actor: Actor, card: Card = null):
+func get_new_events_wrapper(actor: Actor = null, card: Card = null) -> EventsWrapper:
 	
 	var params = _set_up_parameters(parameters_list, actor, card)
 		
-	var events = _set_up_event_launchers(events_list, params)
+	var events = _set_up_event_launchers(events_list, params, actor, card)
 	
 	return EventsWrapper.new(events, params)
 
@@ -44,11 +46,11 @@ actor: Actor, card: Card) -> Dictionary[String, EventParam]:
 	return params
 
 func _set_up_event_launchers(event_resources: Dictionary[String, EventResource], 
-params: Dictionary[String, EventParam]) -> Dictionary[String, EventLauncher]:
+params: Dictionary[String, EventParam], actor: Actor, card: Card) -> Dictionary[String, EventLauncher]:
 	
 	var launchers: Dictionary[String, EventLauncher] = {}
 	
 	for event_name in event_resources:
-		launchers[event_name] = event_resources[event_name].set_up_event_launcher(params)
+		launchers[event_name] = event_resources[event_name].set_up_event_launcher(params, actor, card)
 	
 	return launchers

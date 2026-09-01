@@ -207,12 +207,12 @@ the casting selection.
 func _create_casting_selection_range():
 	var self_range = BeingTargetFilterParam.new()
 	self_range.range_option = EventEnums.BeingRangeOption.SELF
-	self_range._being_parent = self
+	self_range._beingparent = self
 	self_range.requested_beings_list.connect(_pass_all_beings_to_param)
 	
 	_casting_selection = CardTargetFilterParam.new()
 	_casting_selection._being_range = self_range
-	_casting_selection._being_parent = self
+	_casting_selection.being_parent = self
 	_casting_selection.location_range = [Card.Location.HAND, Card.Location.CASTING_WELL]
 	
 	_casting_selection.num_targets_min = 0

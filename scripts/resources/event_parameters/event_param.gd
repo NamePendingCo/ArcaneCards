@@ -4,8 +4,8 @@ class_name EventParam extends Node
 #Whether a selection is made by the player
 var is_chosen: bool
 
-var _actor: Actor = null
-var _parent_card: Card = null
+var actor: Actor = null
+var parent_card: Card = null
 
 func _init(chosen: bool):
 	is_chosen = chosen

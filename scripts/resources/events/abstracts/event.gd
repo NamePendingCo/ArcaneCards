@@ -53,13 +53,11 @@ func prepare_to_run():
 		
 		if param is TargetParam:
 			param.update_range()
-		
-		param.request_selection()
 	
 	is_prepared_to_run = true
 	
 	#Announce the event is running
-	event_running.emit()
+	event_running.emit(is_invocation)
 	
 	#TODO put here a loop that has each effect also announce it is happening
 

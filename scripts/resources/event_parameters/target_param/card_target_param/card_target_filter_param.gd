@@ -100,7 +100,7 @@ class CardTargetFilterParam extends CardTargetParam:
 	Check if a card is acceptable and meets parameters.
 	'''
 	func _check_card(card: Card) -> bool:
-		if exclude_self and (card == _parent_card):
+		if exclude_self and (card == parent_card):
 			return false
 		elif card.card_caster not in _being_range.targets_range:
 			return false

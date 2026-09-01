@@ -95,10 +95,9 @@ var upkeep: int:
 		else:
 			spell_face.get_node("UpkeepCost").text = str(val)
 
-#Dictionary of parameters attached to this card
-var parameters: Dictionary[String, EventParam]
-#Dictionary of events on this card
-var events: Dictionary[String, Event]
+#A wrapper for all event and parameter info
+var events_wrapper: EventsWrapper = null:
+	set = _set_events
 
 #In game states
 var location: Location: 
@@ -152,11 +151,10 @@ func _ready():
 #================================================
 
 '''
-Has the card object destroy itself. First disables all parameters and events.
+Has the card object destroy itself.
 '''
 func self_destruct():
 	marked_to_destroy.emit()
-	_disable_params_and_events()
 	self.queue_free()
 
 #TODO: Add flipping support here perhaps?
@@ -193,9 +191,11 @@ Finally move to conc circle if concentration card.
 func activate():
 	_in_play = true
 	
+	var events = events_wrapper.event_launchers
+	
 	for event_name in events:
-		var event = events[event_name]
-		event.event_state = Event.EventState.ACTIVE
+		var event_launcher = events[event_name]
+		event_launcher.launcher_state = EventLauncher.EventLauncherState.ACTIVE
 		
 	events[CardEventData.ACTIVATION_KEY].trigger()
 	
@@ -212,9 +212,11 @@ Sets in play to false and deactivates all events.
 func deactivate():
 	_in_play = false
 	
+	var events = events_wrapper.event_launchers
+	
 	for event_name in events:
-		var event = events[event_name]
-		event.event_state = Event.EventState.INACTIVE
+		var event_launcher = events[event_name]
+		event_launcher.launcher_state = EventLauncher.EventLauncherState.INACTIVE
 
 ### Below are functions for sending signals pre-events occuring
 
@@ -271,57 +273,42 @@ func _reset_casting_data():
 Resets the event data of this card to be based on the card data.
 '''
 func _reset_event_data():
-	#Disable old data
-	_disable_params_and_events()
+	events_wrapper = card_data.event_data.get_new_events_wrapper(card_caster, self)
+
+func _set_events(wrapper: EventsWrapper):
+	events_wrapper = wrapper
 	
-	#Create a copy of the base resource from card_data.
-	var event_data: CardEventData = card_data.event_data.duplicate_deep(Resource.DEEP_DUPLICATE_ALL)
+	var launchers: Array[EventLauncher] = wrapper.event_launchers.values()
+	var parameters: Array[EventParam] = wrapper.parameters.values()
 	
-	#Set up the events in the event_data
-	event_data.setup_events(card_caster, self)
+	for launcher in launchers:
+		add_child(launcher)
+		launcher.event_triggered.connect(_on_event_triggered)
 	
-	parameters = event_data.parameters
-	events = event_data.events
-	
-	#Subscribe to each invocation event so can declare when invoked
-	for key in events:
-		var event = events[key]
-		if event.is_invocation:
-			event.event_running.connect(_declare_invoked)
-	
-	if card_data.type == Enums.CardType.INSTANT:
-		events[CardEventData.ACTIVATION_KEY].effects.append(_create_discard_self_effect())
+	for param in parameters:
+		add_child(param)
+
+#func _create_discard_self_effect():
+	#var target_card_self: CardTargetFilterParam = CardTargetFilterParam.new()
+	#target_card_self.targets = [self]
+	#var discard_effect: DiscardEffect = DiscardEffect.new()
+	#discard_effect.targets_param = target_card_self
+	#
+	#return discard_effect
 
 '''
-Disables all parameters and events so they don't interact with
-the rest of the game. Allows for them to easily be deleted by
-garbage collection.
+Run when an event is created by an event launcher when triggered.
 '''
-func _disable_params_and_events():
-	if parameters != null:
-		#Disable all paremeters
-		for param_name in parameters:
-			parameters[param_name].disable()
-	
-	if events != null:
-		#Disable all events
-		for event_name in events:
-			events[event_name].event_state = Event.EventState.INACTIVE
-
-func _create_discard_self_effect():
-	var target_card_self: CardTargetFilterParam = CardTargetFilterParam.new()
-	target_card_self.targets = [self]
-	var discard_effect: DiscardEffect = DiscardEffect.new()
-	discard_effect.targets_param = target_card_self
-	
-	return discard_effect
+func _on_event_triggered(event: Event):
+	#Should only handle an event getting run once
+	event.event_running.connect(_on_event_run, CONNECT_ONE_SHOT)
 
 '''
-Sends a signal that this card was invoked. Only will occur if
-an invocation event on the card is triggered.
+Run when an event attached to this card signals it was run.
 '''
-func _declare_invoked():
-	invoked.emit()
+func _on_event_run(isInvocation: bool):
+	if isInvocation:
+		invoked.emit()
 
 '''
 Reloads the viewport for the cardface with new info.

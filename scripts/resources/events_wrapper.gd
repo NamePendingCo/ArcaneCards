@@ -11,3 +11,29 @@ var parameters: Dictionary[String, EventParam]
 func _init(launchers: Dictionary[String, EventLauncher], params: Dictionary[String, EventParam]):
 	event_launchers = launchers
 	parameters = params
+
+'''
+Sets the actor that owns these
+'''
+func set_actor(actor: Actor):
+	for key in event_launchers:
+		var launcher = event_launchers[key]
+		launcher.actor = actor
+		
+	for key in parameters:
+		var param = parameters[key]
+		param.actor = actor
+
+'''
+Sets the card that owns these
+'''
+func set_card(card: Card):
+	for key in event_launchers:
+		var launcher = event_launchers[key]
+		launcher.actor = card.card_caster
+		launcher.parent_card = card
+		
+	for key in parameters:
+		var param = parameters[key]
+		param.actor = card.card_caster
+		param.parent_card = card

@@ -15,8 +15,9 @@ enum EventLauncherState {
 	SUPRESSED = 2
 }
 
-#The entity making the event occur
+#Owners of the events
 var actor: Actor = null
+var parent_card: Card = null
 
 #A packed scene used to load the event
 var packed_event: PackedScene
@@ -48,7 +49,9 @@ var launcher_state: EventLauncherState:
 			EventLauncherState.SUPRESSED:
 				_suppress_event()
 
-func _init(event: Event):
+func _init(event: Event, my_actor: Actor = null, card: Card = null):
+	actor = my_actor
+	parent_card = card
 	packed_event = PackedScene.new()
 	
 	packed_event.pack(event)
@@ -72,6 +75,7 @@ func trigger():
 	print("Event is active")
 	
 	var event: Event = packed_event.instantiate()
+	add_child(event)
 	active_events.append(event)
 	event_triggered.emit(event)
 

@@ -15,4 +15,4 @@ func _init():
 	# if one doesn't exist, create an empty event for activation if 
 	# opened in editor, as most cards will need it
 	if Engine.is_editor_hint():
-		events.get_or_add(ACTIVATION_KEY, UnsignaledEvent.new())
+		events_list.get_or_add(ACTIVATION_KEY, UnsignaledEvent.new())
