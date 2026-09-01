@@ -44,10 +44,10 @@ func _ready():
 		caster.card_manager.created_card.connect(_register_card)
 		
 		#Loop through the basic events, connect to them all
-		for event_name in caster.basic_events.events:
-			var event = caster.basic_events.events[event_name]
-			_register_event(event)
-			print("%s: %s" % [event_name, event.actor])
+		for event_name in caster.caster_events_wrapper.event_launchers:
+			var launcher = caster.caster_events_wrapper.event_launchers[event_name]
+			_register_event_launcher(launcher)
+			print("%s: %s" % [event_name, launcher.actor])
 
 #================================================
 # Public methods
@@ -247,19 +247,19 @@ as connecting it to any signals necessary.
 Params:
 	- event: an event
 '''
-func _handle_activated_event(event: EventLauncher):
-	event.event_triggered.connect(_queue_event)
+func _handle_activated_event(launcher: EventLauncher):
+	launcher.event_triggered.connect(_queue_event)
 	
-	if event is OnPhaseEvent:
+	if launcher is OnPhaseEvent:
 		var phase_signal: Signal
 		#Picks correct signal based on phase type
-		match event.phase:
+		match launcher.phase:
 			RoundPhase.DRAW: phase_signal = draw_phase_began
 			RoundPhase.UPKEEP: phase_signal = upkeep_phase_began
 			RoundPhase.CASTING: phase_signal = casting_phase_began
 			RoundPhase.ADJUDICATION: phase_signal = adjudication_phase_began
 			RoundPhase.END: phase_signal = end_phase_began
-		phase_signal.connect(event.trigger)
+		phase_signal.connect(launcher.trigger)
 
 '''
 When passed a card object, registers a card for any
@@ -269,16 +269,16 @@ Params:
 '''
 func _register_card(card: Card):
 	for event_name in card.events:
-		var event: Event = card.events[event_name]
-		_register_event(event)
+		var launcher: EventLauncher = card.events_wrapper.event_launchers[event_name]
+		_register_event_launcher(launcher)
 
 '''
 Registers an event directly.
 Params:
 	- event: the event to register
 '''
-func _register_event(event: Event):
-	event.event_activated.connect(_handle_activated_event.bind(event))
+func _register_event_launcher(launcher: EventLauncher):
+	launcher.event_activated.connect(_handle_activated_event.bind(launcher))
 
 '''
 Takes a list of events, sorts them based on the sort function, 

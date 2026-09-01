@@ -26,7 +26,7 @@ actor: Actor = null, card: Card = null) -> EventLauncher:
 		event_effects.append(new_effect)
 	
 	#Build the list of parameters to update
-	var updating_params_list = []
+	var updating_params_list: Array[EventParam] = []
 	for param_name in params_to_update:
 		updating_params_list.append(param_dict[param_name])
 	

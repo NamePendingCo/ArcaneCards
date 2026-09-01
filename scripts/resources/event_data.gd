@@ -38,7 +38,7 @@ actor: Actor, card: Card) -> Dictionary[String, EventParam]:
 	var params: Dictionary[String, EventParam] = {}
 	
 	for param_name in param_resources:
-		params[param_name] = param_resources[param_name].build_param()
+		params[param_name] = param_resources[param_name].build_param(actor, card)
 	
 	for param_resource: EventParamResource in param_resources.values():
 		param_resource.complete_unfinished_params(params)

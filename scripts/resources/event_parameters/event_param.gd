@@ -7,7 +7,9 @@ var is_chosen: bool
 var actor: Actor = null
 var parent_card: Card = null
 
-func _init(chosen: bool):
+func _init(my_actor: Actor, my_card: Card, chosen: bool):
+	actor = my_actor
+	parent_card = my_card
 	is_chosen = chosen
 
 #================================================

@@ -74,7 +74,7 @@ func trigger():
 		
 	print("Event is active")
 	
-	var event: Event = packed_event.instantiate()
+	var event: Event = packed_event.instantiate() as Event
 	add_child(event)
 	active_events.append(event)
 	event_triggered.emit(event)

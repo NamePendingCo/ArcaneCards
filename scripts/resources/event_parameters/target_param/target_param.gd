@@ -25,8 +25,9 @@ var num_targets_max: int:
 #Whether or not to automatically refresh the target selection
 var persistent: bool
 
-func _init(chosen: bool, targets_min: int=1, targets_max: int=1, persist=false):
-	super(chosen)
+func _init(my_actor: Actor, my_card: Card, chosen: bool, 
+targets_min: int=1, targets_max: int=1, persist=false):
+	super(my_actor, my_card, chosen)
 	num_targets_min = targets_min
 	num_targets_max = targets_max
 	persistent = persist

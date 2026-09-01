@@ -13,7 +13,7 @@ var is_chosen: bool = true:
 var unfinished_params: Array[EventParam] = []
 
 @abstract
-func build_param() -> EventParam;
+func build_param(actor: Actor, card: Card) -> EventParam;
 
 #Fills in the param references that are needed
 func complete_unfinished_params(params_dict: Dictionary[String, EventParam]):

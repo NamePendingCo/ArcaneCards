@@ -26,8 +26,8 @@ var _location_range: int:
 # Public methods
 #================================================
 
-func build_param() -> EventParam:
-	var param = CardTargetFilterParam.new(self_handling, _location_range, card_filter, is_chosen,
+func build_param(actor: Actor, card: Card) -> EventParam:
+	var param = CardTargetFilterParam.new(actor, card, self_handling, _location_range, card_filter, is_chosen,
 	num_targets_min, num_targets_max)
 	
 	return param
@@ -78,11 +78,12 @@ class CardTargetFilterParam extends CardTargetParam:
 	
 	var card_filter: CardFilter
 	
-	func _init(self_strategy: HandleSelf, loc_range: int, filter: CardFilter, 
+	func _init(my_actor: Actor, my_card: Card, self_strategy: HandleSelf, loc_range: int, filter: CardFilter, 
 	chosen: bool, targets_min: int=1, targets_max: int=1, persist=false):
-		self_handling = HandleSelf
+		self_handling = self_strategy
 		card_filter = filter
 		location_range = EventEnums.flagIntToEnum(loc_range)
+		super(my_actor, my_card, chosen, targets_min, targets_max, persist)
 
 	#================================================
 	# Public methods

@@ -15,8 +15,8 @@ var param_a_name: String
 @export
 var param_b_name: String
 
-func build_param():
-	var param = BeingTargetOperationParam.new(operation, is_chosen, 
+func build_param(actor: Actor, card: Card):
+	var param = BeingTargetOperationParam.new(actor, card, operation, is_chosen, 
 	num_targets_min, num_targets_max, persistent)
 	
 	#Saves param so it can be populated later
@@ -56,9 +56,9 @@ class BeingTargetOperationParam extends BeingTargetParam:
 		- param a: must be set
 		- param b: optionally can be set
 	'''
-	func _init(set_op: SetOperation, chosen: bool, 
+	func _init(my_actor: Actor, my_card: Card, set_op: SetOperation, chosen: bool, 
 	targets_min: int = 1, targets_max: int = 1, persist=false):
-		super(chosen, targets_min, targets_max, persist)
+		super(my_actor, my_card, chosen, targets_min, targets_max, persist)
 
 	func set_params(param_a: BeingTargetParam, param_b: BeingTargetParam = null):
 		operation_handler.set_params(self, param_a, param_b)

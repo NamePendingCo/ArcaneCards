@@ -15,8 +15,8 @@ var being_filter: BeingFilter
 # Public methods
 #================================================
 
-func build_param():
-	var param = BeingTargetFilterParam.new(range_option, being_filter, is_chosen, num_targets_min, num_targets_max)
+func build_param(actor: Actor, card: Card):
+	var param = BeingTargetFilterParam.new(actor, card, range_option, being_filter, is_chosen, num_targets_min, num_targets_max)
 	
 	return param
 
@@ -44,9 +44,9 @@ class BeingTargetFilterParam extends BeingTargetParam:
 	#The filter to apply
 	var being_filter: BeingFilter
 
-	func _init(my_range_option: EventEnums.BeingRangeOption, filter: BeingFilter, chosen: bool,
+	func _init(my_actor: Actor, my_card: Card, my_range_option: EventEnums.BeingRangeOption, filter: BeingFilter, chosen: bool,
 	targets_min: int=1, targets_max: int=1):
-		super(chosen, targets_min, targets_max)
+		super(my_actor, my_card, chosen, targets_min, targets_max)
 		range_option = my_range_option
 		being_filter = filter
 

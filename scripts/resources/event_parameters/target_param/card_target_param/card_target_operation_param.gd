@@ -13,8 +13,9 @@ var param_b_name: String
 # Public methods
 #================================================
 
-func build_param() -> EventParam:
-	var param = CardTargetOperationParam.new(is_chosen, num_targets_min, num_targets_max, persistent)
+func build_param(my_actor: Actor, my_card: Card) -> EventParam:
+	var param = CardTargetOperationParam.new(my_actor, my_card, is_chosen, 
+	num_targets_min, num_targets_max, persistent)
 	
 	#Saves param so it can be populated later
 	unfinished_params.append(param)
@@ -47,8 +48,9 @@ class CardTargetOperationParam extends CardTargetParam:
 	
 	var operation_handler: TargetOperationHandler
 
-	func _init(chosen: bool, targets_min: int=1, targets_max: int=1, persist=false):
-		super(chosen, targets_min, targets_max, persist)
+	func _init(my_actor: Actor, my_card: Card, chosen: bool, 
+	targets_min: int=1, targets_max: int=1, persist=false):
+		super(my_actor, my_card, chosen, targets_min, targets_max, persist)
 
 	func update_range():
 		targets_range = operation_handler.range
