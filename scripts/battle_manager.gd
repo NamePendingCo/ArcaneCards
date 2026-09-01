@@ -247,7 +247,7 @@ as connecting it to any signals necessary.
 Params:
 	- event: an event
 '''
-func _handle_activated_event(event: Event):
+func _handle_activated_event(event: EventLauncher):
 	event.event_triggered.connect(_queue_event)
 	
 	if event is OnPhaseEvent:

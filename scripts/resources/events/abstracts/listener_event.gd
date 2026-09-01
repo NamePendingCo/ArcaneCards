@@ -1,6 +1,6 @@
 @tool
 @abstract
-class_name ListenerEvent extends Event
+class_name ListenerEvent extends EventLauncher
 
 '''
 This is an abstract class to cover all events that occur
