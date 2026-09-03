@@ -58,7 +58,8 @@ class BeingTargetFilterParam extends BeingTargetParam:
 	Gets the list of targets
 	'''
 	func update_range():
-		var all_beings: Array[Being] = get_tree().get_nodes_in_group(Constants.GROUP_BEING).map(func(a): a as Being)
+		var all_beings: Array[Being] = []
+		all_beings.assign(get_tree().get_nodes_in_group(Constants.GROUP_BEING))
 		
 		if actor != null and is_instance_of(actor, Being):
 			match range_option:

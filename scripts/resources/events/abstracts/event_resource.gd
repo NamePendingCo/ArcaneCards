@@ -31,7 +31,9 @@ actor: Actor = null, card: Card = null) -> EventLauncher:
 		updating_params_list.append(param_dict[param_name])
 	
 	#Create the actual event to duplicate
-	var event_template: Event = Event.new(event_effects, updating_params_list)
+	var event_template: Event = Event.new()
+	event_template.effects = event_effects
+	event_template.params_to_update = updating_params_list
 	
 	var launcher = EventLauncher.new(event_template, actor, card)
 	

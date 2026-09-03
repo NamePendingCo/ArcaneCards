@@ -247,7 +247,7 @@ as connecting it to any signals necessary.
 Params:
 	- event: an event
 '''
-func _handle_activated_event(launcher: EventLauncher):
+func _on_event_activated(launcher: EventLauncher):
 	launcher.event_triggered.connect(_queue_event)
 	
 	if launcher is OnPhaseEvent:
@@ -278,7 +278,7 @@ Params:
 	- event: the event to register
 '''
 func _register_event_launcher(launcher: EventLauncher):
-	launcher.event_activated.connect(_handle_activated_event.bind(launcher))
+	launcher.event_activated.connect(_on_event_activated.bind(launcher))
 
 '''
 Takes a list of events, sorts them based on the sort function, 

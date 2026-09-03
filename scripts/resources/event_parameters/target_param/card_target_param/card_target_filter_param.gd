@@ -94,7 +94,8 @@ class CardTargetFilterParam extends CardTargetParam:
 	update_range_from_list
 	'''
 	func update_range():
-		var all_cards = get_tree().get_nodes_in_group(Constants.GROUP_CARD) as Array[Card]
+		var all_cards: Array[Card] = []
+		all_cards.assign(get_tree().get_nodes_in_group(Constants.GROUP_CARD))
 		
 		targets_range = all_cards.filter(_check_card)
 		

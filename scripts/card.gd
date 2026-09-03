@@ -286,24 +286,23 @@ func _reset_event_data():
 
 func _set_events(wrapper: EventsWrapper):
 	events_wrapper = wrapper
+	add_child(events_wrapper)
 	
 	var launchers: Array[EventLauncher] = wrapper.event_launchers.values()
 	var parameters: Array[EventParam] = wrapper.parameters.values()
 	
 	for launcher in launchers:
-		add_child(launcher)
 		launcher.event_triggered.connect(_on_event_triggered)
-	
-	for param in parameters:
-		add_child(param)
 
-#func _create_discard_self_effect():
-	#var target_card_self: CardTargetFilterParam = CardTargetFilterParam.new()
-	#target_card_self.targets = [self]
-	#var discard_effect: DiscardEffect = DiscardEffect.new()
-	#discard_effect.targets_param = target_card_self
-	#
-	#return discard_effect
+func _set_basic_events(wrapper: EventsWrapper):
+	basic_events = wrapper
+	add_child(basic_events)
+	
+	var launchers: Array[EventLauncher] = wrapper.event_launchers.values()
+	var parameters: Array[EventParam] = wrapper.parameters.values()
+	
+	for launcher in launchers:
+		launcher.event_triggered.connect(_on_event_triggered)
 
 '''
 Run when an event is created by an event launcher when triggered.

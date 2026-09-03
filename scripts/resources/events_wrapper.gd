@@ -12,6 +12,15 @@ func _init(launchers: Dictionary[String, EventLauncher], params: Dictionary[Stri
 	event_launchers = launchers
 	parameters = params
 
+func _ready():
+	for key in event_launchers:
+		var launcher = event_launchers[key]
+		add_child(launcher)
+		
+	for key in parameters:
+		var param = parameters[key]
+		add_child(param)
+
 '''
 Sets the actor that owns these
 '''

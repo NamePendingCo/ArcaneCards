@@ -32,11 +32,6 @@ var is_system_event: bool = false
 # Whether this event should count as an invocation for its card
 var is_invocation: bool = true
 
-func _init(my_effects: Array[Effect], updating_params: Array[EventParam]):
-	effects = my_effects
-	params_to_update = updating_params
-	print("my effects %s" % effects)
-
 #================================================
 # Public methods
 #================================================

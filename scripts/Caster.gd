@@ -35,11 +35,10 @@ func _ready():
 	#Register to set self as owner of card when card object is first made
 	card_manager.requested_card_owner.connect(_set_owner_of_card)
 	
-	#_create_casting_selection_range()
-	
 	var events_resource: EventData = load(CASTER_EVENTS_PATH)
 	caster_events_wrapper = events_resource.get_new_events_wrapper(self)
 	_casting_selection = caster_events_wrapper.parameters[CASTING_SELECTION_KEY]
+	add_child(caster_events_wrapper)
 	
 	health_updated.connect(func(val: int): _update_label("Health: %d" % val, $CasterCardImage/HpLabel))
 	mana_updated.connect(func(val: int): _update_label("Mana: %d" % val, $CasterCardImage/ManaLabel))

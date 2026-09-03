@@ -19,6 +19,7 @@ enum EventLauncherState {
 var actor: Actor = null
 var parent_card: Card = null
 
+var event_scene: Event
 #A packed scene used to load the event
 var packed_event: PackedScene
 
@@ -52,9 +53,17 @@ var launcher_state: EventLauncherState:
 func _init(event: Event, my_actor: Actor = null, card: Card = null):
 	actor = my_actor
 	parent_card = card
+	event_scene = event
+
+func _ready():
+	add_child(event_scene)
+	
 	packed_event = PackedScene.new()
 	
-	packed_event.pack(event)
+	var res = packed_event.pack(event_scene)
+	
+	event_scene.queue_free()
+	
 
 #================================================
 # Public methods
@@ -74,8 +83,11 @@ func trigger():
 		
 	print("Event is active")
 	
-	var event: Event = packed_event.instantiate() as Event
-	add_child(event)
+	var node = packed_event.instantiate()
+	add_child(node)
+	var event: Event = node as Event
+	print(node)
+	print(event)
 	active_events.append(event)
 	event_triggered.emit(event)
 
