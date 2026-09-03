@@ -17,7 +17,7 @@ var self_handling: HandleSelf
 var card_filter: CardFilter
 
 #The range of applicable targets enumed
-var _location_range: int:
+@export var _location_range: int:
 	set(val): 
 		_location_range = val
 		notify_property_list_changed()
@@ -29,6 +29,7 @@ var _location_range: int:
 func build_param(actor: Actor, card: Card) -> EventParam:
 	var param = CardTargetFilterParam.new(actor, card, self_handling, _location_range, card_filter, is_chosen,
 	num_targets_min, num_targets_max)
+	unfinished_params.append(param)
 	
 	return param
 
@@ -37,7 +38,8 @@ func complete_unfinished_params(params_dict: Dictionary[String, EventParam]):
 	while not unfinished_params.is_empty():
 		var param = unfinished_params.pop_back() as CardTargetFilterParam
 		
-		if params_dict[being_range_name] is BeingTargetParam:
+		if being_range_name != "" and\
+		params_dict[being_range_name] is BeingTargetParam:
 			param.being_range = params_dict[being_range_name]
 
 #================================================
@@ -83,6 +85,10 @@ class CardTargetFilterParam extends CardTargetParam:
 		self_handling = self_strategy
 		card_filter = filter
 		location_range = EventEnums.flagIntToEnum(loc_range)
+		
+		if self_handling == HandleSelf.ONLY_SELF:
+			chosen = false
+			
 		super(my_actor, my_card, chosen, targets_min, targets_max, persist)
 
 	#================================================
@@ -101,6 +107,7 @@ class CardTargetFilterParam extends CardTargetParam:
 		
 		if being_range != null:
 			being_range.update_range()
+		super()
 
 	#================================================
 	# Private methods
@@ -111,14 +118,19 @@ class CardTargetFilterParam extends CardTargetParam:
 	'''
 	func _check_card(card: Card) -> bool:
 		if (self_handling == HandleSelf.EXCLUDE_SELF) and (card == parent_card):
+			print("Excluding card self")
 			return false
 		elif (self_handling == HandleSelf.ONLY_SELF) and (card != parent_card):
+			print("Not card self")
 			return false
 		elif being_range and (card.card_caster not in being_range.targets_range):
-				return false
+			print("Not in being range")
+			return false
 		elif card.location not in location_range:
+			print("Not in right location")
 			return false
 		elif (card_filter != null) and (not card_filter.card_valid(card)):
+			print("Not in filter")
 			return false
 		else:
 			return true

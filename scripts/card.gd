@@ -205,8 +205,9 @@ func activate():
 	for event_name in events:
 		var event_launcher = events[event_name]
 		event_launcher.launcher_state = EventLauncher.EventLauncherState.ACTIVE
-		
-	events[CardEventData.ACTIVATION_KEY].trigger()
+	
+	if events and events[CardEventData.ACTIVATION_KEY]:
+		events[CardEventData.ACTIVATION_KEY].trigger()
 	
 	#notifies card was activated
 	activated.emit()

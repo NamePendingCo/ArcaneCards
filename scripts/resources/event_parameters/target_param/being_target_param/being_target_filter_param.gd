@@ -46,6 +46,9 @@ class BeingTargetFilterParam extends BeingTargetParam:
 
 	func _init(my_actor: Actor, my_card: Card, my_range_option: EventEnums.BeingRangeOption, filter: BeingFilter, chosen: bool,
 	targets_min: int=1, targets_max: int=1):
+		if my_range_option == EventEnums.BeingRangeOption.SELF:
+			chosen = false
+		
 		super(my_actor, my_card, chosen, targets_min, targets_max)
 		range_option = my_range_option
 		being_filter = filter
@@ -67,6 +70,7 @@ class BeingTargetFilterParam extends BeingTargetParam:
 				EventEnums.BeingRangeOption.ALL_OTHERS: all_beings.erase(actor)
 		
 		targets_range = all_beings.filter(_check_being)
+		super()
 
 	#================================================
 	# Private methods

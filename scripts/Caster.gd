@@ -11,6 +11,7 @@ const CASTER_EVENTS_PATH = "res://system_events/caster_basic_events.tres"
 const INITIAL_DRAW_KEY = "initial_draw"
 const STANDARD_DRAW_KEY = "standard_draw"
 const CASTING_SELECTION_KEY = "casting_selection"
+const SELF_PARAM_KEY = "self"
 
 #List of important children to track
 @onready var card_manager: CardManager = $CardManager
@@ -35,14 +36,17 @@ func _ready():
 	#Register to set self as owner of card when card object is first made
 	card_manager.requested_card_owner.connect(_set_owner_of_card)
 	
+	#Sets up the parameters
 	var events_resource: EventData = load(CASTER_EVENTS_PATH)
 	caster_events_wrapper = events_resource.get_new_events_wrapper(self)
-	_casting_selection = caster_events_wrapper.parameters[CASTING_SELECTION_KEY]
 	add_child(caster_events_wrapper)
 	
-	var self_param: BeingTargetFilterResource.BeingTargetFilterParam = caster_events_wrapper.parameters["self"]
+	_casting_selection = caster_events_wrapper.parameters[CASTING_SELECTION_KEY]
+	#make sure casting selection range matches num targets
+	my_casting_well.num_slots_updated.connect(func(val): _casting_selection.num_targets_max = val)
+	
+	var self_param: BeingTargetParam = caster_events_wrapper.parameters[SELF_PARAM_KEY]
 	self_param.update_range()
-	self_param._set_targets(self_param.targets_range)
 	
 	health_updated.connect(func(val: int): _update_label("Health: %d" % val, $CasterCardImage/HpLabel))
 	mana_updated.connect(func(val: int): _update_label("Mana: %d" % val, $CasterCardImage/ManaLabel))

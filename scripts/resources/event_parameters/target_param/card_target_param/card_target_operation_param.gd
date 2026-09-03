@@ -54,6 +54,7 @@ class CardTargetOperationParam extends CardTargetParam:
 
 	func update_range():
 		targets_range = operation_handler.range
+		super()
 
 	'''
 	When give params for the operation, set the internal arrays

@@ -65,3 +65,4 @@ class BeingTargetOperationParam extends BeingTargetParam:
 
 	func update_range():
 		targets_range = operation_handler.range
+		super()

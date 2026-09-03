@@ -22,7 +22,7 @@ var num_targets_min: int:
 var num_targets_max: int:
 	set(val): num_targets_max = max(val, num_targets_min)
 
-#Whether or not to automatically refresh the target selection
+#Whether or not to automatically refresh the target range
 var persistent: bool
 
 func _init(my_actor: Actor, my_card: Card, chosen: bool, 
@@ -40,8 +40,9 @@ targets_min: int=1, targets_max: int=1, persist=false):
 Updates the range of potential targets for the parameter,
 based on whatever mechanism is expected for the param.
 '''
-@abstract
-func update_range()
+func update_range():
+	if not is_chosen:
+		_targets = _targets_range
 
 '''
 Overrides function. Calls super, then clears the targets list.

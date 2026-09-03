@@ -2,11 +2,18 @@
 
 [ext_resource type="Script" uid="uid://d4jf752axi6qo" path="res://scripts/resources/events/abstracts/event_resource.gd" id="1_0fvhi"]
 [ext_resource type="Script" uid="uid://x0i1uyfprpdj" path="res://scripts/resources/card_data.gd" id="1_a40os"]
+[ext_resource type="Script" uid="uid://bu00k56a351ld" path="res://scripts/resources/effects/abstract_effects/base_effect/effect_resource.gd" id="2_72r2o"]
 [ext_resource type="Script" uid="uid://dyaefiaplcn8n" path="res://scripts/resources/event_parameters/event_param_resource.gd" id="2_kxa1e"]
 [ext_resource type="Script" uid="uid://bcy762hcj7wa7" path="res://scripts/resources/card_event_data.gd" id="5_p1kl5"]
 
+[sub_resource type="Resource" id="Resource_p1kl5"]
+script = ExtResource("1_0fvhi")
+
 [sub_resource type="Resource" id="Resource_42et8"]
 script = ExtResource("5_p1kl5")
+events_list = Dictionary[String, ExtResource("1_0fvhi")]({
+"onActivation": SubResource("Resource_p1kl5")
+})
 metadata/_custom_type_script = "uid://bcy762hcj7wa7"
 
 [resource]
