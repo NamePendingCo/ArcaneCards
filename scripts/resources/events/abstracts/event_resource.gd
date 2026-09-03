@@ -19,22 +19,38 @@ Params:
 func set_up_event_launcher(param_dict: Dictionary[String, EventParam], 
 actor: Actor = null, card: Card = null) -> EventLauncher:
 	
+	#Create the actual event to duplicate
+	var event_template: Event = Event.new()
+	
 	#Create the list of effects
 	var event_effects: Array[Effect] = []
 	for effect_resource in effects:
 		var new_effect = effect_resource.build_effect(param_dict)
 		event_effects.append(new_effect)
+		event_template.add_child(new_effect)
+		
+		#Sets the owner of the effect to be the event template the moment both are in tree
+		event_template.tree_entered.connect(new_effect.set_owner.bind(event_template), CONNECT_ONE_SHOT)
+	
+	event_template.effects = event_effects
 	
 	#Build the list of parameters to update
 	var updating_params_list: Array[EventParam] = []
 	for param_name in params_to_update:
 		updating_params_list.append(param_dict[param_name])
 	
-	#Create the actual event to duplicate
-	var event_template: Event = Event.new()
-	event_template.effects = event_effects
-	event_template.params_to_update = updating_params_list
-	
-	var launcher = EventLauncher.new(event_template, actor, card)
+	var launcher = EventLauncher.new(event_template, updating_params_list, actor, card)
 	
 	return launcher
+
+'''
+Very silly helper function that is used by an effect launcher
+'''
+func _repopulate_params(event: Event, param_dict: Dictionary[String, EventParam]):
+	var event_effects = event.effects
+	
+	for i in range(mini(effects.size(), event_effects.size())):
+		var effect_resource: EffectResource = effects[i]
+		var effect = event_effects[i]
+		
+		effect_resource.populate_params(effect, param_dict)

@@ -1,7 +1,7 @@
 class_name DiscardEffectResource extends CardEffectResource
 
-func _build_effect(target_param: CardTargetParam) -> Effect:
-	return DiscardEffect.new(_val, target_param, _min_val, _max_val)
+func _new_effect() -> Effect:
+	return DiscardEffect.new()
 
 func _get_effect_id(): return EffectID.DISCARD
 

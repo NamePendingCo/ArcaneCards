@@ -1,7 +1,7 @@
 class_name HealEffectResource extends BeingEffectResource
 
-func _build_effect(target_param: BeingTargetParam) -> Effect:
-	return HealEffect.new(_val, target_param, _min_val, _max_val)
+func _new_effect() -> Effect:
+	return HealEffect.new()
 
 func _get_effect_id(): return EffectID.HEAL
 

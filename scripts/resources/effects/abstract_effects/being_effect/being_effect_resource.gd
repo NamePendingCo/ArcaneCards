@@ -1,17 +1,13 @@
 @abstract
 class_name BeingEffectResource extends EffectResource
 
-const TARGET_PARAM_NAME = "target_param_name"
+const TARGET_PARAM_NAME = BeingEffect.TARGET_PARAM_NAME
 
 @export
 var target_param_name: String
 
-@abstract
-func _build_effect(target_param: BeingTargetParam) -> Effect
-
-func build_effect(params: Dictionary[String, EventParam]) -> Effect:
-	var target_param = params[target_param_name] if params.has(target_param_name) else null
-	return _build_effect(target_param)
+func populate_params(effect: Effect, params: Dictionary[String, EventParam]):
+	effect.targets_param = params[target_param_name] if params.has(target_param_name) else null
 
 func get_effect_parameters() -> Dictionary[String, String]:
 	var params: Dictionary[String, String] = {}

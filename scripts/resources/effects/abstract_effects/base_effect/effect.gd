@@ -1,5 +1,5 @@
 @abstract
-class_name Effect extends RefCounted
+class_name Effect extends Node
 
 #signal effect_running #Notify when this effect is about to run
 
@@ -33,17 +33,34 @@ var _max_val: int = INT32_MAX:
 # General methods
 #================================================
 
-func _init(val: int, min_val: int = 0, max_val: int = INT32_MAX):
-	_min_val = min_val
-	_max_val = max_val
-	_val = val
+#func _init(val: int, min_val: int = 0, max_val: int = INT32_MAX):
+	#_min_val = min_val
+	#_max_val = max_val
+	#_val = val
 
 #================================================
 # Public methods
 #================================================
 
+func set_values(val: int, min_val: int = 0, max_val: int = INT32_MAX):
+	_min_val = min_val
+	_max_val = max_val
+	_val = val
+
 func get_base_val():
 	return _val
+
+'''
+Gets all the parameters for an effect as a dictionary
+'''
+func get_params() -> Dictionary[String, EventParam]:
+	return {}
+
+'''
+Sets all the params for an effect based on a dictionary
+'''
+func set_params(params: Dictionary[String, EventParam]):
+	pass
 
 '''
 Takes the val, applies all modifiers to it, then return it.

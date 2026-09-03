@@ -33,8 +33,15 @@ var _max_val: int = INT32_MAX:
 # Public methods
 #================================================
 
+func build_effect(params: Dictionary[String, EventParam]) -> Effect:
+	var effect = _new_effect()
+	_populate_effect_vals(effect)
+	populate_params(effect, params)
+	
+	return effect
+
 @abstract
-func build_effect(params: Dictionary[String, EventParam]) -> Effect
+func populate_params(effect: Effect, params: Dictionary[String, EventParam]);
 
 @abstract
 func get_effect_parameters() -> Dictionary[String, String];
@@ -42,6 +49,12 @@ func get_effect_parameters() -> Dictionary[String, String];
 #================================================
 # Private methods
 #================================================
+
+@abstract
+func _new_effect() -> Effect;
+
+func _populate_effect_vals(effect: Effect):
+	effect.set_values(_val, _min_val, _max_val)
 
 #Should return a constant for each
 @abstract

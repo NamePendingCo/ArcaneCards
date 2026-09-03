@@ -16,6 +16,7 @@ var actor: Actor = null
 var parent_card: Card = null
 
 #List of effects that occur during this event
+@export
 var effects: Array[Effect]
 #list of parameters to update before the event runs. Should always
 #include the parameters that require choices

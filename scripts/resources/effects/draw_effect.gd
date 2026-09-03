@@ -1,7 +1,7 @@
 class_name DrawEffectResource extends BeingEffectResource
 
-func _build_effect(target_param: BeingTargetParam) -> Effect:
-	return DrawEffect.new(_val, target_param, _min_val, _max_val)
+func _new_effect() -> Effect:
+	return DrawEffect.new()
 
 func _get_effect_id(): return EffectID.DRAW
 

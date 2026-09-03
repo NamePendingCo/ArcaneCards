@@ -1,7 +1,7 @@
 class_name DamageEffectResource extends BeingEffectResource
 
-func _build_effect(target_param: BeingTargetParam) -> Effect:
-	return DamageEffect.new(_val, target_param, _min_val, _max_val)
+func _new_effect() -> Effect:
+	return DamageEffect.new()
 
 func _get_effect_id(): return EffectID.INFLICT_DAMAGE
 
