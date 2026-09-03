@@ -39,7 +39,9 @@ actor: Actor = null, card: Card = null) -> EventLauncher:
 	for param_name in params_to_update:
 		updating_params_list.append(param_dict[param_name])
 	
-	var launcher = EventLauncher.new(event_template, updating_params_list, actor, card)
+	event_template.params_to_update = updating_params_list
+	
+	var launcher = EventLauncher.new(event_template, actor, card)
 	
 	return launcher
 

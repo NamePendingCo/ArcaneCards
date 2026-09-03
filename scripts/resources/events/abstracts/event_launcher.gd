@@ -18,7 +18,7 @@ enum EventLauncherState {
 @export var _event_scene: Event #Event scene to duplicate
 var packed_event: PackedScene #A packed scene used to load the event
 
-@export var params_to_update: Array[EventParam] #Params updated when event runs
+var params_to_update: Array[EventParam] #Params updated when event runs
 
 #An array and dictionary used to repopulate effect params, which are lost
 #during instantiation
@@ -55,11 +55,11 @@ var launcher_state: EventLauncherState:
 			EventLauncherState.SUPRESSED:
 				_suppress_event()
 
-func _init(event: Event, params: Array[EventParam], my_actor: Actor = null, card: Card = null):
+func _init(event: Event, my_actor: Actor = null, card: Card = null):
 	actor = my_actor
 	parent_card = card
 	_event_scene = event
-	params_to_update = params
+	params_to_update = event.params_to_update
 	add_child(event)
 
 func _ready():
@@ -75,7 +75,7 @@ func _ready():
 	
 	_event_scene.queue_free()
 	print("Launcher ready")
-	
+
 
 #================================================
 # Public methods
