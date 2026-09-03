@@ -30,8 +30,8 @@ enum Location {
 var card_caster: Caster:
 	set(val):
 		card_caster = val
-		basic_events.set_actor(val)
-		events_wrapper.set_actor(val)
+		if basic_events: basic_events.set_actor(val)
+		if events_wrapper: events_wrapper.set_actor(val)
 
 @export var card_data: CardData:
 	set(value):

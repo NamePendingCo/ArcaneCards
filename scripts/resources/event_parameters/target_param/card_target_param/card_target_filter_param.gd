@@ -114,8 +114,8 @@ class CardTargetFilterParam extends CardTargetParam:
 			return false
 		elif (self_handling == HandleSelf.ONLY_SELF) and (card != parent_card):
 			return false
-		elif card.card_caster not in being_range.targets_range:
-			return false
+		elif being_range and (card.card_caster not in being_range.targets_range):
+				return false
 		elif card.location not in location_range:
 			return false
 		elif (card_filter != null) and (not card_filter.card_valid(card)):

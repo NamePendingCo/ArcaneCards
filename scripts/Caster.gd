@@ -40,6 +40,10 @@ func _ready():
 	_casting_selection = caster_events_wrapper.parameters[CASTING_SELECTION_KEY]
 	add_child(caster_events_wrapper)
 	
+	var self_param: BeingTargetFilterResource.BeingTargetFilterParam = caster_events_wrapper.parameters["self"]
+	self_param.update_range()
+	self_param._set_targets(self_param.targets_range)
+	
 	health_updated.connect(func(val: int): _update_label("Health: %d" % val, $CasterCardImage/HpLabel))
 	mana_updated.connect(func(val: int): _update_label("Mana: %d" % val, $CasterCardImage/ManaLabel))
 	

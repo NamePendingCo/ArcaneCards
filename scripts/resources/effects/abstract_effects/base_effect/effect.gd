@@ -16,17 +16,17 @@ var modifiers: Array[EffectOperator]
 # Private vars
 #================================================
 
-var _val: int:
+@export var _val: int:
 	set(new_val): _val = clamp(new_val, _min_val, _max_val)
 
 #Minimum allowed value for the effect
 #also used for ranges when making comparisons
-var _min_val: int = 0:
+@export var _min_val: int = 0:
 	set(new_val): _val = max(new_val, 0)
 
 #Maximum allowed value for the effect
 #also used for ranges when making comparisons
-var _max_val: int = INT32_MAX:
+@export var _max_val: int = INT32_MAX:
 	set(new_val): _val = max(_min_val, INT32_MAX)
 
 #================================================

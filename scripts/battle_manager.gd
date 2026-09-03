@@ -268,7 +268,10 @@ Params:
 	- card: a card object
 '''
 func _register_card(card: Card):
-	for event_name in card.events:
+	if card.events_wrapper.event_launchers:
+		return
+	
+	for event_name in card.events_wrapper.event_launchers:
 		var launcher: EventLauncher = card.events_wrapper.event_launchers[event_name]
 		_register_event_launcher(launcher)
 

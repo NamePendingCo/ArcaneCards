@@ -97,6 +97,9 @@ func trigger():
 	event.params_to_update = params_to_update
 	_repopulate_params(event)
 	add_child(event)
+	event.actor = actor
+	event.parent_card = parent_card
+	
 	active_events.append(event)
 	event_triggered.emit(event)
 	
