@@ -20,6 +20,7 @@ var parent_card: Card = null
 var effects: Array[Effect]
 #list of parameters to update before the event runs. Should always
 #include the parameters that require choices
+@export
 var params_to_update: Array[EventParam]
 
 var is_prepared_to_run: bool = false
