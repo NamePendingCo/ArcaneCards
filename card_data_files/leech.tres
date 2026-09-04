@@ -3,16 +3,47 @@
 [ext_resource type="Script" uid="uid://d4jf752axi6qo" path="res://scripts/resources/events/abstracts/event_resource.gd" id="1_jfux3"]
 [ext_resource type="Script" uid="uid://x0i1uyfprpdj" path="res://scripts/resources/card_data.gd" id="1_ywhuq"]
 [ext_resource type="Script" uid="uid://bu00k56a351ld" path="res://scripts/resources/effects/abstract_effects/base_effect/effect_resource.gd" id="2_jfux3"]
+[ext_resource type="Script" uid="uid://bwnp248xicgpu" path="res://scripts/resources/effects/damage_effect.gd" id="3_1xhvr"]
 [ext_resource type="Script" uid="uid://dyaefiaplcn8n" path="res://scripts/resources/event_parameters/event_param_resource.gd" id="3_vuwc2"]
+[ext_resource type="Script" uid="uid://br71qxrnafy7b" path="res://scripts/resources/effects/heal_effect.gd" id="4_8c8tv"]
 [ext_resource type="Script" uid="uid://bcy762hcj7wa7" path="res://scripts/resources/card_event_data.gd" id="5_1b3e2"]
+[ext_resource type="Script" uid="uid://l66kvw1qw48c" path="res://scripts/resources/event_parameters/target_param/being_target_param/being_target_filter_param.gd" id="6_1xhvr"]
+
+[sub_resource type="Resource" id="Resource_jfux3"]
+script = ExtResource("3_1xhvr")
+target_param_name = "target"
+_val = 2
+metadata/_custom_type_script = "uid://bwnp248xicgpu"
 
 [sub_resource type="Resource" id="Resource_yihlo"]
+script = ExtResource("4_8c8tv")
+target_param_name = "self"
+_val = 1
+metadata/_custom_type_script = "uid://br71qxrnafy7b"
+
+[sub_resource type="Resource" id="Resource_1b3e2"]
 script = ExtResource("1_jfux3")
+params_to_update = Array[String](["target"])
+effects = Array[ExtResource("2_jfux3")]([SubResource("Resource_jfux3"), SubResource("Resource_yihlo")])
+
+[sub_resource type="Resource" id="Resource_vuwc2"]
+script = ExtResource("6_1xhvr")
+range_option = 1
+metadata/_custom_type_script = "uid://l66kvw1qw48c"
+
+[sub_resource type="Resource" id="Resource_jlsqs"]
+script = ExtResource("6_1xhvr")
+range_option = 2
+metadata/_custom_type_script = "uid://l66kvw1qw48c"
 
 [sub_resource type="Resource" id="Resource_ajmu6"]
 script = ExtResource("5_1b3e2")
+parameters_list = Dictionary[String, ExtResource("3_vuwc2")]({
+"self": SubResource("Resource_vuwc2"),
+"target": SubResource("Resource_jlsqs")
+})
 events_list = Dictionary[String, ExtResource("1_jfux3")]({
-"onActivation": SubResource("Resource_yihlo")
+"onActivation": SubResource("Resource_1b3e2")
 })
 metadata/_custom_type_script = "uid://bcy762hcj7wa7"
 

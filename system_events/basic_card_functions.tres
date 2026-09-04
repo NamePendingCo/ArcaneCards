@@ -2,9 +2,21 @@
 
 [ext_resource type="Script" uid="uid://d4jf752axi6qo" path="res://scripts/resources/events/abstracts/event_resource.gd" id="1_2jy7h"]
 [ext_resource type="Script" uid="uid://dyaefiaplcn8n" path="res://scripts/resources/event_parameters/event_param_resource.gd" id="2_fct5o"]
+[ext_resource type="Script" uid="uid://bu00k56a351ld" path="res://scripts/resources/effects/abstract_effects/base_effect/effect_resource.gd" id="2_fyund"]
+[ext_resource type="Script" uid="uid://dy2la8tixk0k7" path="res://scripts/resources/effects/discard_effect.gd" id="3_72pq0"]
 [ext_resource type="Script" uid="uid://chu660wrfnmcc" path="res://scripts/resources/event_parameters/target_param/card_target_param/card_target_filter_param.gd" id="3_fct5o"]
 [ext_resource type="Script" uid="uid://cedy1d2wx5g2u" path="res://scripts/resources/event_data.gd" id="3_qeisb"]
 [ext_resource type="Script" uid="uid://l66kvw1qw48c" path="res://scripts/resources/event_parameters/target_param/being_target_param/being_target_filter_param.gd" id="4_qeisb"]
+
+[sub_resource type="Resource" id="Resource_q8u5g"]
+script = ExtResource("3_72pq0")
+target_param_name = "this_card"
+metadata/_custom_type_script = "uid://dy2la8tixk0k7"
+
+[sub_resource type="Resource" id="Resource_jlsqs"]
+script = ExtResource("1_2jy7h")
+effects = Array[ExtResource("2_fyund")]([SubResource("Resource_q8u5g")])
+metadata/_custom_type_script = "uid://d4jf752axi6qo"
 
 [sub_resource type="Resource" id="Resource_c01mt"]
 script = ExtResource("4_qeisb")
@@ -21,5 +33,8 @@ script = ExtResource("3_qeisb")
 parameters_list = Dictionary[String, ExtResource("2_fct5o")]({
 "owner": SubResource("Resource_c01mt"),
 "this_card": SubResource("Resource_2jy7h")
+})
+events_list = Dictionary[String, ExtResource("1_2jy7h")]({
+"discard_self": SubResource("Resource_jlsqs")
 })
 metadata/_custom_type_script = "uid://cedy1d2wx5g2u"

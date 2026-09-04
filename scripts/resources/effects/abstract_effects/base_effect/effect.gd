@@ -10,6 +10,10 @@ var effect_id: EffectID:
 	get: return _get_effect_id()
 	set(val): return
 
+var effect_string: String:
+	get: return EffectsEnum.EffectID.keys()[effect_id]
+	set(val): return
+
 var modifiers: Array[EffectOperator]
 
 #================================================

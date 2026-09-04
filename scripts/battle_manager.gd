@@ -268,7 +268,7 @@ Params:
 	- card: a card object
 '''
 func _register_card(card: Card):
-	if card.events_wrapper.event_launchers:
+	if not card.events_wrapper.event_launchers:
 		return
 	
 	for event_name in card.events_wrapper.event_launchers:

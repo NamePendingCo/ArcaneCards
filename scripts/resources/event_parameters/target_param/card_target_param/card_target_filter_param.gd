@@ -118,19 +118,14 @@ class CardTargetFilterParam extends CardTargetParam:
 	'''
 	func _check_card(card: Card) -> bool:
 		if (self_handling == HandleSelf.EXCLUDE_SELF) and (card == parent_card):
-			print("Excluding card self")
 			return false
 		elif (self_handling == HandleSelf.ONLY_SELF) and (card != parent_card):
-			print("Not card self")
 			return false
 		elif being_range and (card.card_caster not in being_range.targets_range):
-			print("Not in being range")
 			return false
 		elif card.location not in location_range:
-			print("Not in right location")
 			return false
 		elif (card_filter != null) and (not card_filter.card_valid(card)):
-			print("Not in filter")
 			return false
 		else:
 			return true

@@ -3,6 +3,8 @@ class_name Card extends Node3D
 const COLOR = Enums.SpellColor
 const BASIC_EVENTS: EventData = preload("res://system_events/basic_card_functions.tres")
 
+const DISCARD_SELF_KEY = "discard_self"
+
 #Core signals to denote state change
 signal changed_location(new_state, old_state)
 signal activated
@@ -101,7 +103,8 @@ var upkeep: int:
 			spell_face.get_node("UpkeepCost").text = str(val)
 
 #A wrapper for all universal card events
-var basic_events: EventsWrapper
+var basic_events: EventsWrapper:
+	set = _set_basic_events
 
 #A wrapper for all event and parameter info unique to this card
 var events_wrapper: EventsWrapper = null:
@@ -154,6 +157,11 @@ func _ready():
 	_reset_casting_data()
 	
 	basic_events = BASIC_EVENTS.get_new_events_wrapper(card_caster, self)
+	
+	for param_name in basic_events.parameters:
+		if basic_events.parameters[param_name] is TargetParam:
+			var param: TargetParam = basic_events.parameters[param_name]
+			param.update_range()
 
 #================================================
 # Public Methods
@@ -215,6 +223,8 @@ func activate():
 	#If a concentration card, also mark to move to concentration circle
 	if card_data.type in Enums.CONC_TYPES:
 		_request_loc_change(Location.CONCENTRATION_CIRCLE)
+	else:
+		basic_events.event_launchers[DISCARD_SELF_KEY].trigger()
 
 '''
 Sets in play to false and deactivates all events.
@@ -304,6 +314,12 @@ func _set_basic_events(wrapper: EventsWrapper):
 	
 	for launcher in launchers:
 		launcher.event_triggered.connect(_on_event_triggered)
+	
+	for param in parameters:
+		if param is TargetParam:
+			param.update_range()
+	
+	basic_events.activate_all()
 
 '''
 Run when an event is created by an event launcher when triggered.

@@ -39,6 +39,7 @@ actor: Actor, card: Card) -> Dictionary[String, EventParam]:
 	
 	for param_name in param_resources:
 		params[param_name] = param_resources[param_name].build_param(actor, card)
+		params[param_name].name = param_name
 	
 	for param_resource: EventParamResource in param_resources.values():
 		param_resource.complete_unfinished_params(params)
@@ -51,6 +52,6 @@ params: Dictionary[String, EventParam], actor: Actor, card: Card) -> Dictionary[
 	var launchers: Dictionary[String, EventLauncher] = {}
 	
 	for event_name in event_resources:
-		launchers[event_name] = event_resources[event_name].set_up_event_launcher(params, actor, card)
+		launchers[event_name] = event_resources[event_name].set_up_event_launcher(params, actor, card, event_name)
 	
 	return launchers

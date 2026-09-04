@@ -57,21 +57,30 @@ var launcher_state: EventLauncherState:
 
 func _init(event: Event, my_actor: Actor = null, card: Card = null):
 	actor = my_actor
+	print("launcher init")
+	print(actor)
 	parent_card = card
+	print(parent_card)
 	_event_scene = event
 	params_to_update = event.params_to_update
 	add_child(event)
 
 func _ready():
+	print("Event scene parent:")
+	print(_event_scene.get_parent())
+	print("Event scene")
+	print(_event_scene)
 	
 	effect_params = []
 	
 	for effect in _event_scene.effects:
 		effect_params.append(effect.get_params())
+		print(effect.effect_id)
+		print(effect)
 	
 	packed_event = PackedScene.new()
 	
-	var res = packed_event.pack(_event_scene)
+	packed_event.pack(_event_scene)
 	
 	_event_scene.queue_free()
 	print("Launcher ready")
@@ -105,7 +114,9 @@ func trigger():
 	
 	print("Event is active")
 	
+	print("Effects:")
 	print(event.effects)
+	print("Params:")
 	print(event.params_to_update)
 
 #================================================

@@ -17,10 +17,12 @@ Params:
 	- card: optional for setting the card this event is for
 '''
 func set_up_event_launcher(param_dict: Dictionary[String, EventParam], 
-actor: Actor = null, card: Card = null) -> EventLauncher:
+actor: Actor = null, card: Card = null, event_name: String = "") -> EventLauncher:
 	
 	#Create the actual event to duplicate
 	var event_template: Event = Event.new()
+	if event_name != "":
+		event_template.name = event_name
 	
 	#Create the list of effects
 	var event_effects: Array[Effect] = []
@@ -28,6 +30,7 @@ actor: Actor = null, card: Card = null) -> EventLauncher:
 		var new_effect = effect_resource.build_effect(param_dict)
 		event_effects.append(new_effect)
 		event_template.add_child(new_effect)
+		new_effect.name = "%s_%s" % [event_name, new_effect.effect_string]
 		
 		#Sets the owner of the effect to be the event template the moment both are in tree
 		event_template.tree_entered.connect(new_effect.set_owner.bind(event_template), CONNECT_ONE_SHOT)
@@ -42,6 +45,7 @@ actor: Actor = null, card: Card = null) -> EventLauncher:
 	event_template.params_to_update = updating_params_list
 	
 	var launcher = EventLauncher.new(event_template, actor, card)
+	launcher.name = event_name + "_launcher"
 	
 	return launcher
 

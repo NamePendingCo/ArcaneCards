@@ -11,8 +11,7 @@ var parameters: Dictionary[String, EventParam]
 func _init(launchers: Dictionary[String, EventLauncher], params: Dictionary[String, EventParam]):
 	event_launchers = launchers
 	parameters = params
-
-func _ready():
+	
 	for key in event_launchers:
 		var launcher = event_launchers[key]
 		add_child(launcher)

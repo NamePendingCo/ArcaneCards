@@ -63,9 +63,10 @@ Runs the event and all effects that should occur as part of it. Does not
 run if the event is not active.
 '''
 func run():
-	print("Running Event")
+	print("Running Event: %s" % name)
 	
 	for effect in effects:
+		print(effect)
 		print(Effect.EffectID.keys()[effect.effect_id])
 		effect.run()
 
