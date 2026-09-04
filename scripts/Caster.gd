@@ -29,6 +29,7 @@ var _casting_selection: CardTargetParam
 
 func _ready():
 	super()
+	mana = 100
 	add_to_group(Constants.GROUP_CASTER)
 	
 	#Connect all newly created cards with the register function
@@ -50,9 +51,6 @@ func _ready():
 	
 	health_updated.connect(func(val: int): _update_label("Health: %d" % val, $CasterCardImage/HpLabel))
 	mana_updated.connect(func(val: int): _update_label("Mana: %d" % val, $CasterCardImage/ManaLabel))
-	
-	health = 40
-	mana = 100
 
 #Enum for determining destinations for drawn cards. Maybe should be moved
 enum DrawDest {
