@@ -31,8 +31,10 @@ var triggered_events: Array[Event] = []
 
 # When true, this event is treated as a regular game
 # driven event and not an action triggered during play.
+@export
 var is_system_event: bool = false
 # Whether this event should count as an invocation for its card
+@export
 var is_invocation: bool = true
 
 #================================================
@@ -93,6 +95,6 @@ Returns:
 func calculate_priority() -> int:
 	var priority: int = 0
 	if is_system_event:
-		priority += 1 << 15 #TODO: decide actual flag
+		priority += 1 << 10 #TODO: decide actual flag
 	
 	return priority

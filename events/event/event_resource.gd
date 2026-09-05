@@ -13,6 +13,9 @@ var effects: Array[EffectResource]
 @export
 var is_system_event: bool = false
 
+@export
+var is_invocation: bool = false
+
 '''
 Creates the event launcher for the event the resource defines
 Params:
@@ -30,6 +33,7 @@ actor: Actor = null, card: Card = null, event_name: String = "") -> EventLaunche
 	launcher.name = event_name + "_launcher"
 	
 	launcher.is_system_event = is_system_event
+	launcher.is_invocation = is_invocation
 	
 	return launcher
 
@@ -60,6 +64,7 @@ func _build_event_template(param_dict: Dictionary[String, EventParam], event_nam
 	event_template.effects = event_effects
 	
 	event_template.is_system_event = is_system_event
+	event_template.is_invocation = is_invocation
 	
 	#Build the list of parameters to update
 	var updating_params_list: Array[EventParam] = []

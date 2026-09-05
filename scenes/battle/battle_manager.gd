@@ -343,7 +343,7 @@ func _process_event_stack():
 	while not event_stack.is_empty():
 		print("\nProcessing event stack...")
 		for event in event_stack:
-			print("\t%s: %s" % [event.actor, event])
+			print("\t%s: %s with priority %d" % [event.actor, event, event.calculate_priority()])
 		
 		#checks the top item on stack. If no new events stacked, run it
 		var event = event_stack.pop_back()
