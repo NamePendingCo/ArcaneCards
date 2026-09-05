@@ -1,0 +1,60 @@
+[gd_resource type="Resource" script_class="EventData" format=3 uid="uid://bv1sq3maly5k8"]
+
+[ext_resource type="Script" uid="uid://d4jf752axi6qo" path="res://events/event/event_resource.gd" id="1_synmn"]
+[ext_resource type="Script" uid="uid://dyaefiaplcn8n" path="res://events/event/components/event_parameters/event_param_resource.gd" id="2_6wpbj"]
+[ext_resource type="Script" uid="uid://bu00k56a351ld" path="res://events/effects/effect_resource.gd" id="2_nptt7"]
+[ext_resource type="Script" uid="uid://cedy1d2wx5g2u" path="res://events/events_wrapper/event_data.gd" id="3_6wpbj"]
+[ext_resource type="Script" uid="uid://cfm3r7ie5r2jg" path="res://events/effects/being_effect/effects/draw_effect.gd" id="3_e1o0t"]
+[ext_resource type="Script" uid="uid://chu660wrfnmcc" path="res://events/event/components/event_parameters/target_param/card_target_param/card_target_filter_param.gd" id="4_6wpbj"]
+[ext_resource type="Script" uid="uid://frwkbynydm4o" path="res://events/event/listening_event/on_phase_listening_event/on_phase_launcher.gd" id="4_e1o0t"]
+[ext_resource type="Script" uid="uid://l66kvw1qw48c" path="res://events/event/components/event_parameters/target_param/being_target_param/being_target_filter_param.gd" id="7_cf7b0"]
+
+[sub_resource type="Resource" id="Resource_nxtc6"]
+script = ExtResource("3_e1o0t")
+target_param_name = "self"
+_val = 7
+metadata/_custom_type_script = "uid://cfm3r7ie5r2jg"
+
+[sub_resource type="Resource" id="Resource_c01mt"]
+script = ExtResource("1_synmn")
+effects = Array[ExtResource("2_nptt7")]([SubResource("Resource_nxtc6")])
+is_system_event = true
+metadata/_custom_type_script = "uid://d4jf752axi6qo"
+
+[sub_resource type="Resource" id="Resource_wp0k4"]
+script = ExtResource("3_e1o0t")
+target_param_name = "self"
+_val = 1
+metadata/_custom_type_script = "uid://cfm3r7ie5r2jg"
+
+[sub_resource type="Resource" id="Resource_lhr70"]
+script = ExtResource("4_e1o0t")
+effects = Array[ExtResource("2_nptt7")]([SubResource("Resource_wp0k4")])
+is_system_event = true
+metadata/_custom_type_script = "uid://frwkbynydm4o"
+
+[sub_resource type="Resource" id="Resource_cf7b0"]
+script = ExtResource("4_6wpbj")
+being_range_name = "self"
+self_handling = 1
+_location_range = 3
+num_targets_min = 0
+num_targets_max = 3
+metadata/_custom_type_script = "uid://chu660wrfnmcc"
+
+[sub_resource type="Resource" id="Resource_mc0xd"]
+script = ExtResource("7_cf7b0")
+range_option = 1
+metadata/_custom_type_script = "uid://l66kvw1qw48c"
+
+[resource]
+script = ExtResource("3_6wpbj")
+parameters_list = Dictionary[String, ExtResource("2_6wpbj")]({
+"casting_selection": SubResource("Resource_cf7b0"),
+"self": SubResource("Resource_mc0xd")
+})
+events_list = Dictionary[String, ExtResource("1_synmn")]({
+"initial_draw": SubResource("Resource_c01mt"),
+"standard_draw": SubResource("Resource_lhr70")
+})
+metadata/_custom_type_script = "uid://cedy1d2wx5g2u"
