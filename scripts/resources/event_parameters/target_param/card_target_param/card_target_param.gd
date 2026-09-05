@@ -44,3 +44,8 @@ func _register_card(card: Card):
 	if not registerd_cards.has(card):
 			card.marked_to_destroy.connect(_remove_from_lists.bind(card), CONNECT_ONE_SHOT)
 			registerd_cards[card] = true
+
+func _set_actor(val: Actor):
+	super(val)
+	if actor:
+		selection_requested.connect(actor._choose_card_from_range)

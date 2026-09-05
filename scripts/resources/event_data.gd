@@ -27,7 +27,9 @@ func get_new_events_wrapper(actor: Actor = null, card: Card = null) -> EventsWra
 		
 	var events = _set_up_event_launchers(events_list, params, actor, card)
 	
-	return EventsWrapper.new(events, params)
+	var wrapper = EventsWrapper.new(events, params)
+	
+	return wrapper
 
 #================================================
 # Private methods
@@ -38,8 +40,9 @@ actor: Actor, card: Card) -> Dictionary[String, EventParam]:
 	var params: Dictionary[String, EventParam] = {}
 	
 	for param_name in param_resources:
-		params[param_name] = param_resources[param_name].build_param(actor, card)
-		params[param_name].name = param_name
+		var param = param_resources[param_name].build_param(actor, card)
+		params[param_name] = param
+		param.name = param_name
 	
 	for param_resource: EventParamResource in param_resources.values():
 		param_resource.complete_unfinished_params(params)

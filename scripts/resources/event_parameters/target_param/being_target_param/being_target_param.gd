@@ -25,3 +25,8 @@ func _set_targets(arr: Array[Being]):
 func _set_targets_range(arr: Array[Being]):
 	targets_range.assign(arr)
 	super(arr)
+
+func _set_actor(val: Actor):
+	super(val)
+	if actor:
+		selection_requested.connect(actor._choose_being_from_range)

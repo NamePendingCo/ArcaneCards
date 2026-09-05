@@ -52,6 +52,8 @@ func prepare_to_run():
 		
 		if param is TargetParam:
 			param.update_range()
+		
+		param.request_selection()
 	
 	is_prepared_to_run = true
 	
