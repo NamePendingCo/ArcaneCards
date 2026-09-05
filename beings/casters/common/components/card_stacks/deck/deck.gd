@@ -2,8 +2,8 @@ class_name Deck extends CardStack
 
 func _ready():
 	_stack = ["chilly_breeze", "echoing_roar", "echoing_roar", "chilly_breeze", "leech",
-	"chilly_breeze", "echoing_roar", "echoing_roar", "chilly_breeze", "leech",
-	"chilly_breeze", "echoing_roar", "echoing_roar", "chilly_breeze", "leech"] #TYPE TBD
+	"heat_cycle", "echoing_roar", "echoing_roar", "heat_cycle", "leech",
+	"chilly_breeze", "heat_cycle", "echoing_roar", "chilly_breeze", "leech"] #TYPE TBD
 
 func _get_relevant_location() -> Card.Location:
 	return Card.Location.DECK
