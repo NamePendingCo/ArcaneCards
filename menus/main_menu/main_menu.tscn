@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cakc0u1hpwn2g"]
 
-[ext_resource type="Script" uid="uid://depsivroxitx5" path="res://menus/menu.gd" id="1_1nwmw"]
+[ext_resource type="Script" uid="uid://dxh7xttwsrgu5" path="res://menus/main_menu/main_menu.gd" id="1_1nwmw"]
 [ext_resource type="Theme" uid="uid://1k0noqr6ojd" path="res://menus/themes/main_menu_theme.tres" id="1_xbn2l"]
 
 [node name="MainMenu" type="Control" unique_id=1238128444]
@@ -62,3 +62,6 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("1_xbn2l")
 text = "Quit"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonsVBox/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonsVBox/QuitButton" to="." method="_on_quit_button_pressed"]

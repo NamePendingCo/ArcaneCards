@@ -1,4 +1,4 @@
-class_name LoadScreen extends Control
+class_name LoadScreen extends CanvasLayer
 
 const TOOLTIPS_PATH: String = "res://menus/load_screen/tooltips.txt"
 
@@ -16,7 +16,10 @@ func _ready():
 	
 	tooltips = content.split("\n")
 	
+	_update_tool_tip()
+	
 	timer = Timer.new()
+	add_child(timer)
 	timer.timeout.connect(_update_tool_tip)
 	
 	timer.start(10.0)

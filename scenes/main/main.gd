@@ -7,9 +7,12 @@ The main scene that governs changes between all scenes
 signal scene_loaded
 signal scene_load_progress(progress)
 signal scene_populate_progress(progress)
+signal scene_entered
 
 const BATTLE_SCENE_KEY = "battle"
 const MAIN_MENU_KEY = "main_menu"
+
+const LOAD_SCREEN_PATH = "res://menus/load_screen/load_screen.tscn"
 
 const MENU_PATHS: Dictionary[String, String] = {
 	"main_menu": "res://menus/main_menu/main_menu.tscn"
@@ -19,14 +22,18 @@ const SCENE_PATHS: Dictionary[String, String] = {
 	"battle": "res://scenes/battle/battle.tscn"
 }
 
+#The node currently loaded
+var loaded_scene: Node
+
+var load_screen_resource: PackedScene
+
 var has_scene_loading: bool = false
 var loading_scene_path: String = ""
 
 func _ready():
-	var main_menu_resource: PackedScene = load(MENU_PATHS[MAIN_MENU_KEY])
-	var main_menu: Menu = main_menu_resource.instantiate()
+	load_main_menu()
 	
-	add_child(main_menu)
+	load_screen_resource = preload(LOAD_SCREEN_PATH)
 
 func _process(delta):
 	if has_scene_loading:
@@ -35,6 +42,14 @@ func _process(delta):
 #================================================
 # Public methods
 #================================================
+
+func load_main_menu():
+	var main_menu_resource: PackedScene = load(MENU_PATHS[MAIN_MENU_KEY])
+	var main_menu: MainMenu = main_menu_resource.instantiate()
+	
+	add_child(main_menu)
+	loaded_scene = main_menu
+	main_menu.start_game.connect(load_battle, CONNECT_ONE_SHOT)
 
 '''
 Params:
@@ -51,10 +66,15 @@ Loads the battle scene. Eventually this should get some parameters in here
 which should set things like the casters/beings and ruleset.
 '''
 func load_battle():
+	_raise_load_screen()
+	remove_scene(loaded_scene)
 	var battle_resource = await _load_scene_async(SCENE_PATHS[BATTLE_SCENE_KEY])
+	await get_tree().create_timer(2).timeout #THIS LINE IS FOR DEMO ONLY. DELETE LATER
 	
 	var battle = battle_resource.instantiate()
 	add_child(battle)
+	loaded_scene = battle
+	scene_entered.emit()
 
 #================================================
 # Private methods
@@ -79,7 +99,7 @@ finishes, or signal the amount of progress in loading if not.
 '''
 func _check_loading_status():
 	var progress: Array = []
-	var status = ResourceLoader.load_threaded_get_status(loading_scene_path, [])
+	var status = ResourceLoader.load_threaded_get_status(loading_scene_path, progress)
 	
 	if status == ResourceLoader.ThreadLoadStatus.THREAD_LOAD_LOADED:
 		scene_loaded.emit()
@@ -94,5 +114,15 @@ Param:
 	- load_populate_ratio: the ratio of the total load screen bar that
 	should be filled from loading the scene vs populating it.
 '''
-func _raise_load_screen(load_populate_ratio: float):
-	pass
+func _raise_load_screen(load_populate_ratio: float = 0):
+	var load_screen = load_screen_resource.instantiate()
+	
+	scene_entered.connect(remove_scene.bind(load_screen), CONNECT_ONE_SHOT)
+	add_child(load_screen)
+
+func remove_scene(node: Node):
+	if node == loaded_scene:
+		loaded_scene = null
+	
+	remove_child(node)
+	node.queue_free()
