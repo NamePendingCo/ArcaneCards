@@ -63,20 +63,18 @@ func _init(event: Event, my_actor: Actor = null, card: Card = null):
 	print(parent_card)
 	_event_scene = event
 	params_to_update = event.params_to_update
+	print(params_to_update)
 	add_child(event)
 
-func _ready():
-	print("Event scene parent:")
-	print(_event_scene.get_parent())
-	print("Event scene")
-	print(_event_scene)
-	
+func _ready():	
 	effect_params = []
 	
 	for effect in _event_scene.effects:
 		effect_params.append(effect.get_params())
 		print(effect.effect_id)
 		print(effect)
+	
+	print(effect_params)
 	
 	packed_event = PackedScene.new()
 	
@@ -116,8 +114,8 @@ func trigger():
 	
 	print("Effects:")
 	print(event.effects)
-	print("Params:")
-	print(event.params_to_update)
+	for effect: Effect in event.effects:
+		print(effect.get_params())
 
 #================================================
 # Private methods

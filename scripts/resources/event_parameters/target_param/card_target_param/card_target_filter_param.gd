@@ -117,15 +117,31 @@ class CardTargetFilterParam extends CardTargetParam:
 	Check if a card is acceptable and meets parameters.
 	'''
 	func _check_card(card: Card) -> bool:
+		
+		_print_toggle(card)
 		if (self_handling == HandleSelf.EXCLUDE_SELF) and (card == parent_card):
+			_print_toggle("Excluding self")
+			_print_toggle(parent_card)
 			return false
 		elif (self_handling == HandleSelf.ONLY_SELF) and (card != parent_card):
+			_print_toggle("Not self")
+			_print_toggle(parent_card)
 			return false
 		elif being_range and (card.card_caster not in being_range.targets_range):
+			_print_toggle("Excluding self")
 			return false
-		elif card.location not in location_range:
+		elif (location_range.size() > 0) and (card.location not in location_range):
+			_print_toggle("Wrong location")
+			_print_toggle("%s not in %s" % [str(Card.Location.keys()[card.location]), str(location_range)])
 			return false
 		elif (card_filter != null) and (not card_filter.card_valid(card)):
+			_print_toggle("wrong filter")
 			return false
 		else:
 			return true
+
+	func _print_toggle(to_print: Variant):
+		var debug = true
+		
+		if debug:
+			print(to_print)

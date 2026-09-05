@@ -15,15 +15,16 @@ metadata/_custom_type_script = "uid://dy2la8tixk0k7"
 
 [sub_resource type="Resource" id="Resource_jlsqs"]
 script = ExtResource("1_2jy7h")
+params_to_update = Array[String](["owner", "this_card"])
 effects = Array[ExtResource("2_fyund")]([SubResource("Resource_q8u5g")])
 metadata/_custom_type_script = "uid://d4jf752axi6qo"
 
-[sub_resource type="Resource" id="Resource_c01mt"]
+[sub_resource type="Resource" id="Resource_qeisb"]
 script = ExtResource("4_qeisb")
 range_option = 1
 metadata/_custom_type_script = "uid://l66kvw1qw48c"
 
-[sub_resource type="Resource" id="Resource_2jy7h"]
+[sub_resource type="Resource" id="Resource_t5nwg"]
 script = ExtResource("3_fct5o")
 self_handling = 2
 metadata/_custom_type_script = "uid://chu660wrfnmcc"
@@ -31,8 +32,8 @@ metadata/_custom_type_script = "uid://chu660wrfnmcc"
 [resource]
 script = ExtResource("3_qeisb")
 parameters_list = Dictionary[String, ExtResource("2_fct5o")]({
-"owner": SubResource("Resource_c01mt"),
-"this_card": SubResource("Resource_2jy7h")
+"owner": SubResource("Resource_qeisb"),
+"this_card": SubResource("Resource_t5nwg")
 })
 events_list = Dictionary[String, ExtResource("1_2jy7h")]({
 "discard_self": SubResource("Resource_jlsqs")

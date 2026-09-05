@@ -30,6 +30,7 @@ func instantiate_card(data: CardData, start_pos: Vector3 = position):
 	requested_card_owner.emit(new_card)
 	
 	new_card.card_data = data
+	
 	#tell listeners a new card object has been made
 	created_card.emit(new_card)
 	return new_card

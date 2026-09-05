@@ -45,6 +45,8 @@ the parameters and conditions. Then send signal that this event is running.
 func prepare_to_run():
 	print("Preparing to run event")
 	
+	print(params_to_update)
+	
 	for param in params_to_update:
 		#Loops through and makes all choices for parameters
 		

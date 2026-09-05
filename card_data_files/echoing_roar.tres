@@ -4,13 +4,31 @@
 [ext_resource type="Script" uid="uid://x0i1uyfprpdj" path="res://scripts/resources/card_data.gd" id="1_a40os"]
 [ext_resource type="Script" uid="uid://bu00k56a351ld" path="res://scripts/resources/effects/abstract_effects/base_effect/effect_resource.gd" id="2_72r2o"]
 [ext_resource type="Script" uid="uid://dyaefiaplcn8n" path="res://scripts/resources/event_parameters/event_param_resource.gd" id="2_kxa1e"]
+[ext_resource type="Script" uid="uid://bwnp248xicgpu" path="res://scripts/resources/effects/damage_effect.gd" id="3_42et8"]
 [ext_resource type="Script" uid="uid://bcy762hcj7wa7" path="res://scripts/resources/card_event_data.gd" id="5_p1kl5"]
+[ext_resource type="Script" uid="uid://l66kvw1qw48c" path="res://scripts/resources/event_parameters/target_param/being_target_param/being_target_filter_param.gd" id="5_xb174"]
+
+[sub_resource type="Resource" id="Resource_foe1e"]
+script = ExtResource("3_42et8")
+target_param_name = "target"
+_val = 3
+metadata/_custom_type_script = "uid://bwnp248xicgpu"
 
 [sub_resource type="Resource" id="Resource_p1kl5"]
 script = ExtResource("1_0fvhi")
+params_to_update = Array[String](["target"])
+effects = Array[ExtResource("2_72r2o")]([SubResource("Resource_foe1e")])
+
+[sub_resource type="Resource" id="Resource_0m7pk"]
+script = ExtResource("5_xb174")
+range_option = 2
+metadata/_custom_type_script = "uid://l66kvw1qw48c"
 
 [sub_resource type="Resource" id="Resource_42et8"]
 script = ExtResource("5_p1kl5")
+parameters_list = Dictionary[String, ExtResource("2_kxa1e")]({
+"target": SubResource("Resource_0m7pk")
+})
 events_list = Dictionary[String, ExtResource("1_0fvhi")]({
 "onActivation": SubResource("Resource_p1kl5")
 })

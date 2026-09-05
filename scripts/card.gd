@@ -40,7 +40,9 @@ var card_caster: Caster:
 		#set the new data as the data for this card
 		card_data = value
 		
-		print("new_card: %s" % card_data.cardName)
+		print("NEW_CARD: %s" % card_data.cardName)
+		
+		name = card_data.card_id
 		
 		# Set local variables from the card total so that data itself remains consistent
 		upkeep = card_data.upkeep_cost \
@@ -67,7 +69,7 @@ var card_caster: Caster:
 				backdrop_path = "res://assets/card_bases/blue_base_card.png"
 			COLOR.PURPLE:
 				backdrop_path = "res://assets/card_bases/purple_base_card.png"
-				
+		
 		var backdrop: TextureRect = spell_face.get_node("CardBackdrop")
 		backdrop.texture = load(backdrop_path)
 		
@@ -315,11 +317,11 @@ func _set_basic_events(wrapper: EventsWrapper):
 	for launcher in launchers:
 		launcher.event_triggered.connect(_on_event_triggered)
 	
+	basic_events.activate_all()
+	
 	for param in parameters:
 		if param is TargetParam:
 			param.update_range()
-	
-	basic_events.activate_all()
 
 '''
 Run when an event is created by an event launcher when triggered.
