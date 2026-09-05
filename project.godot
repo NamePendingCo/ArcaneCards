@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="ArcaneCombat"
-run/main_scene="uid://cdead6mxekkfm"
+run/main_scene="uid://bnoep4srgh1tb"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 

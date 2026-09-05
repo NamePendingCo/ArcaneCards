@@ -13,6 +13,7 @@ class DamageEffect extends BeingEffect:
 		var targets: Array[Being] = targets_param.targets
 		
 		for target in targets:
+			print("\ndamaging %s for %d" % [target, _val])
 			target.take_damage(get_final_val())
 
 	func _get_effect_id(): return EffectID.INFLICT_DAMAGE
