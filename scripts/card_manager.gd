@@ -24,12 +24,13 @@ Return:
 func instantiate_card(data: CardData, start_pos: Vector3 = position):
 	var new_card: Card = card_scene.instantiate()
 	new_card.position = start_pos
-	add_child(new_card)
 	
 	#This needs to be after add child or the owner will get reset I guess
 	requested_card_owner.emit(new_card)
 	
 	new_card.card_data = data
+	
+	add_child(new_card)
 	
 	#tell listeners a new card object has been made
 	created_card.emit(new_card)

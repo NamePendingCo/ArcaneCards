@@ -29,7 +29,7 @@ enum Location {
 }
 
 #THIS SHOULD BE USED *ONLY* TO COMPARE OWNERS. NEVER CALL THIS
-var card_caster: Caster:
+var card_caster: Caster = null:
 	set(val):
 		card_caster = val
 		if basic_events: basic_events.set_actor(val)
@@ -49,60 +49,17 @@ var card_caster: Caster:
 			if card_data.type != Enums.CardType.INSTANT else -1
 		activation_cost = card_data.activation_cost
 		
-		#set name in cardface
-		spell_face.get_node("Name").text = card_data.cardName
-		
-		#TODO Make this more efficient, probably by preloading these guys
-		var backdrop_path = ""
-		match card_data.color:
-			COLOR.NULL:
-				backdrop_path = "res://assets/Blank Card.png"
-			COLOR.RED:
-				backdrop_path = "res://assets/card_bases/red_base_card.png"
-			COLOR.ORANGE:
-				backdrop_path = "res://assets/card_bases/orange_base_card.png"
-			COLOR.YELLOW:
-				backdrop_path = "res://assets/card_bases/yellow_base_card.png"
-			COLOR.GREEN:
-				backdrop_path = "res://assets/card_bases/green_base_card.png"
-			COLOR.BLUE:
-				backdrop_path = "res://assets/card_bases/blue_base_card.png"
-			COLOR.PURPLE:
-				backdrop_path = "res://assets/card_bases/purple_base_card.png"
-		
-		var backdrop: TextureRect = spell_face.get_node("CardBackdrop")
-		backdrop.texture = load(backdrop_path)
-		
-		spell_face.get_node("Tier").text = ''
-		for i in range(card_data.tier):
-			spell_face.get_node("Tier").text += 'I'
-		
-		#creates the overview string and sets it on cardface
-		spell_face.get_node("Overview").text = '-- ' + Enums.colorString(card_data.color) + ' (' + Enums.subdomainString(card_data.subdomain) + ') -- ' + Enums.typeString(card_data.type) + ' --'
-		
-		spell_face.get_node("Effects").text = card_data.effects_text
-		
-		#reset the viewport so it reloads with the new info
-		_reload_cardface()
+		# Populates the cardface with the new card data if in tree
+		if is_node_ready():
+			_populate_cardface()
 		
 		#Store a new set of the events
 		_reset_event_data()
 
-var activation_cost: Array[int]:
-	set(ac):
-		activation_cost = ac
-		match card_data.tier:
-			1: spell_face.get_node("ActivationCost").text = str(ac[0])
-			2: spell_face.get_node("ActivationCost").text = str(ac[0]) + '/' + str(ac[1])
-			3: spell_face.get_node("ActivationCost").text = str(ac[0]) + '/' + str(ac[1]) + '/' + str(ac[2])
+var activation_cost: Array[int]
+
 var upkeep: int:
-	set(val):
-		#set upkeep cost on cardface
-		upkeep = min(val, -1)
-		if upkeep == -1:
-			spell_face.get_node("UpkeepCost").text = str("")
-		else:
-			spell_face.get_node("UpkeepCost").text = str(val)
+	set(val): upkeep = max(val, -1)
 
 #A wrapper for all universal card events
 var basic_events: EventsWrapper:
@@ -113,7 +70,7 @@ var events_wrapper: EventsWrapper = null:
 	set = _set_events
 
 #In game states
-var location: Location: 
+var location: Location = Location.NULL:
 	set(new_loc):
 		#This setter should be its own function, but Godot refused to cooperate
 		var old_loc = location
@@ -143,20 +100,22 @@ var position_locked: bool:
 @onready var spell_face: Control = $"Cardfront/SubViewport/CardFace"
 @onready var viewport: Viewport = $"Cardfront/SubViewport"
 
-var _rounds_spent_casting: int: 
+var _rounds_spent_casting: int:
 	set(val): _rounds_spent_casting = max(val, 0)
-var _delay_amount: int: 
+var _delay_amount: int:
 	set(val): _delay_amount = max(val, 0)
-var _quicken_amount: int: 
+var _quicken_amount: int:
 	set(val): _quicken_amount = max(val, 0)
 
 func _ready():
 	#Add to the card group
 	add_to_group(Constants.GROUP_CARD)
-	card_caster = null
-	location = Location.NULL
 	in_play = false
 	_reset_casting_data()
+	
+	#Populates the face of the card for loading
+	if card_data:
+		_populate_cardface()
 	
 	basic_events = BASIC_EVENTS.get_new_events_wrapper(card_caster, self)
 	
@@ -204,7 +163,7 @@ func progress_casting(progress_increment: int):
 		activate()
 
 '''
-In play to true. Set all events to active. Then run the activation event. 
+In play to true. Set all events to active. Then run the activation event.
 Finally move to conc circle if concentration card.
 '''
 func activate():
@@ -250,7 +209,7 @@ func mark_to_discard():
 	_request_loc_change(Location.DISCARD)
 
 '''
-Called by other classes to tell the card to be cast. 
+Called by other classes to tell the card to be cast.
 Params:
 	- slot: the slot the card should be cast to. -1 means first open
 '''
@@ -324,6 +283,61 @@ func _set_basic_events(wrapper: EventsWrapper):
 			param.update_range()
 
 '''
+Reloads the viewport for the cardface with new info.
+'''
+func _reload_cardface():
+	viewport.render_target_update_mode = SubViewport.UpdateMode.UPDATE_ONCE
+
+'''
+Sets the actual card face nodes to match the card data
+'''
+func _populate_cardface():
+	#TODO Make this more efficient, probably by preloading these guys
+	var backdrop_path = ""
+	match card_data.color:
+		COLOR.NULL:
+			backdrop_path = "res://assets/Blank Card.png"
+		COLOR.RED:
+			backdrop_path = "res://assets/card_bases/red_base_card.png"
+		COLOR.ORANGE:
+			backdrop_path = "res://assets/card_bases/orange_base_card.png"
+		COLOR.YELLOW:
+			backdrop_path = "res://assets/card_bases/yellow_base_card.png"
+		COLOR.GREEN:
+			backdrop_path = "res://assets/card_bases/green_base_card.png"
+		COLOR.BLUE:
+			backdrop_path = "res://assets/card_bases/blue_base_card.png"
+		COLOR.PURPLE:
+			backdrop_path = "res://assets/card_bases/purple_base_card.png"
+	
+	var backdrop: TextureRect = spell_face.get_node("CardBackdrop")
+	backdrop.texture = load(backdrop_path)
+	
+	#set name in cardface
+	spell_face.get_node("Name").text = card_data.cardName
+	
+	spell_face.get_node("Tier").text = ''
+	for i in range(card_data.tier):
+		spell_face.get_node("Tier").text += 'I'
+	
+	#creates the overview string and sets it on cardface
+	spell_face.get_node("Overview").text = '-- ' + Enums.colorString(card_data.color) + ' (' + Enums.subdomainString(card_data.subdomain) + ') -- ' + Enums.typeString(card_data.type) + ' --'
+	
+	spell_face.get_node("Effects").text = card_data.effects_text
+	
+	match card_data.tier:
+		1: spell_face.get_node("ActivationCost").text = "%d" % activation_cost[0]
+		2: spell_face.get_node("ActivationCost").text = "%d/%d" % [activation_cost[0], activation_cost[1]]
+		3: spell_face.get_node("ActivationCost").text = "%d/%d/%d" % [activation_cost[0], activation_cost[1], activation_cost[2]]
+	
+	if upkeep == -1:
+		spell_face.get_node("UpkeepCost").text = str("")
+	else:
+		spell_face.get_node("UpkeepCost").text = str(upkeep)
+	
+	_reload_cardface()
+
+'''
 Run when an event is created by an event launcher when triggered.
 '''
 func _on_event_triggered(event: Event):
@@ -336,9 +350,3 @@ Run when an event attached to this card signals it was run.
 func _on_event_run(isInvocation: bool):
 	if isInvocation:
 		invoked.emit()
-
-'''
-Reloads the viewport for the cardface with new info.
-'''
-func _reload_cardface():
-	viewport.render_target_update_mode = SubViewport.UpdateMode.UPDATE_ONCE
