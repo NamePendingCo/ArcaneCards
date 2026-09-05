@@ -48,15 +48,3 @@ actor: Actor = null, card: Card = null, event_name: String = "") -> EventLaunche
 	launcher.name = event_name + "_launcher"
 	
 	return launcher
-
-'''
-Very silly helper function that is used by an effect launcher
-'''
-func _repopulate_params(event: Event, param_dict: Dictionary[String, EventParam]):
-	var event_effects = event.effects
-	
-	for i in range(mini(effects.size(), event_effects.size())):
-		var effect_resource: EffectResource = effects[i]
-		var effect = event_effects[i]
-		
-		effect_resource.populate_params(effect, param_dict)
