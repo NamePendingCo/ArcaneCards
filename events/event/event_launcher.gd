@@ -29,7 +29,6 @@ var actor: Actor = null
 var parent_card: Card = null
 
 # list of events from this launcher in play.
-# right now, these are not deleted when event is freed. TODO
 var active_events: Array[Event] = []
 
 # When true, this event is treated as a regular game
@@ -114,6 +113,7 @@ func trigger():
 	event.parent_card = parent_card
 	
 	active_events.append(event)
+	event.event_terminated.connect(_on_event_terminated, CONNECT_ONE_SHOT)
 	event_triggered.emit(event)
 	
 	print("\tEvent is active")
@@ -132,11 +132,21 @@ func _activate_event():
 
 #In case its necessary--run when set to inactive (but not suppressed)
 func _deactivate_event():
-	pass
+	_cancel_events()
 
 #In case its necessary--run when set to suppressed
 func _suppress_event():
-	pass
+	_cancel_events()
+
+func _cancel_events():
+	for event in active_events:
+		event.terminate()
+
+'''
+Deletes an event from active list when its terminated
+'''
+func _on_event_terminated(event: Event):
+	active_events.erase(event)
 
 '''
 Very silly helper function that is used by an effect launcher

@@ -364,3 +364,9 @@ Gets connected to an event's trigger when it is activated.
 func _queue_event(event: Event):
 	print("Queuing %s" % event)
 	to_stack_list.append(event)
+	event.event_terminated.connect(_on_event_terminated, CONNECT_ONE_SHOT)
+
+func _on_event_terminated(event: Event):
+	to_stack_list.erase(event)
+	to_stack_after_list.erase(event)
+	event_stack.erase(event)

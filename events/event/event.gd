@@ -9,6 +9,7 @@ their pre-defined blueprint.
 '''
 
 signal event_running #when actually running
+signal event_terminated #notify that event is canceled or complete
 
 #The entity making the event occur
 var actor: Actor = null
@@ -73,6 +74,13 @@ func run():
 		print("\t%s" % effect)
 		effect.run()
 	
+	terminate()
+
+'''
+Cancel the event running.
+'''
+func terminate():
+	event_terminated.emit(self)
 	queue_free()
 
 '''
