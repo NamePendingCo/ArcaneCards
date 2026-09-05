@@ -1,4 +1,4 @@
 @tool
-class_name OnEffectEvent extends ListenerEvent
+class_name OnEffectEventResource extends EventResource
 
 #TODO

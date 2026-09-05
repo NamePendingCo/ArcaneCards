@@ -132,8 +132,6 @@ func phaseRoundLoad():
 	if round_num > 1:
 		#Moves first priority to end of priority
 		caster_priority_order.push_back(caster_priority_order.pop_front())
-	
-	advancePhase()
 
 '''
 The draw phase of the game. Any events that should occur go here.
@@ -251,7 +249,7 @@ func _on_event_activated(launcher: EventLauncher):
 	print("Launcher %s was activated" % launcher)
 	launcher.event_triggered.connect(_queue_event)
 	
-	if launcher is OnPhaseEvent:
+	if launcher is OnPhaseEventResource.OnPhaseLauncher:
 		var phase_signal: Signal
 		#Picks correct signal based on phase type
 		match launcher.phase:

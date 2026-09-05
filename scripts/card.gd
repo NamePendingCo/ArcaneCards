@@ -262,7 +262,6 @@ func _set_events(wrapper: EventsWrapper):
 	add_child(events_wrapper)
 	
 	var launchers: Array[EventLauncher] = wrapper.event_launchers.values()
-	var parameters: Array[EventParam] = wrapper.parameters.values()
 	
 	for launcher in launchers:
 		launcher.event_triggered.connect(_on_event_triggered)
@@ -272,7 +271,6 @@ func _set_basic_events(wrapper: EventsWrapper):
 	add_child(basic_events)
 	
 	var launchers: Array[EventLauncher] = wrapper.event_launchers.values()
-	var parameters: Array[EventParam] = wrapper.parameters.values()
 	
 	for launcher in launchers:
 		launcher.event_triggered.connect(_on_event_triggered)

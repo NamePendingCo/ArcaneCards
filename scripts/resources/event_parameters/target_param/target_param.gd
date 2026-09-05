@@ -65,7 +65,7 @@ func _get_targets_range()
 '''
 Designed to be overriden.
 '''
-func _set_targets_range(arr: Array[Variant]):
+func _set_targets_range(_arr: Array[Variant]):
 	updated_range.emit() #notify of update
 
 @abstract
@@ -74,7 +74,7 @@ func _get_targets()
 '''
 Designed to be overriden.
 '''
-func _set_targets(arr: Array[Variant]):
+func _set_targets(_arr: Array[Variant]):
 	updated_targets.emit() #notify of update
 
 '''

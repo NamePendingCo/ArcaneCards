@@ -9,6 +9,10 @@ class_name EventResource extends Resource
 @export
 var effects: Array[EffectResource]
 
+#if the event is a system event, which should go after others
+@export
+var is_system_event: bool = false
+
 '''
 Creates the event launcher for the event the resource defines
 Params:
@@ -19,6 +23,17 @@ Params:
 func set_up_event_launcher(param_dict: Dictionary[String, EventParam], 
 actor: Actor = null, card: Card = null, event_name: String = "") -> EventLauncher:
 	
+	#Create the actual event to duplicate
+	var event_template: Event = _build_event_template(param_dict, event_name)
+	
+	var launcher = EventLauncher.new(event_template, actor, card)
+	launcher.name = event_name + "_launcher"
+	
+	launcher.is_system_event = is_system_event
+	
+	return launcher
+
+func _build_event_template(param_dict: Dictionary[String, EventParam], event_name: String = "") -> Event:
 	#Create the actual event to duplicate
 	var event_template: Event = Event.new()
 	if event_name != "":
@@ -37,6 +52,8 @@ actor: Actor = null, card: Card = null, event_name: String = "") -> EventLaunche
 	
 	event_template.effects = event_effects
 	
+	event_template.is_system_event = is_system_event
+	
 	#Build the list of parameters to update
 	var updating_params_list: Array[EventParam] = []
 	for param_name in params_to_update:
@@ -44,7 +61,4 @@ actor: Actor = null, card: Card = null, event_name: String = "") -> EventLaunche
 	
 	event_template.params_to_update = updating_params_list
 	
-	var launcher = EventLauncher.new(event_template, actor, card)
-	launcher.name = event_name + "_launcher"
-	
-	return launcher
+	return event_template
