@@ -22,3 +22,4 @@ card_generator/current_cards/
 
 # Ignore OSE files
 .DS_Store
+/addons/godot-git-plugin
