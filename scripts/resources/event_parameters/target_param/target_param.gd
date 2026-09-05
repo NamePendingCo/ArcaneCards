@@ -43,9 +43,9 @@ based on whatever mechanism is expected for the param.
 func update_range():
 	if not is_chosen:
 		_targets = _targets_range
-	print("\nRange update for: %s" % self)
-	print("\tRange: %s " % str(_targets_range))
-	print("\ttargets: %s" % str(_targets))
+	#print("\nRange update for: %s" % self)
+	#print("\tRange: %s " % str(_targets_range))
+	#print("\ttargets: %s" % str(_targets))
 
 '''
 Overrides function. Calls super, then clears the targets list.

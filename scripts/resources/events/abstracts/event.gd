@@ -72,6 +72,8 @@ func run():
 	for effect in effects:
 		print("\t%s" % effect)
 		effect.run()
+	
+	queue_free()
 
 '''
 Calculates the priority score for the event for determining. 
