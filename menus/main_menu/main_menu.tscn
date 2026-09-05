@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://cakc0u1hpwn2g"]
+
+[ext_resource type="Script" uid="uid://depsivroxitx5" path="res://menus/menu.gd" id="1_1nwmw"]
+[ext_resource type="Theme" uid="uid://1k0noqr6ojd" path="res://menus/themes/main_menu_theme.tres" id="1_xbn2l"]
+
+[node name="MainMenu" type="Control" unique_id=1238128444]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_1nwmw")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=346934763]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.01079999, 0.53118014, 0.54, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1894434336]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=376475272]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1753756478]
+layout_mode = 2
+size_flags_vertical = 6
+theme = ExtResource("1_xbn2l")
+theme_override_font_sizes/font_size = 48
+text = "Arcane Combat Demo"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ButtonsVBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=745996591]
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="StartButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonsVBox" unique_id=607859769]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_xbn2l")
+text = "Start"
+
+[node name="QuitButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonsVBox" unique_id=863956656]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_xbn2l")
+text = "Quit"
