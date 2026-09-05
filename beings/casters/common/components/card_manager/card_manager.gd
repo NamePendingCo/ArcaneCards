@@ -5,7 +5,7 @@ signal created_card(card: Card)
 #used to request the parent to mark themself as owner of card
 signal requested_card_owner(card: Card)
 
-const CARD_SCENE_PATH = "res://scenes/card.tscn"
+const CARD_SCENE_PATH = "res://cards/card/card.tscn"
 
 var card_scene: PackedScene
 

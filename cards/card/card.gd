@@ -1,7 +1,7 @@
 class_name Card extends Node3D
 
 const COLOR = Enums.SpellColor
-const BASIC_EVENTS: EventData = preload("res://system_events/basic_card_functions.tres")
+const BASIC_EVENTS: EventData = preload("res://cards/card_data/basic_card_functions.tres")
 
 const DISCARD_SELF_KEY = "discard_self"
 

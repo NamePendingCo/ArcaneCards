@@ -5,7 +5,7 @@ signal mana_updated(new_val)
 
 signal paying_upkeep #send out before paying upkeep
 
-const CASTER_EVENTS_PATH = "res://system_events/caster_basic_events.tres"
+const CASTER_EVENTS_PATH = "res://beings/casters/common/caster_basic_events.tres"
 const INITIAL_DRAW_KEY = "initial_draw"
 const STANDARD_DRAW_KEY = "standard_draw"
 const CASTING_SELECTION_KEY = "casting_selection"

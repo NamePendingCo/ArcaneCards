@@ -10,7 +10,7 @@ const MIN_SLOTS = 1
 const MAX_SLOTS = 5
 
 #for creating new card slots
-const CARD_SLOT_PATH = "res://scenes/CardSlot.tscn"
+const CARD_SLOT_PATH = "res://beings/casters/common/components/slotted_card_arrays/card_slot/card_slot.tscn"
 var card_slot_scene : PackedScene
 
 # Called when the node enters the scene tree for the first time.
