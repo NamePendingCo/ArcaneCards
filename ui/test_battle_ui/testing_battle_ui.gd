@@ -12,7 +12,7 @@ Test UI used for running battle simulation. Not at all a final product.
 @onready var enter_button: Button = $Selection/Submit
 
 # the battle manager for the game
-@export var battle_manager: BattleManager
+@export var battle: Battle
 
 # The current player whose stuff is being interacted with
 @export var acting_player: PlayerCaster:
@@ -115,9 +115,9 @@ func submit_decision():
 Starts the game. Triggered by button press.
 '''
 func _start_game():
-	if battle_manager != null:
+	if battle != null:
 		start_button.hide()
-		battle_manager.startMatch()
+		battle.startMatch()
 	else:
 		print("No battle manager found.")
 

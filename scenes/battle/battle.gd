@@ -1,4 +1,4 @@
-class_name BattleManager extends Node3D
+class_name Battle extends Node3D
 
 #Signals to notify about phase starts
 signal round_load_phase_began #likely won't ever need this one

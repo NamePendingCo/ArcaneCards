@@ -2,7 +2,7 @@
 class_name OnPhaseEventResource extends ListeningEventResource
 
 #The phase the event occurs on
-@export var phase: BattleManager.RoundPhase = BattleManager.RoundPhase.DRAW
+@export var phase: Battle.RoundPhase = Battle.RoundPhase.DRAW
 
 func set_up_event_launcher(param_dict: Dictionary[String, EventParam], 
 actor: Actor = null, card: Card = null, event_name: String = "") -> EventLauncher:
@@ -25,13 +25,13 @@ func _validate_property(property: Dictionary) -> void:
 	if property.name == "phase":
 		#Set range to only allow for phase values that aren't the base
 		property.hint_string = EventEnums.getEnumValsHintString(\
-		BattleManager.RoundPhase, BattleManager.RoundPhase.DRAW)
+		Battle.RoundPhase, Battle.RoundPhase.DRAW)
 	elif property.name == "isRunAfter":
 		property.usage &= ~PROPERTY_USAGE_EDITOR
 
 class OnPhaseLauncher extends ListeningLauncher:
 
-	var phase: BattleManager.RoundPhase = BattleManager.RoundPhase.DRAW
+	var phase: Battle.RoundPhase = Battle.RoundPhase.DRAW
 
 	func _init(event: Event, my_actor: Actor = null, card: Card = null):
 		super(event, my_actor, card)
