@@ -35,6 +35,13 @@ func get_new_events_wrapper(actor: Actor = null, card: Card = null) -> EventsWra
 # Private methods
 #================================================
 
+'''
+Helper function, sets up all parameters that are defined in the event data.
+Param:
+	- param_resource: the resource defining the parameters to set up
+	- actor: the actor who these params are attached to
+	- card: the card who these params are attached to
+'''
 func _set_up_parameters(param_resources: Dictionary[String, EventParamResource], 
 actor: Actor, card: Card) -> Dictionary[String, EventParam]:
 	var params: Dictionary[String, EventParam] = {}
@@ -49,6 +56,14 @@ actor: Actor, card: Card) -> Dictionary[String, EventParam]:
 	
 	return params
 
+'''
+Helper function. Sets up the event launchers defined in the data.
+Params:
+	event_resources: all resource that should be set up
+	params: the parameters to attach to the effects in the events
+	actor: the actor who will be performing these events
+	card: the card the events are attached to
+'''
 func _set_up_event_launchers(event_resources: Dictionary[String, EventResource], 
 params: Dictionary[String, EventParam], actor: Actor, card: Card) -> Dictionary[String, EventLauncher]:
 	

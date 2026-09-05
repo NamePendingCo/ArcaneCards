@@ -33,6 +33,13 @@ actor: Actor = null, card: Card = null, event_name: String = "") -> EventLaunche
 	
 	return launcher
 
+'''
+Creates the actual event template that will be duplicated by the launcher.
+Params: 
+	- param_dict: A dictionary of parameters to attach to the event in its
+	param_to_update value
+	- event_name: The name of the event
+'''
 func _build_event_template(param_dict: Dictionary[String, EventParam], event_name: String = "") -> Event:
 	#Create the actual event to duplicate
 	var event_template: Event = Event.new()

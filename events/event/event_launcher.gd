@@ -55,6 +55,12 @@ var launcher_state: EventLauncherState:
 			EventLauncherState.SUPRESSED:
 				_suppress_event()
 
+'''
+Params:
+	- event: the template to use to create each event launcher
+	- my_actor: the actor who owns the launcher
+	- card: the card who owns the launcher
+'''
 func _init(event: Event, my_actor: Actor = null, card: Card = null):
 	actor = my_actor
 	print("\nInitializing new launcher")

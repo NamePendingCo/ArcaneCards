@@ -46,10 +46,16 @@ func set_card(card: Card):
 		param.actor = card.card_caster
 		param.parent_card = card
 
+'''
+Activates all effect launchers attached to the wrapper.
+'''
 func activate_all():
 	for event_name in event_launchers:
 		event_launchers[event_name].launcher_state = EventLauncher.EventLauncherState.ACTIVE
 
+'''
+Deactivates all effect launchers attached to the wrapper.
+'''
 func deactivate_all():
 	for event_name in event_launchers:
 		event_launchers[event_name].launcher_state = EventLauncher.EventLauncherState.INACTIVE

@@ -10,16 +10,19 @@ var effect_id: EffectID:
 	get: return _get_effect_id()
 	set(val): return
 
+#The string name for the effect ID
 var effect_string: String:
 	get: return EffectsEnum.EffectID.keys()[effect_id]
 	set(val): return
 
+#Any modifirs applied to the value of the effect
 var modifiers: Array[EffectOperator]
 
 #================================================
 # Private vars
 #================================================
 
+#The actual value of the actual effect
 @export var _val: int:
 	set(new_val): _val = clamp(new_val, _min_val, _max_val)
 
@@ -32,15 +35,6 @@ var modifiers: Array[EffectOperator]
 #also used for ranges when making comparisons
 @export var _max_val: int = INT32_MAX:
 	set(new_val): _max_val = max(_min_val, INT32_MAX)
-
-#================================================
-# General methods
-#================================================
-
-#func _init(val: int, min_val: int = 0, max_val: int = INT32_MAX):
-	#_min_val = min_val
-	#_max_val = max_val
-	#_val = val
 
 #================================================
 # Public methods
