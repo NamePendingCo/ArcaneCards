@@ -39,7 +39,7 @@ func _ready():
 	
 	#Connect all card creation to _register_card
 	var casters = get_tree().get_nodes_in_group(Constants.GROUP_CASTER)
-	print(casters)
+	print("\nCasters: %s" % str(casters))
 	for caster: Caster in casters:
 		caster.card_manager.created_card.connect(_register_card)
 		
@@ -47,7 +47,7 @@ func _ready():
 		for event_name in caster.caster_events_wrapper.event_launchers:
 			var launcher = caster.caster_events_wrapper.event_launchers[event_name]
 			_register_event_launcher(launcher)
-			print("%s: %s" % [event_name, launcher.actor])
+			print("\t%s: %s" % [event_name, launcher.actor])
 
 #================================================
 # Public methods
@@ -57,7 +57,7 @@ func _ready():
 All game start and setup stuff should be done here
 '''
 func startMatch():
-	print("Starting match...")
+	print("\nStarting match...")
 	round_num = 0 #starts at zero so it can increase every round
 	match_in_progress = true
 	
@@ -125,9 +125,9 @@ func phaseRoundLoad():
 	round_load_phase_began.emit()
 	
 	round_num += 1 #Increases the round number
-	print("==============")
+	print("\n==============")
 	print("Round %d" % round_num)
-	print("==============")
+	print("==============\n")
 	
 	if round_num > 1:
 		#Moves first priority to end of priority
@@ -184,12 +184,12 @@ func phaseCasting():
 		being = being as Being #Casts to ensure is a being
 		decision_funcs.append(being.make_casting_phase_decisions)
 	
-	print("Preparing to await")
+	print("\nPreparing to await selections...")
 	
 	#Waits for all decisions to be completed
 	await casting_decision_coroutines.multi_function(decision_funcs)
 	
-	print("After await")
+	print("await complete")
 	
 	#Reveal all decisions made once ready
 	for being in beings:
@@ -248,6 +248,7 @@ Params:
 	- event: an event
 '''
 func _on_event_activated(launcher: EventLauncher):
+	print("Launcher %s was activated" % launcher)
 	launcher.event_triggered.connect(_queue_event)
 	
 	if launcher is OnPhaseEvent:
@@ -271,6 +272,10 @@ func _register_card(card: Card):
 	if not card.events_wrapper.event_launchers:
 		return
 	
+	for event_name in card.basic_events.event_launchers:
+		var launcher: EventLauncher = card.basic_events.event_launchers[event_name]
+		_register_event_launcher(launcher)
+	
 	for event_name in card.events_wrapper.event_launchers:
 		var launcher: EventLauncher = card.events_wrapper.event_launchers[event_name]
 		_register_event_launcher(launcher)
@@ -282,6 +287,7 @@ Params:
 '''
 func _register_event_launcher(launcher: EventLauncher):
 	launcher.event_activated.connect(_on_event_activated.bind(launcher))
+	print("\nRegistered %s in battle_manager" % launcher)
 
 '''
 Takes a list of events, sorts them based on the sort function, 
@@ -297,6 +303,7 @@ func _stack_event_list(event_list: Array[Event]):
 	event_list.clear()
 
 func _initial_stack_setup():
+	print("to stack list: %s" % str(to_stack_list))
 	_stack_event_list(to_stack_list)
 	_stack_event_list(to_stack_after_list)
 
@@ -336,10 +343,9 @@ process_triggered_events. If true, run event. If false, ignore and loop
 func _process_event_stack():
 	_initial_stack_setup()
 	while not event_stack.is_empty():
-		print("Processing event stack...")
-		print("events:")
+		print("\nProcessing event stack...")
 		for event in event_stack:
-			print("%s: %s" % [event.actor, event])
+			print("\t%s: %s" % [event.actor, event])
 		
 		#checks the top item on stack. If no new events stacked, run it
 		var event = event_stack.pop_back()
@@ -358,4 +364,5 @@ Adds an event to the queue so it can be triggered in order.
 Gets connected to an event's trigger when it is activated.
 '''
 func _queue_event(event: Event):
+	print("Queuing %s" % event)
 	to_stack_list.append(event)

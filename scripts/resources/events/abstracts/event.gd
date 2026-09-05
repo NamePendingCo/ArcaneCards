@@ -43,9 +43,9 @@ Have the event go through and make all selections for
 the parameters and conditions. Then send signal that this event is running.
 '''
 func prepare_to_run():
-	print("Preparing to run event")
+	print("\nPreparing to run event: %s" % self)
 	
-	print(params_to_update)
+	print("\tParams to update: %s" % str(params_to_update))
 	
 	for param in params_to_update:
 		#Loops through and makes all choices for parameters
@@ -65,11 +65,10 @@ Runs the event and all effects that should occur as part of it. Does not
 run if the event is not active.
 '''
 func run():
-	print("Running Event: %s" % name)
+	print("\nRunning Event: %s with effects:" % name)
 	
 	for effect in effects:
-		print(effect)
-		print(Effect.EffectID.keys()[effect.effect_id])
+		print("\t%s" % effect)
 		effect.run()
 
 '''

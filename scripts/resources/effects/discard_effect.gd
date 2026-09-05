@@ -13,9 +13,8 @@ class DiscardEffect extends CardEffect:
 	func run():
 		var targets: Array[Card] = targets_param.targets
 		
-		print("Discard effect")
-		print("Target:")
-		print(targets_param)
+		print("\nDiscard effect")
+		print("\tTargets: %s" % str(targets_param))
 		
 		for target in targets:
 			target.mark_to_discard()

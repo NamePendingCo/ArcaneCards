@@ -57,31 +57,30 @@ var launcher_state: EventLauncherState:
 
 func _init(event: Event, my_actor: Actor = null, card: Card = null):
 	actor = my_actor
-	print("launcher init")
-	print(actor)
+	print("\nInitializing new launcher")
+	print("\tactor: %s" % actor)
 	parent_card = card
-	print(parent_card)
+	print("\tparent_card: %s" % parent_card)
 	_event_scene = event
 	params_to_update = event.params_to_update
-	print(params_to_update)
+	print("\tparams to update: %s" % str(params_to_update))
 	add_child(event)
 
-func _ready():	
+func _ready():
+	print("\nReadying launcher: %s" % self)
 	effect_params = []
 	
 	for effect in _event_scene.effects:
 		effect_params.append(effect.get_params())
-		print(effect.effect_id)
-		print(effect)
 	
-	print(effect_params)
+	print("\teffect params: %s " % str(effect_params))
 	
 	packed_event = PackedScene.new()
 	
 	packed_event.pack(_event_scene)
 	
 	_event_scene.queue_free()
-	print("Launcher ready")
+	print("\tLauncher ready")
 
 
 #================================================
@@ -93,11 +92,12 @@ Usually connected with a signal. When called, signals to the battle_manager
 to be added to the event stack.
 '''
 func trigger():
-	print("Triggered Event %s for %s which is %s" % [self, actor.name, EventLauncherState.keys()[launcher_state]])
+	print("\nTriggered Event %s for %s which is %s" % [self, actor.name, EventLauncherState.keys()[launcher_state]])
 	#Only can trigger if active
 	
 	if launcher_state != EventLauncherState.ACTIVE:
 		#Does nothing if event is not active
+		print("\tInactive, doing nothing")
 		return
 	
 	var event = packed_event.instantiate() as Event
@@ -110,12 +110,11 @@ func trigger():
 	active_events.append(event)
 	event_triggered.emit(event)
 	
-	print("Event is active")
+	print("\tEvent is active")
 	
-	print("Effects:")
-	print(event.effects)
+	print("\tParams for effects:")
 	for effect: Effect in event.effects:
-		print(effect.get_params())
+		print("\t\t%s params: %s" % [str(effect), str(effect.get_params())])
 
 #================================================
 # Private methods

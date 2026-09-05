@@ -40,8 +40,6 @@ var card_caster: Caster = null:
 		#set the new data as the data for this card
 		card_data = value
 		
-		print("NEW_CARD: %s" % card_data.cardName)
-		
 		name = card_data.card_id
 		
 		# Set local variables from the card total so that data itself remains consistent
@@ -107,6 +105,9 @@ var _delay_amount: int:
 var _quicken_amount: int:
 	set(val): _quicken_amount = max(val, 0)
 
+func _init():
+	basic_events = BASIC_EVENTS.get_new_events_wrapper(card_caster, self)
+
 func _ready():
 	#Add to the card group
 	add_to_group(Constants.GROUP_CARD)
@@ -117,8 +118,8 @@ func _ready():
 	if card_data:
 		_populate_cardface()
 	
-	basic_events = BASIC_EVENTS.get_new_events_wrapper(card_caster, self)
-	
+	#Ready the basic events to be used
+	basic_events.activate_all()
 	for param_name in basic_events.parameters:
 		if basic_events.parameters[param_name] is TargetParam:
 			var param: TargetParam = basic_events.parameters[param_name]
@@ -156,10 +157,10 @@ func progress_casting(progress_increment: int):
 	var progress_total = _rounds_spent_casting + _quicken_amount
 	var wait_total = card_data.tier + _delay_amount
 	
-	print("Casting for card %s progressed to %d" % [card_data.cardName, progress_total])
+	print("\nCasting for card %s progressed to %d" % [card_data.cardName, progress_total])
 	
 	if progress_total >= wait_total:
-		print("Activating!")
+		print("\tActivating!")
 		activate()
 
 '''
@@ -275,12 +276,6 @@ func _set_basic_events(wrapper: EventsWrapper):
 	
 	for launcher in launchers:
 		launcher.event_triggered.connect(_on_event_triggered)
-	
-	basic_events.activate_all()
-	
-	for param in parameters:
-		if param is TargetParam:
-			param.update_range()
 
 '''
 Reloads the viewport for the cardface with new info.

@@ -30,10 +30,14 @@ func instantiate_card(data: CardData, start_pos: Vector3 = position):
 	
 	new_card.card_data = data
 	
-	add_child(new_card)
+	print("\nNew Card Created: %s" % new_card)
 	
 	#tell listeners a new card object has been made
 	created_card.emit(new_card)
+	
+	#Bring the card into the fold
+	add_child(new_card)
+	
 	return new_card
 
 '''

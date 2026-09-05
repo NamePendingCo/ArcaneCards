@@ -41,8 +41,6 @@ static func flagIntToEnum(value: int, enum_list: Dictionary={}):
 	if not enum_list.is_empty() and (enum_list.values()[0] == 0):
 		place_counter = 0
 	while value > 0:
-		print("value: %d" % value)
-		print("PC: %d " % place_counter)
 		if value & 1 == 1: #if has a 1 in this place, add to list
 			if enum_list.is_empty():
 				vals.append(place_counter)

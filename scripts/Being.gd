@@ -13,11 +13,8 @@ var _health: int
 var health = _health:
 	get: return _health
 	set(val):
-		print("old health: %d" % _health) 
-		print("change val: %d" % val)
 		_health = max(0, val)
 		health_updated.emit(_health)
-		print("new health: %d" % _health)
 		health_depleted.emit()
 
 var attack_strength: int
