@@ -66,10 +66,13 @@ Loads the battle scene. Eventually this should get some parameters in here
 which should set things like the casters/beings and ruleset.
 '''
 func load_battle():
-	_raise_load_screen()
+	_raise_load_screen(0.5)
 	remove_scene(loaded_scene)
 	var battle_resource = await _load_scene_async(SCENE_PATHS[BATTLE_SCENE_KEY])
-	await get_tree().create_timer(2).timeout #THIS LINE IS FOR DEMO ONLY. DELETE LATER
+	await get_tree().create_timer(1).timeout #THIS LINE IS FOR DEMO ONLY. DELETE LATER
+	scene_populate_progress.emit(0.5)
+	await get_tree().create_timer(1).timeout #THIS LINE IS FOR DEMO ONLY. DELETE LATER
+	scene_populate_progress.emit(1)
 	
 	var battle = battle_resource.instantiate()
 	add_child(battle)
@@ -102,9 +105,10 @@ func _check_loading_status():
 	var status = ResourceLoader.load_threaded_get_status(loading_scene_path, progress)
 	
 	if status == ResourceLoader.ThreadLoadStatus.THREAD_LOAD_LOADED:
-		scene_loaded.emit()
+		scene_load_progress.emit(progress[0])
 		has_scene_loading = false
 		loading_scene_path = ""
+		scene_loaded.emit()
 	elif status == ResourceLoader.ThreadLoadStatus.THREAD_LOAD_IN_PROGRESS:
 		#If still in progress, announce scene
 		scene_load_progress.emit(progress[0])
@@ -115,7 +119,11 @@ Param:
 	should be filled from loading the scene vs populating it.
 '''
 func _raise_load_screen(load_populate_ratio: float = 0):
-	var load_screen = load_screen_resource.instantiate()
+	var load_screen: LoadScreen = load_screen_resource.instantiate()
+	load_screen.progress_ratio = load_populate_ratio
+	
+	scene_load_progress.connect(load_screen.update_progress)
+	scene_populate_progress.connect(load_screen.update_progress.bind(LoadScreen.ProgressType.POPULATE))
 	
 	scene_entered.connect(remove_scene.bind(load_screen), CONNECT_ONE_SHOT)
 	add_child(load_screen)

@@ -3,8 +3,9 @@
 [ext_resource type="Script" uid="uid://dloww8vscs14o" path="res://menus/load_screen/load_screen.gd" id="1_5qflk"]
 [ext_resource type="Theme" uid="uid://1k0noqr6ojd" path="res://menus/themes/main_menu_theme.tres" id="1_uhnwm"]
 
-[node name="CanvasLayer" type="CanvasLayer" unique_id=1621211562 node_paths=PackedStringArray("tool_tip_label")]
+[node name="LoadScreen" type="CanvasLayer" unique_id=1621211562 node_paths=PackedStringArray("progress_bar", "tool_tip_label")]
 script = ExtResource("1_5qflk")
+progress_bar = NodePath("MarginContainer/VBoxContainer/ProgressBar")
 tool_tip_label = NodePath("MarginContainer/VBoxContainer/ToolTipLabel")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1042822931]
@@ -29,9 +30,13 @@ theme_override_constants/margin_bottom = 48
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=870423216]
 layout_mode = 2
 
-[node name="ToolTipLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=685241458]
+[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer" unique_id=1772105936]
 layout_mode = 2
 size_flags_vertical = 10
+
+[node name="ToolTipLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=685241458]
+layout_mode = 2
+size_flags_vertical = 8
 theme = ExtResource("1_uhnwm")
 text = "<tip>"
 horizontal_alignment = 1
