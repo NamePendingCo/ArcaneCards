@@ -57,9 +57,8 @@ Params:
 	- do_exit_scene: if true, exit the scene. If false, load over scene
 '''
 func load_menu(menu_key: String, do_exit_scene: bool=true):
-	var menu_resource: PackedScene = load(MENU_PATHS[menu_key])
-	
-	var menu: Menu = menu_resource.instantiate()
+	#TODO
+	pass
 
 '''
 Loads the battle scene. Eventually this should get some parameters in here
