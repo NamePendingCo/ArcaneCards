@@ -64,6 +64,7 @@ enum CardType { ## The type of card this is.
 	COMPONENT ## Components cards.
 }
 
+## Array of all concentration card types.
 const CONC_TYPES = [CardType.ENCHANTMENT, CardType.WARD, CardType.CURSE]
 
 #Convert type to a string format
