@@ -1,7 +1,11 @@
+@tool
 @abstract
 class_name BeingValEnumParamResource extends EnumParamResource
 
-var being_param_name: String
+## This is a string that is used to set the parameter after complete.
+## If set, this Enum param can get the value from each card when updated. 
+## If left blank, value won't ever be grabbed.
+@export var being_param_name: String
 
 #Sets the being param for all unfinished
 func complete_unfinished_params(params_dict: Dictionary[String, EventParam]):
