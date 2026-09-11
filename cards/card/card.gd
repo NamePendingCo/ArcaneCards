@@ -28,6 +28,11 @@ enum Location {
 	ATTACHED
 }
 
+'''Static dictionary used to count the number of cards of each
+name there are so that they can have unique names
+'''
+static var card_counts: Dictionary[String, int] = {}
+
 #THIS SHOULD BE USED *ONLY* TO COMPARE OWNERS. NEVER CALL THIS
 var card_caster: Caster = null:
 	set(val):
@@ -40,7 +45,7 @@ var card_caster: Caster = null:
 		#set the new data as the data for this card
 		card_data = value
 		
-		name = card_data.card_id
+		_set_name()
 		
 		# Set local variables from the card total so that data itself remains consistent
 		upkeep = card_data.upkeep_cost \
@@ -104,6 +109,12 @@ var _delay_amount: int:
 	set(val): _delay_amount = max(val, 0)
 var _quicken_amount: int:
 	set(val): _quicken_amount = max(val, 0)
+
+'''
+Static method that resets the number of cards being tracked
+'''
+static func _reset_card_counts():
+	card_counts.clear()
 
 func _init():
 	basic_events = BASIC_EVENTS.get_new_events_wrapper(card_caster, self)
@@ -242,6 +253,24 @@ default will emit something empty the caster can ignore.
 '''
 func _request_loc_change(new_loc: Location, args=[]):
 	requested_loc_change.emit(new_loc, args)
+
+'''
+Sets name to be the id, the number item it is, and the
+'''
+func _set_name():
+	if not card_data:
+		name = "unnamed_card"
+	
+	var id = card_data.card_id if card_data else "blank"
+	
+	var owner_name = card_caster.name if card_caster else "[unowned]"
+	
+	var id_and_owner = "%s_%s" % [id, owner_name]
+	
+	var count = card_counts.get_or_add(id_and_owner, 0)
+	
+	name = "%s_%d" % [id_and_owner, count]
+	card_counts[id_and_owner] += 1
 
 '''
 Set all casting data back to 0.
