@@ -16,20 +16,18 @@ var is_system_event: bool = false
 @export
 var is_invocation: bool = false
 
-'''
-Creates the event launcher for the event the resource defines
-Params:
-	- param_dict: the parameters to assign to the effects in the card
-	- actor: optional for setting the actor of the event
-	- card: optional for setting the card this event is for
-'''
+## Creates the event launcher for the event the resource defines.[br][br]
+## Params:[br]
+## - param_dict: the parameters to assign to the effects in the card.[br]
+## - actor: optional for setting the actor of the event.[br]
+## - card: optional for setting the card this event is for.
 func set_up_event_launcher(param_dict: Dictionary[String, EventParam], 
 actor: Actor = null, card: Card = null, event_name: String = "") -> EventLauncher:
 	
 	#Create the actual event to duplicate
 	var event_template: Event = _build_event_template(param_dict, event_name)
 	
-	var launcher = EventLauncher.new(event_template, actor, card)
+	var launcher = EventLauncher.new_event_launcher(event_template, actor, card)
 	launcher.name = event_name + "_launcher"
 	
 	launcher.is_system_event = is_system_event
@@ -37,13 +35,11 @@ actor: Actor = null, card: Card = null, event_name: String = "") -> EventLaunche
 	
 	return launcher
 
-'''
-Creates the actual event template that will be duplicated by the launcher.
-Params: 
-	- param_dict: A dictionary of parameters to attach to the event in its
-	param_to_update value
-	- event_name: The name of the event
-'''
+## Creates the actual event template that will be duplicated by the launcher.[br][br]
+## Params: [br]
+## - param_dict: A dictionary of parameters to attach to the event in its.[br]
+## - param_to_update value.[br]
+## - event_name: The name of the event.
 func _build_event_template(param_dict: Dictionary[String, EventParam], event_name: String = "") -> Event:
 	#Create the actual event to duplicate
 	var event_template: Event = Event.new()
