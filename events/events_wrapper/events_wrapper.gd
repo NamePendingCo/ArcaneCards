@@ -3,20 +3,27 @@ class_name EventsWrapper extends Node
 ## Wrapper for a collection of events and parameters. Useful for
 ## attaching to cards and beings.
 
-var event_launchers: Dictionary[String, EventLauncher]
-var parameters: Dictionary[String, EventParam]
+## The list of event launchers in this event set.
+@export var event_launchers: Dictionary[String, EventLauncher]
 
-func _init(launchers: Dictionary[String, EventLauncher], params: Dictionary[String, EventParam]):
-	event_launchers = launchers
-	parameters = params
+## The list of parameters in this event set.
+@export var parameters: Dictionary[String, EventParam]
+
+static func new_events_wrapper(launchers: Dictionary[String, EventLauncher], params: Dictionary[String, EventParam])\
+ -> EventsWrapper:
+	var wrapper = EventsWrapper.new()
+	wrapper.event_launchers = launchers
+	wrapper.parameters = params
 	
-	for key in event_launchers:
-		var launcher = event_launchers[key]
-		add_child(launcher)
+	for key in wrapper.event_launchers:
+		var launcher = wrapper.event_launchers[key]
+		wrapper.add_child(launcher)
 		
-	for key in parameters:
-		var param = parameters[key]
-		add_child(param)
+	for key in wrapper.parameters:
+		var param = wrapper.parameters[key]
+		wrapper.add_child(param)
+	
+	return wrapper
 
 ## Sets the actor that owns the events.
 func set_actor(actor: Actor):
