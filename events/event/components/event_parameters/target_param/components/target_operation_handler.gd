@@ -1,47 +1,44 @@
 class_name TargetOperationHandler extends RefCounted
 
-'''
-Perform an operation between one or
-two different target params. Uses the targets, not their
-ranges.
-'''
+## Perform an operation between one or two different target params. 
+## Uses the targets, not their ranges.
 
 enum SetOperation {
-	IDENTITY,
-	INVERT_RANGE, #all options from range not in target
-	UNION,
-	INTERSECTION,
-	DIFFERENCE
+	IDENTITY, ## Copies the targets into the range.
+	INVERT_RANGE, ## All options from range not in target.
+	UNION, ## Any target in either.
+	INTERSECTION, ## Targets that are in both.
+	DIFFERENCE ## Targets in A that are NOT in B.
 }
 
 var operation: SetOperation
 
 var range: Array = []
 
-#The first list of targets to be tracking
+## The first list of targets to be tracking
 var targets_arr_a: Array = []:
 	set(val):
 		targets_arr_a = val
 		update_range_output()
 
-#The second list of targets to be tracking
+## The second list of targets to be tracking
 var targets_arr_b: Array = []:
 	set(val):
 		targets_arr_b = val
 		update_range_output()
 
-func _init(parent: TargetParam, param_a: TargetParam, param_b: TargetParam = null):
-	set_params(parent, param_a, param_b)
+static func new_target_op_handler(parent: TargetParam, param_a: TargetParam, param_b: TargetParam = null) -> TargetOperationHandler:
+	var handler = TargetOperationHandler.new()
+	handler.set_params(parent, param_a, param_b)
+	return handler
 
-'''
-Sets the arrays to match the given parameters for the operation.
-Subscribes the parent operation parameter to the range updates if the
-parent is persistent.
-Params:
-	- parent: the operation TargetParam which is running this function
-	- param_a: The first parameter to be used for the operation
-	- param_b: optional, the second parameter to be used for operation, if necessary
-'''
+## Sets the arrays to match the given parameters for the operation.[br]
+## Subscribes the parent operation parameter to the range updates if the
+## parent is persistent.[br][br]
+## Params:[br]
+## - parent: the operation TargetParam which is running this function[br]
+## - param_a: The first parameter to be used for the operation[br]
+## - param_b: optional, the second parameter to be used for operation, if necessary
 func set_params(parent: TargetParam, param_a: TargetParam, param_b: TargetParam = null):
 	#Set the targets_arr_a to match the targets of a
 	targets_arr_a = param_a.targets
@@ -66,10 +63,8 @@ func set_params(parent: TargetParam, param_a: TargetParam, param_b: TargetParam 
 				if parent.persistent:
 					param_b.updated_targets.connect(parent.update_range_output)
 
-'''
-Regenerates the output range array based on the existing arrays
-such that it can be accessed by the parent.
-'''
+## Regenerates the output range array based on the existing arrays
+## such that it can be accessed by the parent.
 func update_range_output():
 	match operation:
 		#Set range to match targets of param A

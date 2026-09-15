@@ -14,7 +14,7 @@ var param_b_name: String
 #================================================
 
 func build_param(my_actor: Actor, my_card: Card) -> EventParam:
-	var param = CardTargetOperationParam.new(my_actor, my_card, is_chosen, 
+	var param = CardTargetOperationParam.new_card_target_op_param(my_actor, my_card, is_chosen, 
 	num_targets_min, num_targets_max, persistent)
 	
 	#Saves param so it can be populated later
@@ -48,20 +48,22 @@ class CardTargetOperationParam extends CardTargetParam:
 	
 	var operation_handler: TargetOperationHandler
 
-	func _init(my_actor: Actor, my_card: Card, chosen: bool, 
-	targets_min: int=1, targets_max: int=1, persist=false):
-		super(my_actor, my_card, chosen, targets_min, targets_max, persist)
-
+	## Static constructor.
+	static func new_card_target_op_param(my_actor: Actor, my_card: Card, chosen: bool, 
+	targets_min: int=1, targets_max: int=1, persist=false) -> CardTargetOperationParam:
+		var param = CardTargetOperationParam.new()
+		param._set_target_base_vals(my_actor, my_card, chosen, targets_min, targets_max, persist)
+		
+		return param
+	
 	func update_range():
 		targets_range = operation_handler.range
 		super()
 
-	'''
-	When give params for the operation, set the internal arrays
-	to match the params.
-	Params:
-		- param a: must be set
-		- param b: optionally can be set
-	'''
+	## When give params for the operation, set the internal arrays
+	## to match the params.[br][br]
+	## Params:[br]
+	## - param a: must be set[br]
+	## - param b: optionally can be set
 	func set_params(param_a: CardTargetParam, param_b: CardTargetParam = null):
 		operation_handler.set_params(self, param_a, param_b)

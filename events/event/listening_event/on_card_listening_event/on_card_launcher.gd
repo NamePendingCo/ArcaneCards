@@ -1,5 +1,5 @@
 @tool
-class_name CardListenerEventLauncher extends ListeningEventResource
+class_name CardListenerEventResource extends ListeningEventResource
 
 enum CardTriggers {
 	INVOKE,
@@ -16,10 +16,8 @@ actor: Actor = null, card: Card = null, event_name: String = "") -> EventLaunche
 	
 	return launcher
 
-'''
-Used for improved use of resource on backend side. Sets which properties are
-visible and what params they take.
-'''
+## Used for improved use of resource on backend side. Sets which properties are
+## visible and what params they take.
 func _validate_property(property: Dictionary) -> void:
 	if property.name == "is_run_after":
 		#is run after should be shown if activate or invoke is true
@@ -39,7 +37,7 @@ class CardListenerLauncher extends ListeningLauncher:
 		#Reset the connections every time the target list is updated
 		triggering_cards.updated_targets.connect(reset_connections)
 
-	#Subscribe to the correct signal for the listener
+	## Subscribe to the correct signal for the listener.
 	func _connect_to_card(card: Card):
 		match triggerEvent:
 			CardTriggers.INVOKE:
@@ -52,10 +50,8 @@ class CardListenerLauncher extends ListeningLauncher:
 				isRunAfter = false
 				card.casted.connect(trigger)
 
-	'''
-	Disconnects from all existing connections. Then connect
-	to the relevant signal for each card in the target list.
-	'''
+	## Disconnects from all existing connections. Then connect
+	## to the relevant signal for each card in the target list.
 	func reset_connections():
 		#first disconnect all current triggers
 		disconnect_all_triggers()

@@ -1,13 +1,11 @@
 class_name EventLauncher extends Node
 
-'''
-EventLaunchers are factories that create Events to be added to the
-stack. They each hold template information that creates the event
-and then "launch" it when the time comes.
-'''
+## EventLaunchers are factories that create Events to be added to the
+## stack. They each hold template information that creates the event
+## and then "launch" it when the time comes.
 
-signal event_activated #When the event is enabled
-signal event_triggered(event) #emited when the event is successfully triggered
+signal event_activated ## When the event is enabled.
+signal event_triggered(event) ## emited when the event is successfully triggered.
 
 enum EventLauncherState {
 	INACTIVE = 0,
@@ -15,29 +13,28 @@ enum EventLauncherState {
 	SUPRESSED = 2
 }
 
-@export var _event_scene: Event #Event scene to duplicate
-var packed_event: PackedScene #A packed scene used to load the event
+@export var _event_scene: Event ## Event scene to duplicate
+@export var packed_event: PackedScene ## A packed scene used to load the event
 
-var params_to_update: Array[EventParam] #Params updated when event runs
+var params_to_update: Array[EventParam] ## Params updated when event runs
 
-#An array and dictionary used to repopulate effect params, which are lost
-#during instantiation
+## An array and dictionary used to repopulate effect params, which are lost
+## during instantiation.
 var effect_params: Array[Dictionary]
 
-#Owners of the events
-var actor: Actor = null
-var parent_card: Card = null
+var actor: Actor = null ## Being/Caster that owns the event.
+var parent_card: Card = null ## Card this event is attached to.
 
-# list of events from this launcher in play.
+## list of events from this launcher in play.
 var active_events: Array[Event] = []
 
-# When true, this event is treated as a regular game
-# driven event and not an action triggered during play.
+## When true, this event is treated as a regular game
+## driven event and not an action triggered during play.
 var is_system_event: bool = false
-# Whether this event should count as an invocation for its card
+## Whether this event should count as an invocation for its card
 var is_invocation: bool = true
 
-#Tracks the current state of the event launcher
+## Tracks the current state of the event launcher
 var launcher_state: EventLauncherState:
 	set(val):
 		if launcher_state == val:
@@ -54,22 +51,16 @@ var launcher_state: EventLauncherState:
 			EventLauncherState.SUPRESSED:
 				_suppress_event()
 
-'''
-Params:
-	- event: the template to use to create each event launcher
-	- my_actor: the actor who owns the launcher
-	- card: the card who owns the launcher
-'''
-func _init(event: Event, my_actor: Actor = null, card: Card = null):
-	actor = my_actor
-	print("\nInitializing new launcher")
-	print("\tactor: %s" % actor)
-	parent_card = card
-	print("\tparent_card: %s" % parent_card)
-	_event_scene = event
-	params_to_update = event.params_to_update
-	print("\tparams to update: %s" % str(params_to_update))
-	add_child(event)
+## Static constructor for event launchers.[br][br]
+## Params:[br]
+## - event: the template to use to create each event launcher.[br]
+## - my_actor: the actor who owns the launcher.[br]
+## - card: the card who owns the launcher
+static func new_event_launcher(event: Event, my_actor: Actor = null, card: Card = null) -> EventLauncher:
+	var launcher = EventLauncher.new()
+	launcher._set_basic_values(event, my_actor, card)
+	
+	return launcher
 
 func _ready():
 	print("\nReadying launcher: %s" % self)
@@ -92,11 +83,9 @@ func _ready():
 # Public methods
 #================================================
 
-'''
-Usually connected with a signal. When called, signals to the battle_manager
-to be added to the event stack.
-'''
-func trigger():
+## Usually connected with a signal. When called, signals to the battle_manager
+## to be added to the event stack.
+func trigger() -> void:
 	print("\nTriggered Event %s for %s which is %s" % [self, actor.name, EventLauncherState.keys()[launcher_state]])
 	#Only can trigger if active
 	
@@ -126,15 +115,29 @@ func trigger():
 # Private methods
 #================================================
 
-#In case its necessary--run when set to active
+## Helper function for constructor that sets the core values of the launcher.
+func _set_basic_values(event: Event, 
+my_actor: Actor = null, card: Card = null):
+	actor = my_actor
+	print("\nInitializing new launcher")
+	print("\tactor: %s" % actor)
+	parent_card = card
+	print("\tparent_card: %s" % parent_card)
+	_event_scene = event
+	params_to_update = event.params_to_update
+	print("\tparams to update: %s" % str(params_to_update))
+	add_child(event)
+	
+
+## In case its necessary--run when set to active.
 func _activate_event():
 	event_activated.emit()
 
-#In case its necessary--run when set to inactive (but not suppressed)
+## In case its necessary--run when set to inactive (but not suppressed).
 func _deactivate_event():
 	_cancel_events()
 
-#In case its necessary--run when set to suppressed
+## In case its necessary--run when set to suppressed.
 func _suppress_event():
 	_cancel_events()
 
@@ -142,15 +145,11 @@ func _cancel_events():
 	for event in active_events:
 		event.terminate()
 
-'''
-Deletes an event from active list when its terminated
-'''
+## Deletes an event from active list when its terminated.
 func _on_event_terminated(event: Event):
 	active_events.erase(event)
 
-'''
-Very silly helper function that is used by an effect launcher
-'''
+## Very silly helper function that is used by an effect launcher.
 func _repopulate_params(event: Event):
 	var event_effects = event.effects
 	

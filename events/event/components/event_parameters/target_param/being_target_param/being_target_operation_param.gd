@@ -3,20 +3,17 @@ class_name BeingTargetOperationResource extends BeingTargetResource
 
 const SetOperation = TargetOperationHandler.SetOperation
 
-@export
-var operation: SetOperation:
+@export var operation: SetOperation:
 	set(val):
 		operation = val
 		notify_property_list_changed()
 
-@export
-var param_a_name: String 
+@export var param_a_name: String 
 
-@export
-var param_b_name: String
+@export var param_b_name: String
 
 func build_param(actor: Actor, card: Card):
-	var param = BeingTargetOperationParam.new(actor, card, operation, is_chosen, 
+	var param = BeingTargetOperationParam.new_being_target_op_param(actor, card, operation, is_chosen, 
 	num_targets_min, num_targets_max, persistent)
 	
 	#Saves param so it can be populated later
@@ -49,16 +46,12 @@ class BeingTargetOperationParam extends BeingTargetParam:
 
 	var operation_handler: TargetOperationHandler
 
-	'''
-	When give params for the operation, set the internal arrays
-	to match the params.
-	Params:
-		- param a: must be set
-		- param b: optionally can be set
-	'''
-	func _init(my_actor: Actor, my_card: Card, set_op: SetOperation, chosen: bool, 
-	targets_min: int = 1, targets_max: int = 1, persist=false):
-		super(my_actor, my_card, chosen, targets_min, targets_max, persist)
+	static func new_being_target_op_param(my_actor: Actor, my_card: Card, set_op: SetOperation, chosen: bool, 
+	targets_min: int = 1, targets_max: int = 1, persist=false) -> BeingTargetOperationParam:
+		var param = BeingTargetOperationParam.new()
+		param._set_target_base_vals(my_actor, my_card, chosen, targets_min, targets_max, persist)	
+		return param
+	
 
 	func set_params(param_a: BeingTargetParam, param_b: BeingTargetParam = null):
 		operation_handler.set_params(self, param_a, param_b)
