@@ -25,7 +25,6 @@ metadata/_custom_type_script = "uid://br71qxrnafy7b"
 script = ExtResource("1_146d4")
 params_to_update = Array[String](["target", "self"])
 effects = Array[ExtResource("2_aty1s")]([SubResource("Resource_jfux3"), SubResource("Resource_yihlo")])
-is_system_event = null
 is_invocation = true
 
 [sub_resource type="Resource" id="Resource_vuwc2"]
