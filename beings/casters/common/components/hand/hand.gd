@@ -1,19 +1,18 @@
 class_name Hand extends CasterElementBase
 
-#shorthand access to this enum val
+## The hand object which tracks all cards in a caster's hand.
+
+## shorthand access to this enum val
 const IN_HAND = Card.Location.HAND
 
 var hand: Array[Card] = []
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	pass
 
 #TODO: Delete this or change to return list of IDs
-'''
-Utility function just to get the list of cards in the hand
-Returns: a string of the list of card names
-'''
+## Utility function just to get the list of cards in the hand
+## Returns: a string of the list of card names.
 func list_cards_in_hand():
 	var card_names = []
 	for card in hand:
@@ -33,9 +32,7 @@ func remove_card_from_hand(card: Card):
 		hand.erase(card)
 		_update_hand_positions()
 
-'''
-Updates the positions of all cards in the hand based on their sizes
-'''
+## Updates the positions of all cards in the hand based on their sizes.
 func _update_hand_positions():
 	for i in range(hand.size()):
 		#get offset of the card relative to hand
@@ -47,13 +44,11 @@ func _update_hand_positions():
 		#move the card into new position
 		hand[i].animate_move_card(new_pos)
 
-'''
-Calculates the position a card should be assigned based on its index:
-Params:
-	- index: the index of a card in the hand
-Returns:
-	- offset: Vector3 for the relative position of the card to the hand origin
-'''
+## Calculates the position a card should be assigned based on its index: [br][br]
+## Params: [br]
+## - index: the index of a card in the hand. [br][br]
+## Returns: [br]
+## - offset: Vector3 for the relative position of the card to the hand origin.
 func calculate_card_offset(index: int):
 	# Takes card with then gives space on either side
 	var card_space = Constants.CARD_WIDTH + 0.2 

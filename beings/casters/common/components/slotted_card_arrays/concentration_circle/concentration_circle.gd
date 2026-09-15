@@ -1,15 +1,18 @@
 class_name ConcentrationCircle extends SlottedCardArray
 
+## The concentration circle of a caster, which tracks all 
+## concentration cards in play.
+## 
+## Extends [SlottedCardArray].
+
 func _get_relevant_location():
 	return Card.Location.CONCENTRATION_CIRCLE
 
-'''
-Alias for add card to array for concentration circle
-'''
+## Alias for add card to array for concentration circle
 func add_card_to_conc_circle(card: Card, slot_num: int=-1):
 	_add_card_to_array(card, slot_num)
 
-#TODO: Consider if should be kept
+## TODO: Consider if should be kept
 func get_circle_upkeep():
 	var upkeep_total = 0
 	
@@ -18,14 +21,12 @@ func get_circle_upkeep():
 		
 	return upkeep_total
 
-'''
-Used to trigger signals before upkeep
-'''
+## Used to trigger signals before upkeep.
 func prepare_pay_circle_upkeep():
 	for slot in card_slots:
 		slot.attached_card.prepare_pay_upkeep()
 
-#TODO: Probably will get replaced
+## TODO: Probably will get replaced
 func pay_circle_upkeep():
 	var upkeep_total = 0
 	

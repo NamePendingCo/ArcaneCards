@@ -1,19 +1,21 @@
 class_name CastingWell extends SlottedCardArray
 
-signal num_slots_updated(new_num_slots) #Announce when slot num changes
+## The casting well object, which tracks all cards a caster is casting.
+##
+## Extends [SlottedCardArray].
 
-const SPACE_BETWEEN_SLOTS = 0.8
+signal num_slots_updated(new_num_slots) ## Announce when slot num changes
 
-#constants for number of slots
-const DEFAULT_SLOTS = 3
-const MIN_SLOTS = 1
-const MAX_SLOTS = 5
+const SPACE_BETWEEN_SLOTS = 0.8 ## Distance in pixels between well slots.
 
-#for creating new card slots
+const DEFAULT_SLOTS = 3 ## Base number of card slots in well.
+const MIN_SLOTS = 1 ## Max slots well allows.
+const MAX_SLOTS = 5 ## Min slots well allows.
+
+## Scene path for creating new card slots.
 const CARD_SLOT_PATH = "res://beings/casters/common/components/slotted_card_arrays/card_slot/card_slot.tscn"
 var card_slot_scene : PackedScene
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	card_slot_scene = preload(CARD_SLOT_PATH)
 	for i in range(DEFAULT_SLOTS):
@@ -22,9 +24,7 @@ func _ready():
 func _get_relevant_location() -> Card.Location:
 	return Card.Location.CASTING_WELL
 
-'''
-Adds a slot to the casting well
-'''
+## Adds a slot to the casting well.
 func add_slot():
 	if num_slots + 1 > MAX_SLOTS:
 		print("Slots cannot be increased above " + str(MAX_SLOTS))
@@ -41,9 +41,7 @@ func add_slot():
 	card_slots.push_back(new_slot)
 	num_slots_updated.emit(num_slots)
 
-'''
-Removes the last slot from the slots list and destroys it.
-'''
+## Removes the last slot from the slots list and destroys it.
 func remove_slot():
 	if num_slots - 1 < MIN_SLOTS:
 		print("Slots cannot be lowered below " + str(MIN_SLOTS))
@@ -70,9 +68,7 @@ func set_slots(new_num_slots: int):
 			#removes slot if too many
 			remove_slot()
 
-'''
-Alias for add card to array for casting well
-'''
+## Alias for add card to array for casting well
 func add_card_to_well(card: Card, slot_num: int=-1):
 	card.location = Card.Location.CASTING_WELL
 	return _add_card_to_array(card, slot_num)
@@ -80,13 +76,11 @@ func add_card_to_well(card: Card, slot_num: int=-1):
 func move_card_in_well(slot_num_from: int, slot_num_to: int):
 	_move_between_slots(card_slots[slot_num_from], card_slots[slot_num_to])
 
-'''
-Takes a list of cards and arranges them into the available
-casting slots, in order. If there are not enough slots available,
-ignores the last parts of the list.
-Params:
-	- cards: The ordered list of cards to attach, no repeats
-'''
+## Takes a list of cards and arranges them into the available
+## casting slots, in order. If there are not enough slots available,
+## ignores the last parts of the list. [br][br]
+## Params: [br]
+## - cards: The ordered list of cards to attach, no repeats
 func set_casting_cards(passed_cards: Array[Card]):
 	
 	print("selected cards to cast:")
@@ -114,9 +108,7 @@ func set_casting_cards(passed_cards: Array[Card]):
 		if card != null:
 			add_card_to_well(card, index)
 
-'''
-Moves a card from one slot to another.
-'''
+## Moves a card from one slot to another.
 func _move_between_slots(slot_from: CardSlot, slot_to: CardSlot):
 	var card = slot_from.detach_card()
 	

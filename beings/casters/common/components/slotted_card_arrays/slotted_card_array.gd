@@ -1,11 +1,15 @@
 @abstract
 class_name SlottedCardArray extends CasterElementBase
 
-#actual tracker for card slots. Each hold reference to card in well
+## Parent class for casting well and concentration circle.
+## 
+## Allows for tracking a batch of cards in a bunch.
+
+## actual tracker for card slots. Each hold reference to card in well
 @export
 var card_slots: Array[CardSlot]
 
-#easy variable for tracking size of card_slots
+## Easy variable for tracking size of card_slots
 var num_slots: int:
 	get: return card_slots.size()
 	set(val): pass
@@ -27,13 +31,11 @@ func get_first_card_in_array():
 			return slot.attached_card
 	return null
 
-'''
-Gets the slot a card is in. Or -1 if its not in a slot.
-Params:
-	card: the card to check
-Returns:
-	the slot number of the card, or -1 if not present
-'''
+## Gets the slot a card is in. Or -1 if its not in a slot. [br][br]
+## Params: [br]
+## - card: the card to check [br][br]
+## Returns: [br]
+## - the slot number of the card, or -1 if not present.
 func get_cards_slot(card: Card):
 	var slot_num = 0
 	for slot in card_slots:
@@ -47,13 +49,11 @@ func get_cards_slot(card: Card):
 # Private methods
 #================================================
 
-'''
-Helper function that attaches a card to a card slot
-Params:
-	- card: a card
-	- slot: a card slot
-Returns: True on success, false on failure
-'''
+## Helper function that attaches a card to a card slot. [br][br]
+## Params: [br]
+## - card: a card. [br]
+## - slot: a card slot. [br][br]
+## Returns: True on success, false on failure
 func _attach_card_to_slot(card: Card, slot: CardSlot):
 	if not slot.has_card_attached:
 		#must change the card's location first
@@ -66,14 +66,12 @@ func _attach_card_to_slot(card: Card, slot: CardSlot):
 		print(notif_str % [card.card_data.cardName, str(slot), str(self)])
 		return false
 
-'''
-Adds a card to the zone. Defaults to first available slot unless specified
-Params:
-	- card: Card to be added to the well
-	- slot_num: the index of the slot, or -1 if first available slot
-Return:
-	- True if card could be added, False if it could not
-'''
+## Adds a card to the zone. Defaults to first available slot unless specified. [br][br]
+## Params: [br]
+## - card: Card to be added to the well. [br]
+## - slot_num: the index of the slot, or -1 if first available slot. [br][br]
+## Return: [br]
+## - True if card could be added, False if it could not.
 func _add_card_to_array(card: Card, slot_num: int=-1):
 	if slot_num == -1:
 		for slot in card_slots:
