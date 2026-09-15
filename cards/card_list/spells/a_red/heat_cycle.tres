@@ -1,0 +1,61 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://bkw4dngvfae2y"]
+
+[ext_resource type="Script" uid="uid://d4jf752axi6qo" path="res://events/event/event_resource.gd" id="1_d1lg2"]
+[ext_resource type="Script" uid="uid://bu00k56a351ld" path="res://events/effects/effect_resource.gd" id="2_7w3k1"]
+[ext_resource type="Script" uid="uid://dyaefiaplcn8n" path="res://events/event/components/event_parameters/event_param_resource.gd" id="3_lbq2y"]
+[ext_resource type="Script" uid="uid://bwnp248xicgpu" path="res://events/effects/being_effect/effects/damage_effect.gd" id="3_s1ltm"]
+[ext_resource type="Script" uid="uid://l66kvw1qw48c" path="res://events/event/components/event_parameters/target_param/being_target_param/being_target_filter_param.gd" id="4_7w3k1"]
+[ext_resource type="Script" uid="uid://cfm3r7ie5r2jg" path="res://events/effects/being_effect/effects/draw_effect.gd" id="4_f7w55"]
+[ext_resource type="Script" uid="uid://bcy762hcj7wa7" path="res://cards/card_data/card_event_data.gd" id="4_s1ltm"]
+[ext_resource type="Script" uid="uid://x0i1uyfprpdj" path="res://cards/card_data/card_data.gd" id="5_f7w55"]
+
+[sub_resource type="Resource" id="Resource_7w3k1"]
+script = ExtResource("3_s1ltm")
+target_param_name = "target"
+_val = 1
+metadata/_custom_type_script = "uid://bwnp248xicgpu"
+
+[sub_resource type="Resource" id="Resource_lbq2y"]
+script = ExtResource("4_f7w55")
+target_param_name = "self"
+_val = 1
+metadata/_custom_type_script = "uid://cfm3r7ie5r2jg"
+
+[sub_resource type="Resource" id="Resource_nx0kk"]
+script = ExtResource("1_d1lg2")
+params_to_update = Array[String](["self", "target"])
+effects = Array[ExtResource("2_7w3k1")]([SubResource("Resource_7w3k1"), SubResource("Resource_lbq2y")])
+is_invocation = true
+
+[sub_resource type="Resource" id="Resource_d1lg2"]
+script = ExtResource("4_7w3k1")
+range_option = 1
+metadata/_custom_type_script = "uid://l66kvw1qw48c"
+
+[sub_resource type="Resource" id="Resource_pbkal"]
+script = ExtResource("4_7w3k1")
+range_option = 2
+metadata/_custom_type_script = "uid://l66kvw1qw48c"
+
+[sub_resource type="Resource" id="Resource_mahmq"]
+script = ExtResource("4_s1ltm")
+parameters_list = Dictionary[String, ExtResource("3_lbq2y")]({
+"self": SubResource("Resource_d1lg2"),
+"target": SubResource("Resource_pbkal")
+})
+events_list = Dictionary[String, ExtResource("1_d1lg2")]({
+"onActivation": SubResource("Resource_nx0kk")
+})
+
+[resource]
+script = ExtResource("5_f7w55")
+card_id = "heat_cycle"
+cardName = "Heat Cycle"
+color = 1
+subdomain = 11
+type = 1
+tier = 1
+activation_cost = Array[int]([0])
+effects_text = "Draw 1. Deal 1 damage to a target."
+event_data = SubResource("Resource_mahmq")
+metadata/_custom_type_script = "uid://x0i1uyfprpdj"

@@ -1,0 +1,50 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://d2n5shcpvrktb"]
+
+[ext_resource type="Script" uid="uid://d4jf752axi6qo" path="res://events/event/event_resource.gd" id="1_aos1w"]
+[ext_resource type="Script" uid="uid://bu00k56a351ld" path="res://events/effects/effect_resource.gd" id="2_hmtgj"]
+[ext_resource type="Script" uid="uid://bwnp248xicgpu" path="res://events/effects/being_effect/effects/damage_effect.gd" id="3_aos1w"]
+[ext_resource type="Script" uid="uid://dyaefiaplcn8n" path="res://events/event/components/event_parameters/event_param_resource.gd" id="4_k6s4b"]
+[ext_resource type="Script" uid="uid://l66kvw1qw48c" path="res://events/event/components/event_parameters/target_param/being_target_param/being_target_filter_param.gd" id="5_vi333"]
+[ext_resource type="Script" uid="uid://bcy762hcj7wa7" path="res://cards/card_data/card_event_data.gd" id="6_qo2pb"]
+[ext_resource type="Script" uid="uid://x0i1uyfprpdj" path="res://cards/card_data/card_data.gd" id="7_r0c0u"]
+
+[sub_resource type="Resource" id="Resource_inqkf"]
+script = ExtResource("3_aos1w")
+target_param_name = "target"
+_val = 1
+metadata/_custom_type_script = "uid://bwnp248xicgpu"
+
+[sub_resource type="Resource" id="Resource_cy4iv"]
+script = ExtResource("1_aos1w")
+params_to_update = Array[String](["target"])
+effects = Array[ExtResource("2_hmtgj")]([SubResource("Resource_inqkf")])
+is_invocation = true
+
+[sub_resource type="Resource" id="Resource_s1ltm"]
+script = ExtResource("5_vi333")
+range_option = 2
+metadata/_custom_type_script = "uid://l66kvw1qw48c"
+
+[sub_resource type="Resource" id="Resource_1g7tn"]
+script = ExtResource("6_qo2pb")
+parameters_list = Dictionary[String, ExtResource("4_k6s4b")]({
+"target": SubResource("Resource_s1ltm")
+})
+events_list = Dictionary[String, ExtResource("1_aos1w")]({
+"onActivation": SubResource("Resource_cy4iv")
+})
+
+[resource]
+script = ExtResource("7_r0c0u")
+card_id = "chilly_breeze"
+cardName = "Chilly Breeze"
+color = 1
+subdomain = 12
+type = 1
+tier = 1
+activation_cost = Array[int]([2])
+effects_text = "Deal 1 damage to a target and place a 0-Cost Counter on a Red card in your casting well.
+
+Empower 1: Deal 1 more damage."
+event_data = SubResource("Resource_1g7tn")
+metadata/_custom_type_script = "uid://x0i1uyfprpdj"
