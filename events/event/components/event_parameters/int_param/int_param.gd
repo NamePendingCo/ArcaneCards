@@ -21,5 +21,17 @@ class_name IntParam extends EventParam
 func get_keyed_value(key: String):
 	return value_dict.get(key, value)
 
+#================================================
+# Private methods
+#================================================
+
 func _set_keyed_value(key: String, val: int):
 	value_dict[key] = clamp(val, _min_val, _max_val)
+
+func _set_int_base_vals(actor: Actor, card: Card, chosen: bool, 
+	default: int, min: int, max: int):
+		_set_base_vals(actor, card, chosen)
+		value = default
+		_min_val = min
+		_max_val = max
+	
