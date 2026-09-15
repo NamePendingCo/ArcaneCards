@@ -76,8 +76,8 @@ func declare_paying_upkeep():
 	paying_upkeep.emit() #notify battle manager
 	my_conc_circle.prepare_pay_circle_upkeep() #notify cards in circle
 
-## Adds a card to the hand.[br][br]
-## Params:[br]
+## Adds a card to the hand. [br][br]
+## Params: [br]
 ## - card: the card to move
 func move_to_hand_card(card: Card):
 	my_hand.add_card_to_hand(card)
