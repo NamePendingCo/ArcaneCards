@@ -7,12 +7,10 @@ class_name PlayerCaster extends Caster
 # Public methods
 #================================================
 
-'''
-Has the player make the card selection during casting phase.
-
-Utilizes the UI to make the selection. VERY TEMPORARY UI system,
-so all of this should be replaced once we have a more proper functionality.
-'''
+## Has the player make the card selection during casting phase. [br][br]
+## 
+## Utilizes the UI to make the selection. VERY TEMPORARY UI system,
+## so all of this should be replaced once we have a more proper functionality.
 func make_casting_phase_decisions():
 	if ui == null:
 		#Choose randomly if no UI is set
@@ -22,9 +20,7 @@ func make_casting_phase_decisions():
 	
 	_casting_selection.update_range()
 	
-	'''
-	Inner lambda to use to compare two cards for sorting the list more easily.
-	'''
+	## Inner lambda to use to compare two cards for sorting the list more easily.
 	var comp_casting_cards = func(card_a: Card, card_b: Card):
 		if card_b.location == Card.Location.CASTING_WELL:
 			if card_a.location != Card.Location.CASTING_WELL:
@@ -81,7 +77,7 @@ func make_casting_phase_decisions():
 # Private methods
 #================================================
 
-#TODO, actually interface with the selection screen
+## TODO, actually interface with the selection screen
 func _chose_being_from_menu(choice_indices: PackedInt32Array, param: BeingTargetParam):
 	var choices: Array[Being] = []
 	for index in choice_indices:
@@ -89,9 +85,7 @@ func _chose_being_from_menu(choice_indices: PackedInt32Array, param: BeingTarget
 	
 	param.targets = choices
 
-'''
-Overrides.
-'''
+## Overrides.
 func _choose_being_from_range(param: BeingTargetParam):
 	print("Choosing being")
 	#Just copy if the range isn't big enough
@@ -115,10 +109,8 @@ func _choose_being_from_range(param: BeingTargetParam):
 	
 	param.targets = targets
 
-'''
-Overrides.
-'''
-#TODO: Actually interface with current UI
+## Overrides.
+## TODO: Actually interface with current UI
 func _choose_card_from_range(param: CardTargetParam):
 	#Just copy if the range isn't big enough
 	if param.targets_range.size() <= param.num_targets_min:
