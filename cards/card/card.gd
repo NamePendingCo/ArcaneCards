@@ -1,34 +1,40 @@
 class_name Card extends Node3D
 
+## The class that represents a basic card object.
+## 
+## This may eventually need to be split off to have a lot of this
+## functionality apply only to spell cards because right now
+## it is very big and is very spell specific. Components
+## and any other types of cards will throw a fit.
+
 const COLOR = Enums.SpellColor
 const BASIC_EVENTS: EventData = preload("res://cards/card_data/basic_card_functions.tres")
 
 const DISCARD_SELF_KEY = "discard_self"
 
-#Core signals to denote state change
-signal changed_location(new_state, old_state)
-signal activated
-signal invoked
+signal changed_location(new_state, old_state) ## Card's location has changed.
+signal activated ## Card was activated.
+signal invoked ## Card was invoked.
 
 signal marked_to_destroy
 
-#signals to tell the caster to move this card's location
+## signals to tell the caster to move this card's location
 signal requested_loc_change(new_loc: Location)
 
-signal payment_declared(type) #Eventually set param type with an enum
+signal payment_declared(type) ## Eventually set param type with an enum
 
-enum Location {
-	NULL,
-	HAND,
-	CASTING_WELL,
-	CONCENTRATION_CIRCLE,
-	DECK, #For cards just leaving or reentering the deck
-	DISCARD, #For cards entering the discard or being taken out
-	ANULLED,
-	ATTACHED
+enum Location { ## Any locations a card can be in.
+	NULL, ## Location unset. Should only be for new cards.
+	HAND, ## Card is in a caster's hand.
+	CASTING_WELL, ## Card is in the casting well.
+	CONCENTRATION_CIRCLE, ## Card is in the concentration circle.
+	DECK, ## For cards just leaving or reentering the deck.
+	DISCARD, ## For cards entering the discard or being taken out.
+	ANULLED, ## Card was annulled and is leaving or re-entering play.
+	ATTACHED ## Card is attached to another card.
 }
 
-#THIS SHOULD BE USED *ONLY* TO COMPARE OWNERS. NEVER CALL THIS
+## THIS SHOULD BE USED *ONLY* TO COMPARE OWNERS. NEVER CALL THIS
 var card_caster: Caster = null:
 	set(val):
 		card_caster = val
@@ -59,15 +65,15 @@ var activation_cost: Array[int]
 var upkeep: int:
 	set(val): upkeep = max(val, -1)
 
-#A wrapper for all universal card events
+## A wrapper for all universal card events
 var basic_events: EventsWrapper:
 	set = _set_basic_events
 
-#A wrapper for all event and parameter info unique to this card
+## A wrapper for all event and parameter info unique to this card
 var events_wrapper: EventsWrapper = null:
 	set = _set_events
 
-#In game states
+## In game states
 var location: Location = Location.NULL:
 	set(new_loc):
 		#This setter should be its own function, but Godot refused to cooperate
@@ -83,14 +89,13 @@ var location: Location = Location.NULL:
 		
 		changed_location.emit(new_loc, old_loc)
 
-# Whether the card is in play or not
 var _in_play: bool
-var in_play: bool:
+var in_play: bool: ## Whether the card is in play or not
 	get: return _in_play
 	set(val): return
 
-#when true, card can be dragged around by player. When false, cannot move
-#for now, assume always can while in hand or state is null. Probably fix later
+## when true, card can be dragged around by player. When false, cannot move
+## for now, assume always can while in hand or state is null. Probably fix later
 var position_locked: bool:
 	get: return location <= Location.HAND
 	set(val): pass
@@ -129,28 +134,22 @@ func _ready():
 # Public Methods
 #================================================
 
-'''
-Has the card object destroy itself.
-'''
+## Has the card object destroy itself.
 func self_destruct():
 	marked_to_destroy.emit()
 	self.queue_free()
 
 #TODO: Add flipping support here perhaps?
-'''
-Runs a tween to move the card to a new location
-Params:
-	- new_pos: the new location for the card
-'''
+## Runs a tween to move the card to a new location.[br][br]
+## Params:[br]
+## - new_pos: the new location for the card
 func animate_move_card(new_pos: Vector3):
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "global_position", new_pos, 0.2)
 	await tween.finished
 
-'''
-Increases the casting stage. If it is ready to activate,
-activate the card.
-'''
+## Increases the casting stage. If it is ready to activate,
+## activate the card.
 func progress_casting(progress_increment: int):
 	_rounds_spent_casting += progress_increment
 	
@@ -163,10 +162,8 @@ func progress_casting(progress_increment: int):
 		print("\tActivating!")
 		activate()
 
-'''
-In play to true. Set all events to active. Then run the activation event.
-Finally move to conc circle if concentration card.
-'''
+## In play to true. Set all events to active. Then run the activation event.
+## Finally move to conc circle if concentration card.
 func activate():
 	_in_play = true
 	
@@ -188,9 +185,7 @@ func activate():
 	else:
 		basic_events.event_launchers[DISCARD_SELF_KEY].trigger()
 
-'''
-Sets in play to false and deactivates all events.
-'''
+## Sets in play to false and deactivates all events.
 func deactivate():
 	_in_play = false
 	
@@ -202,31 +197,23 @@ func deactivate():
 
 ### Below are functions for sending signals pre-events occuring
 
-'''
-Called by other classes to tell the card it should be discarded. Used to signal
-to the caster it should be discarded.
-'''
+## Called by other classes to tell the card it should be discarded. Used to signal
+## to the caster it should be discarded.
 func mark_to_discard():
 	_request_loc_change(Location.DISCARD)
 
-'''
-Called by other classes to tell the card to be cast.
-Params:
-	- slot: the slot the card should be cast to. -1 means first open
-'''
+## Called by other classes to tell the card to be cast.[br][br]
+## Params:[br]
+## - slot: the slot the card should be cast to. -1 means first open
 func mark_to_cast():
 	_request_loc_change(Location.CASTING_WELL)
 
 #TODO merge with pay upkeep. Use awaits instead
-'''
-Emits a signal saying its upkeep is about to be paid.
-'''
+## Emits a signal saying its upkeep is about to be paid.
 func prepare_pay_upkeep():
 	payment_declared.emit("upkeep") #TODO swap with Enum
 
-'''
-Actually pays the upkeep. Handles any effects that are set up on card for this.
-'''
+## Actually pays the upkeep. Handles any effects that are set up on card for this.
 func pay_upkeep():
 	#TODO Add handling for cost counters
 	return upkeep
@@ -235,25 +222,19 @@ func pay_upkeep():
 # Private Methods
 #================================================
 
-'''
-Args allows for optional parameters to be passed if necessary,
-such as slot number, or whether to place in bottom of deck. By
-default will emit something empty the caster can ignore.
-'''
+## Args allows for optional parameters to be passed if necessary,
+## such as slot number, or whether to place in bottom of deck. By
+## default will emit something empty the caster can ignore.
 func _request_loc_change(new_loc: Location, args=[]):
 	requested_loc_change.emit(new_loc, args)
 
-'''
-Set all casting data back to 0.
-'''
+## Set all casting data back to 0.
 func _reset_casting_data():
 	_rounds_spent_casting = 0
 	_delay_amount = 0
 	_quicken_amount = 0
 
-'''
-Resets the event data of this card to be based on the card data.
-'''
+## Resets the event data of this card to be based on the card data.
 func _reset_event_data():
 	events_wrapper = card_data.event_data.get_new_events_wrapper(card_caster, self)
 
@@ -275,15 +256,11 @@ func _set_basic_events(wrapper: EventsWrapper):
 	for launcher in launchers:
 		launcher.event_triggered.connect(_on_event_triggered)
 
-'''
-Reloads the viewport for the cardface with new info.
-'''
+## Reloads the viewport for the cardface with new info.
 func _reload_cardface():
 	viewport.render_target_update_mode = SubViewport.UpdateMode.UPDATE_ONCE
 
-'''
-Sets the actual card face nodes to match the card data
-'''
+## Sets the actual card face nodes to match the card data
 func _populate_cardface():
 	#TODO Make this more efficient, probably by preloading these guys
 	var backdrop_path = ""
@@ -330,16 +307,12 @@ func _populate_cardface():
 	
 	_reload_cardface()
 
-'''
-Run when an event is created by an event launcher when triggered.
-'''
+## Run when an event is created by an event launcher when triggered.
 func _on_event_triggered(event: Event):
 	#Should only handle an event getting run once
 	event.event_running.connect(_on_event_run, CONNECT_ONE_SHOT)
 
-'''
-Run when an event attached to this card signals it was run.
-'''
+## Run when an event attached to this card signals it was run.
 func _on_event_run(isInvocation: bool):
 	if isInvocation:
 		invoked.emit()
