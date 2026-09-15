@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://bnoep4srgh1tb"]
+
+[ext_resource type="Script" uid="uid://1j0xvsw6uq7p" path="res://scenes/battle/battle.gd" id="1_fh7rg"]
+[ext_resource type="Texture2D" uid="uid://f54njeqyrcy5" path="res://assets/TEMP_table_texture.jpg" id="1_h0kxc"]
+[ext_resource type="PackedScene" uid="uid://bf5hb8yrkmoyv" path="res://beings/casters/caster.tscn" id="2_fh7rg"]
+[ext_resource type="Script" uid="uid://67p6s6d66c5r" path="res://beings/casters/player_caster/player_caster.gd" id="3_pll4o"]
+[ext_resource type="Script" uid="uid://vm78ismff16e" path="res://beings/casters/npc_casters/npc_caster.gd" id="4_py4tk"]
+[ext_resource type="PackedScene" uid="uid://qn8wmasljdgo" path="res://ui/test_battle_ui/TestingBattleUI.tscn" id="5_agsc7"]
+
+[node name="Battle" type="Node3D" unique_id=1819971996]
+script = ExtResource("1_fh7rg")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1962963733]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 24, 0)
+
+[node name="TableBackground" type="Sprite3D" parent="." unique_id=1152462456]
+transform = Transform3D(2, 0, 0, 0, -8.742278e-08, 2, 0, -2, -8.742278e-08, 0, 0, 0)
+texture = ExtResource("1_h0kxc")
+
+[node name="Caster" parent="." unique_id=616650361 node_paths=PackedStringArray("ui") instance=ExtResource("2_fh7rg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 10)
+script = ExtResource("3_pll4o")
+ui = NodePath("../TestingBattleUI")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=223600215]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 20, 0)
+
+[node name="Caster2" parent="." unique_id=1179766310 instance=ExtResource("2_fh7rg")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.2, -10.353292)
+script = ExtResource("4_py4tk")
+
+[node name="TestingBattleUI" parent="." unique_id=2088716599 node_paths=PackedStringArray("battle", "acting_player") instance=ExtResource("5_agsc7")]
+battle = NodePath("..")
+acting_player = NodePath("../Caster")
