@@ -1,19 +1,17 @@
 class_name AwaitGroup extends RefCounted
 
-'''
-A utility class that allows for running multiple signals
-or multiple functions at once. 
+## A utility class that allows for running multiple signals
+## or multiple functions at once. 
 
-Might eventually split this into two, one for signals and one for functions,
-so that it can use the _init() constructor to define the things to wait on.
-But not for now.
-'''
+## Might eventually split this into two, one for signals and one for functions,
+## so that it can use the _init() constructor to define the things to wait on.
+## But not for now.
 
-signal _all_completed
+signal _all_completed ## All coroutines are done.
 
-var _counter: int = 0
+var _counter: int = 0 ## Number of coroutines active.
 
-var in_progress: bool = false
+var in_progress: bool = false ## If coroutines are happening.
 
 func multi_signal(signals: Array[Signal]) -> void:
 	if in_progress: return
@@ -26,11 +24,9 @@ func multi_signal(signals: Array[Signal]) -> void:
 	
 	await _all_completed
 
-'''
-Allows for awaiting multiple functions at a time.
-Params:
-	- list of functions
-'''
+## Allows for awaiting multiple functions at a time.[br][br]
+## Params:[br]
+## - list of functions
 func multi_function(functions: Array[Callable]) -> void:
 	if in_progress: return
 	
