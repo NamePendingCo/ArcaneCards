@@ -17,6 +17,7 @@ enum Operation {
 ## The second parameter in the operation.
 @export var param_b_name: String
 
+## The operation that will be performed.
 @export var operation: Operation
 
 func build_param(actor: Actor, card: Card) -> EventParam:
