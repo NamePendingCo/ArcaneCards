@@ -91,27 +91,23 @@ func move_to_hand_card(card: Card):
 func cast_card(card: Card, slot: int=-1):
 	my_casting_well.add_card_to_well(card, slot)
 
-'''
-Adds a card to the hand
-Params:
-	- card: the card to move
-	- slot: the slot to move it to. If -1, does the first open move. 
-'''
+## Adds a card to the hand. [br][br]
+## Params: [br]
+## - card: the card to move. [br]
+## - slot: the slot to move it to. If -1, does the first open move. 
 func move_to_conc_circle_card(card: Card, slot: int=-1):
 	if card.in_play:
 		my_conc_circle.add_card_to_conc_circle(card, slot)
 
 #TODO: Handle dest value
-'''
-Takes in a number of cards to draw from the deck. Draws them, then sends them to
-a destination, defaulting to the hand.
-Params:
-	num_drawn: Number of cards drawn, defaults to 1
-	dest: Enum specifying destination of where the cards should go. 
-	Defaults to the hand (0). 
-Returns:
-	True on successful draw. False if failed
-'''
+## Takes in a number of cards to draw from the deck. Draws them, then sends them to
+## a destination, defaulting to the hand. [br][br]
+## Params: [br]
+## - num_drawn: Number of cards drawn, defaults to 1. [br]
+## - dest: Enum specifying destination of where the cards should go. [br]
+## - Defaults to the hand (0). [br][br]
+## Returns: [br]
+## - True on successful draw. False if failed
 func draw(num_drawn: int = 1, dest: DrawDest = DrawDest.HAND):
 	print("%s drawing %d cards" % [self, num_drawn])
 	
@@ -132,18 +128,14 @@ func draw(num_drawn: int = 1, dest: DrawDest = DrawDest.HAND):
 			move_to_hand_card(drawn_card)
 		return true
 
-'''
-Sends passed card to the deck pile. 
-Params:
-	- card: card to add to the deck
-	- bottom_deck: if true, will place card on bottom of deck
-'''
+## Sends passed card to the deck pile. [br][br]
+## Params: [br]
+## - card: card to add to the deck. [br]
+## - bottom_deck: if true, will place card on bottom of deck
 func move_to_deck_card(card: Card, bottom_deck: bool=false):
 	my_deck.add_card_to_deck(card, bottom_deck)
 
-'''
-Sends passed card to the discard pile
-'''
+## Sends passed card to the discard pile.
 func discard_card(card: Card):
 	my_discard.add_card_to_discard(card)
 
@@ -161,21 +153,17 @@ func move_card_from_discard_pile(index: int, dest: DrawDest = DrawDest.HAND):
 		move_to_hand_card(card)
 		return true
 
-'''
-OVERRIDES
-For casters, the most important casting phase decision is to choose the cards.
-Make a selection for what cards should be cast during the casting phase.
-
-The default behavior is to choose randomly, but should always be overriden
-in every subclass of caster.
-'''
+## OVERRIDES
+## For casters, the most important casting phase decision is to choose the cards.
+## Make a selection for what cards should be cast during the casting phase. [br][br]
+## 
+## The default behavior is to choose randomly, but should always be overriden
+## in every subclass of caster.
 func make_casting_phase_decisions():
 	_random_target_selection(_casting_selection)
 
-'''
-OVERRIDES
-Takes the cards selected for the casting phase and actually casts them.
-'''
+## OVERRIDES
+## Takes the cards selected for the casting phase and actually casts them.
 func reveal_casting_phase_decisions():
 	my_casting_well.set_casting_cards(_casting_selection.targets)
 
@@ -183,29 +171,23 @@ func reveal_casting_phase_decisions():
 # Private methods
 #================================================
 
-'''
-Connects a card's signals to the caster
-Params:
-	- card: The card to connect with
-'''
+## Connects a card's signals to the caster. [br][br]
+## Params: [br]
+## - card: The card to connect with
 func _register_card(card: Card):
 	card.requested_loc_change.connect(_process_card_loc_change_request.bind(card))
 
-'''
-This function is a hotfix for an order of operations issue regarding creating events.
-I think it will be removed if we can rework events not to need their owners listed.
-'''
+## This function is a hotfix for an order of operations issue regarding creating events.
+## I think it will be removed if we can rework events not to need their owners listed.
 func _set_owner_of_card(card: Card):
 	card.card_caster = self
 
-'''
-Only ever called by signal. Takes in a request from a card to have its
-location change and passes to the appropriate method.
-Params:
-	- location: the new location to change to
-	- args: optional. can be anything, usually an array. If usable, will be passed to appropriate func
-	- card: the card emitting the signal
-'''
+## Only ever called by signal. Takes in a request from a card to have its
+## location change and passes to the appropriate method. [br][br]
+## Params: [br]
+## - location: the new location to change to. [br]
+## - args: optional. can be anything, usually an array. If usable, will be passed to appropriate func. [br]
+## - card: the card emitting the signal
 func _process_card_loc_change_request(location: Card.Location, args, card: Card):
 	match location: 
 		Card.Location.HAND:
@@ -229,17 +211,11 @@ func _process_card_loc_change_request(location: Card.Location, args, card: Card)
 		Card.Location.DISCARD:
 			discard_card(card)
 
-'''
-Only should activate via signal from battle manager. Actually pays upkeep cost
-'''
+## Only should activate via signal from battle manager. Actually pays upkeep cost
 func _pay_total_upkeep():
 	mana -= my_conc_circle.pay_circle_upkeep()
 
-'''
-Make a random selection of targets.
-Param:
-	
-'''
+## Make a random selection of targets.
 func _random_target_selection(target_param: TargetParam):
 	target_param.update_range()
 	
@@ -282,6 +258,6 @@ func _random_target_selection(target_param: TargetParam):
 	
 	target_param.targets = final_selections
 
-#TODO VERY TEMPORARY. REPLACE THESE
+## TODO VERY TEMPORARY. REPLACE THESE
 func _update_label(new_text: String, label: Label3D):
 	label.text = new_text
