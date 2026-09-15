@@ -18,7 +18,7 @@ static func new_events_wrapper(launchers: Dictionary[String, EventLauncher], par
 	for key in wrapper.event_launchers:
 		var launcher = wrapper.event_launchers[key]
 		wrapper.add_child(launcher)
-		
+	
 	for key in wrapper.parameters:
 		var param = wrapper.parameters[key]
 		wrapper.add_child(param)
