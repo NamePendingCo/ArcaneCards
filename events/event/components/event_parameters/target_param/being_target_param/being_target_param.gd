@@ -4,7 +4,7 @@ class_name BeingTargetParam extends TargetParam
 var targets_range: Array[Being]:
 	get = _get_targets_range, set = _set_targets_range
 
-#The actual chosen targets
+## The actual chosen targets
 var targets: Array[Being]:
 	get = _get_targets, set = _set_targets
 
