@@ -10,7 +10,7 @@ enum SpellColor { ## Defines a spell card's color/domain.
 	PURPLE = 6 ## Purple spells.
 }
 
-#Convert color to a string format
+## Convert color to a string format
 static func colorString(color: SpellColor):
 	return String(SpellColor.keys()[color]).to_pascal_case()
 
@@ -51,7 +51,7 @@ enum Subdomain { ## A spell card's subdomain.
 	CHANNELING = 63 ## Divine/otherly being themed purple spells.
 }
 
-#Convert subdomain to a string format
+## Convert subdomain to a string format
 static func subdomainString(subdomain: Subdomain):
 	return String(Subdomain.keys()[Subdomain.keys().find(subdomain)]).to_pascal_case()
 
@@ -67,6 +67,6 @@ enum CardType { ## The type of card this is.
 ## Array of all concentration card types.
 const CONC_TYPES = [CardType.ENCHANTMENT, CardType.WARD, CardType.CURSE]
 
-#Convert type to a string format
+## Convert type to a string format
 static func typeString(type: CardType):
 	return String(CardType.keys()[CardType.keys().find(type)]).to_pascal_case()

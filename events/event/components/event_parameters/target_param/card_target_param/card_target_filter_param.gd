@@ -1,22 +1,23 @@
 @tool
 class_name CardTargetFilterResource extends CardTargetResource
 
-enum HandleSelf {
-	EXCLUDE_SELF,
-	INCLUDE_SELF,
-	ONLY_SELF
+## If parameter is on a card, how the card should be handled.
+enum HandleSelf { 
+	EXCLUDE_SELF, ## Card is excluded from list.
+	INCLUDE_SELF, ## Card is included in list.
+	ONLY_SELF ## Ignore all cards that aren't self.
 }
 
-# If there should be a being range that should limit the cards
+## If there should be a being range that should limit the cards
 @export var being_range_name: String
 
-@export
-var self_handling: HandleSelf
+## How the parameter should handle itself.
+@export var self_handling: HandleSelf
 
-@export
-var card_filter: CardFilter
+## The filter resource used to pick the cards.
+@export var card_filter: CardFilter
 
-#The range of applicable targets enumed
+## The range of applicable targets enumed.
 @export var _location_range: int:
 	set(val): 
 		_location_range = val
@@ -27,7 +28,7 @@ var card_filter: CardFilter
 #================================================
 
 func build_param(actor: Actor, card: Card) -> EventParam:
-	var param = CardTargetFilterParam.new(actor, card, self_handling, _location_range, card_filter, is_chosen,
+	var param = CardTargetFilterParam.new_card_target_filter_param(actor, card, self_handling, _location_range, card_filter, is_chosen,
 	num_targets_min, num_targets_max)
 	unfinished_params.append(param)
 	
@@ -70,35 +71,39 @@ func _validate_property(property: Dictionary) -> void:
 
 class CardTargetFilterParam extends CardTargetParam:
 
-	#Set the range of the being who should own the available cards
+	## Set the range of the being who should own the available cards.
 	var being_range: BeingTargetParam
 
-	#List of locations
+	## List of locations to consider.
 	var location_range: Array[Card.Location]
 	
 	var self_handling: HandleSelf
 	
 	var card_filter: CardFilter
 	
-	func _init(my_actor: Actor, my_card: Card, self_strategy: HandleSelf, loc_range: int, filter: CardFilter, 
-	chosen: bool, targets_min: int=1, targets_max: int=1, persist=false):
-		self_handling = self_strategy
-		card_filter = filter
-		location_range = EventEnums.flagIntToEnum(loc_range)
+	## Static constructor.
+	static func new_card_target_filter_param(my_actor: Actor, my_card: Card, self_strategy: HandleSelf, loc_range: int, filter: CardFilter, 
+	chosen: bool, targets_min: int=1, targets_max: int=1, persist=false) -> CardTargetFilterParam:
+		var param = CardTargetFilterParam.new()
 		
-		if self_handling == HandleSelf.ONLY_SELF:
+		if param.self_handling == HandleSelf.ONLY_SELF:
 			chosen = false
-			
-		super(my_actor, my_card, chosen, targets_min, targets_max, persist)
+		
+		param._set_target_base_vals(my_actor, my_card, chosen, targets_min, targets_max, persist)
+		
+		param.self_handling = self_strategy
+		param.card_filter = filter
+		param.location_range = EventEnums.flagIntToEnum(loc_range)
+		
+		return param
 
 	#================================================
 	# Public methods
 	#================================================
 
-	'''
-	Sends a signal which should tell the actor to update its range using
-	update_range_from_list
-	'''
+
+	## Sends a signal which should tell the actor to update its range using
+	## update_range_from_list
 	func update_range():
 		_print_toggle("============\nUpdating range for %s on %s" % [self, parent_card])
 		
@@ -119,9 +124,8 @@ class CardTargetFilterParam extends CardTargetParam:
 	# Private methods
 	#================================================
 
-	'''
-	Check if a card is acceptable and meets parameters.
-	'''
+	
+	## Check if a card is acceptable and meets parameters.
 	func _check_card(card: Card) -> bool:
 		
 		_print_toggle("Checking card: %s" % str(card), 1)

@@ -3,24 +3,24 @@ class_name EventEnums extends Node
 #BELOW HERE IS BIT BASED BUT ONLY USED AS ENUM BY USER
 
 enum BeingRangeOption {
-	NULL = 0, # Use this if there should be a target, but it will be set with an event
-	SELF = 1 << 0,
-	ALL_OTHERS = 1 << 1, #All other beings on field
-	EVERYONE = SELF ^ ALL_OTHERS, #All beings including self
+	NULL = 0, ## Use this if there should be a target, but it will be set with an event
+	SELF = 1 << 0, ## Targeting self.
+	ALL_OTHERS = 1 << 1, ## All other beings on field
+	EVERYONE = SELF ^ ALL_OTHERS, ## All beings including self.
 }
 
 #TODO Set to match Card State
 enum CardRangeOption {
 	NULL = 0,
-	HAND = 1 << 0,
-	CASTING_WELL = 1 << 1, #From the casting well
-	CONCENTRATION_CIRCLE = 1 << 2,
-	WHOLE_FIELD = HAND ^ CASTING_WELL ^ CONCENTRATION_CIRCLE, #grabs bits from each location
+	HAND = 1 << 0, ## From the hand.
+	CASTING_WELL = 1 << 1, ## From the casting well
+	CONCENTRATION_CIRCLE = 1 << 2, ## From the Conc circle.
+	WHOLE_FIELD = HAND ^ CASTING_WELL ^ CONCENTRATION_CIRCLE, ## Hand, well, and circle
 }
 
 #BELOW HERE IS USED AS FLAGS
 
-# All secondary triggers. Uses bitwise indexing for use as flags
+## All secondary triggers. Uses bitwise indexing for use as flags
 enum BonusTriggers {
 	NONE = 0,
 	EMPOWER = 1 << 0,
@@ -32,9 +32,7 @@ enum BonusTriggers {
 	SYNERGIZE = 1 << 6
 }
 
-'''
-Takes a flag int and converts it into an array of enum values.
-'''
+## Takes a flag int and converts it into an array of enum values.
 static func flagIntToEnum(value: int, enum_list: Dictionary={}):
 	var vals: Array[int] = []
 	var place_counter: int = 1
@@ -50,21 +48,21 @@ static func flagIntToEnum(value: int, enum_list: Dictionary={}):
 		place_counter += 1
 	return vals
 
-'''
-This is a very crazy way to convert a regular enum_list to a flagged enum list.
-It basically left shifts every single entry that isn't 0 by the enum value. It
-also supports adding values that are combinations of two.
-Params:
-	-enum_list: an enum type
-	-ignore_list: an array of values from the enum to ignore
-	-shortcuts: A dictionary of keys of strings with an array of values from the Enum
-	being flagified 
-Example: 
-	enum_list=CardState
-	shortcuts: {"FIELD": [CardState.HAND, CardState.CASTING_WELL, CardState.CONCENTRATION_CIRCLE]}
-Returns:
-	- a dict of flags
-'''
+## This is a very crazy way to convert a regular enum_list to a flagged enum list.
+## It basically left shifts every single entry that isn't 0 by the enum value. It
+## also supports adding values that are combinations of two.[br][br]
+## Params:[br]
+## - enum_list: an enum type[br]
+## - ignore_list: an array of values from the enum to ignore[br]
+## - shortcuts: A dictionary of keys of strings with an array of values from the Enum
+## being flagified
+##[codeblock]
+## Example:
+##     num_list=CardState
+##     shortcuts={"FIELD": [CardState.HAND, CardState.CASTING_WELL, CardState.CONCENTRATION_CIRCLE]}
+## [/codeblock]
+## Returns:[br]
+## - a dict of flags
 static func enumToFlags(enum_list: Dictionary, ignore_list: Array=[], shortcuts: Dictionary[String, Array]={}):
 	var new_dict: Dictionary = {}
 	var count = 0 #use this to avoid shifting by arbitrary size
@@ -85,20 +83,17 @@ static func enumToFlags(enum_list: Dictionary, ignore_list: Array=[], shortcuts:
 	
 	return new_dict
 
-#TODO As soon as we upgrade to Godot 4.7, we can replace the default end value with INT32_MAX but until then it doesn't exist
-'''
-Takes an enum dict and returns a hint string that can be used for an export
-for a property. Useful for creating interface for internal design
-Params:
-	- enum_list: a dictionary, ideally an enum dict
-	- asFlags: If true, will instead make the value equal to 1 left shifted
-	equal to n - 1 where n is the value of the entry. This allows the enum to
-	be used as a flag export, allowing multi-selection
-	- start: optional, index to start from
-	- end: optional, idnex to end at
-Returns:
-	- The evals as a hint string
-'''
+## Takes an enum dict and returns a hint string that can be used for an export
+## for a property. Useful for creating interface for internal design.[br][br]
+## Params:[br]
+## - enum_list: a dictionary, ideally an enum dict[br]
+## - asFlags: If true, will instead make the value equal to 1 left shifted
+## equal to n - 1 where n is the value of the entry. This allows the enum to
+## be used as a flag export, allowing multi-selection[br]
+## - start: optional, index to start from[br]
+## - end: optional, index to end at[br]
+## Returns:[br]
+## - The evals as a hint string
 static func getEnumValsHintString(enum_list: Dictionary, start=0, end=INT32_MAX):
 	var key_val = []
 	

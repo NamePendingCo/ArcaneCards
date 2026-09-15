@@ -3,12 +3,10 @@ class_name CardData
 
 extends Resource
 
-'''
-Resource that holds all data about a card type so it can be loaded 
-easily into the game.
-'''
+## Resource that holds all data about a card type so it can be loaded 
+## easily into the game. Might eventually become SpellData as a subclass.
 
-@export var card_id: String # Unique ID for database stuff
+@export var card_id: String ## Unique ID for database stuff
 
 @export var cardName: String
 @export var color: Enums.SpellColor

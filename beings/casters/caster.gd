@@ -3,7 +3,7 @@ class_name Caster extends Being
 
 signal mana_updated(new_val)
 
-signal paying_upkeep #send out before paying upkeep
+signal paying_upkeep ## send out before paying upkeep
 
 const CASTER_EVENTS_PATH = "res://beings/casters/common/caster_basic_events.tres"
 const INITIAL_DRAW_KEY = "initial_draw"
@@ -71,29 +71,23 @@ func on_game_start():
 	#Do standard draw
 	caster_events_wrapper.event_launchers[INITIAL_DRAW_KEY].trigger()
 
-'''
-Notify all actors that caster is paying upkeep
-'''
+## Notify all actors that caster is paying upkeep
 func declare_paying_upkeep():
 	paying_upkeep.emit() #notify battle manager
 	my_conc_circle.prepare_pay_circle_upkeep() #notify cards in circle
 
-'''
-Adds a card to the hand
-Params:
-	- card: the card to move
-'''
+## Adds a card to the hand. [br][br]
+## Params: [br]
+## - card: the card to move
 func move_to_hand_card(card: Card):
 	my_hand.add_card_to_hand(card)
 
-'''
-Send a spell into the casting well. 
-Params:
-	- card: the card to cast
-	- slot: the slot to cast it to. If -1, does the first open slot. 
-Return:
-	- True if successful. False if not
-'''
+## Send a spell into the casting well. [br][br]
+## Params: [br]
+## - card: the card to cast. [br]
+## - slot: the slot to cast it to. If -1, does the first open slot. [br][br]
+## Return:[br]
+## - True if successful. False if not
 func cast_card(card: Card, slot: int=-1):
 	my_casting_well.add_card_to_well(card, slot)
 

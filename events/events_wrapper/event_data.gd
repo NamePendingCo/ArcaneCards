@@ -23,7 +23,7 @@ func get_new_events_wrapper(actor: Actor = null, card: Card = null) -> EventsWra
 		
 	var events = _set_up_event_launchers(events_list, params, actor, card)
 	
-	var wrapper = EventsWrapper.new(events, params)
+	var wrapper = EventsWrapper.new_events_wrapper(events, params)
 	
 	return wrapper
 

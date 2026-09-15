@@ -1,22 +1,21 @@
 @tool
 class_name BeingTargetFilterResource extends BeingTargetResource
 
-#The range of applicable targets
-@export
-var range_option: EventEnums.BeingRangeOption:
+## The range of applicable targets: self, all other, or everyone.
+@export var range_option: EventEnums.BeingRangeOption:
 	set(val): 
 		range_option = val
 		notify_property_list_changed()
 
-@export
-var being_filter: BeingFilter
+## The filter used to pick which beings to select.
+@export var being_filter: BeingFilter
 
 #================================================
 # Public methods
 #================================================
 
 func build_param(actor: Actor, card: Card):
-	var param = BeingTargetFilterParam.new(actor, card, range_option, being_filter, is_chosen, num_targets_min, num_targets_max)
+	var param = BeingTargetFilterParam.new_being_target_filter_param(actor, card, range_option, being_filter, is_chosen, num_targets_min, num_targets_max)
 	
 	return param
 
@@ -41,25 +40,28 @@ class BeingTargetFilterParam extends BeingTargetParam:
 
 	var range_option: EventEnums.BeingRangeOption
 
-	#The filter to apply
+	## The filter to apply
 	var being_filter: BeingFilter
 
-	func _init(my_actor: Actor, my_card: Card, my_range_option: EventEnums.BeingRangeOption, filter: BeingFilter, chosen: bool,
-	targets_min: int=1, targets_max: int=1):
+	## Static constructor.
+	static func new_being_target_filter_param(my_actor: Actor, my_card: Card, my_range_option: EventEnums.BeingRangeOption, filter: BeingFilter, chosen: bool,
+	targets_min: int=1, targets_max: int=1) -> BeingTargetFilterParam:
+		var param = BeingTargetFilterParam.new()
+		
 		if my_range_option == EventEnums.BeingRangeOption.SELF:
 			chosen = false
 		
-		super(my_actor, my_card, chosen, targets_min, targets_max)
-		range_option = my_range_option
-		being_filter = filter
+		param._set_target_base_vals(my_actor, my_card, chosen, targets_min, targets_max)
+		param.range_option = my_range_option
+		param.being_filter = filter
+		
+		return param
 
 	#================================================
 	# Public methods
 	#================================================
-
-	'''
-	Gets the list of targets
-	'''
+	
+	## Gets the list of targets.
 	func update_range():
 		var all_beings: Array[Being] = []
 		all_beings.assign(get_tree().get_nodes_in_group(Constants.GROUP_BEING))
@@ -76,9 +78,7 @@ class BeingTargetFilterParam extends BeingTargetParam:
 	# Private methods
 	#================================================
 
-	'''
-	Filter function used to see if a specific being matches the parameter filters.
-	'''
+	## Filter function used to see if a specific being matches the parameter filters.
 	func _check_being(being: Being) -> bool:
 		if (range_option ^ EventEnums.BeingRangeOption.SELF == 0) \
 		and (being != actor):
