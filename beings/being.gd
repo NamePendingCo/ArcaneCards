@@ -1,15 +1,17 @@
 @abstract
 class_name Being extends Actor
 
+## Any actor in the game with health.
+
 signal health_updated(new_val)
 
 signal health_depleted
 
 var being_name: String
 
-#backdoor in case we ever need to handle health below zero
+## backdoor in case we ever need to handle health below zero
 var _health: int
-#main health variable. Can't go below 0
+## main health variable. Can't go below 0
 var health = _health:
 	get: return _health
 	set(val):
@@ -39,16 +41,12 @@ func heal(health_regen: int):
 func attack_being(target: Being):
 	target.take_damage(attack_strength)
 
-'''
-Might unabstract later. But this is to allow for any being to make decisions
-in this phase, so non-casters can choose to attack and such.
-'''
+## Might unabstract later. But this is to allow for any being to make decisions
+## in this phase, so non-casters can choose to attack and such.
 @abstract
 func make_casting_phase_decisions()
 
-'''
-Reveals all decisions made during casting phase, such as who the being is 
-attacking or, if a caster, what they cast.
-'''
+## Reveals all decisions made during casting phase, such as who the being is 
+## attacking or, if a caster, what they cast.
 @abstract
 func reveal_casting_phase_decisions()
