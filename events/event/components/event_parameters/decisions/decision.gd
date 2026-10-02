@@ -1,6 +1,16 @@
 @abstract
 class_name Decision extends RefCounted
 
+## Holds the decision for an actor's choices. 
+## 
+## Usually created by an [EventParam], which should connect to
+## [signal decision_made] once to update its final value accordingly.
+## Actors should get a [DecisionRequest] object from [method generate_request]
+## and then pass it to whatever makes their decisions (UI, an AI, etc.)
+## and then waits until it receives a [DecisionSelection] it can pass
+## back to the decision. Once a decision is made, it is locked and
+## cannot be remade. 
+
 ## Sends the results of the decision back
 signal decision_made
 

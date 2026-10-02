@@ -14,4 +14,4 @@ options_list: Array[Being], default_list: Array[Being]):
 	default = default_list.duplicate()
 
 func create_selection(choices: Array[Being]):
-	return DecisionSelection.new(decision_id, choices)
+	return _create_selection(choices)
