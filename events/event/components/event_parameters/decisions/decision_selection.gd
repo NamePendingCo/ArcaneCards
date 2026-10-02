@@ -2,6 +2,9 @@ class_name DecisionSelection extends RefCounted
 
 ## The internal id of the decision this selection is for.
 var _decision_id: String
+var decision_id: String:
+	get(): return _decision_id
+	set(val): return
 
 ## The selected value that should be 
 var _selected_value: Variant
