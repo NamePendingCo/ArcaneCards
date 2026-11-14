@@ -16,6 +16,14 @@ class_name IntParam extends EventParam
 ## A dictionary containing keyed values, if needed.
 @export var value_dict: Dictionary[String, int]
 
+#================================================
+# Public methods
+#================================================
+
+# TODO: Update when decision is created
+func update_value() -> void:
+	return
+
 ## Gets a value based on a given key (usually a target's id for an effect.)
 ## If the key does not have a value, return the base value instead.
 func get_keyed_value(key: String):

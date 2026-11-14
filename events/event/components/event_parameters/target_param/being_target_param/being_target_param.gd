@@ -8,6 +8,26 @@ var targets_range: Array[Being]:
 var targets: Array[Being]:
 	get = _get_targets, set = _set_targets
 
+#================================================
+# Public methods
+#================================================
+
+func update_value() -> void:
+	if not is_chosen:
+		targets = targets_range
+		return
+	
+	# If there aren't even enough targets to begin with, take what's there
+	if num_targets_min >= targets_range.size():
+		targets = targets_range
+		return
+	
+	BeingDecision
+
+#================================================
+# Private methods
+#================================================
+
 #OVERRIDES
 func _get_targets():
 	return targets
@@ -28,5 +48,3 @@ func _set_targets_range(arr: Array[Being]):
 
 func _set_actor(val: Actor):
 	super(val)
-	if actor:
-		selection_requested.connect(actor._choose_being_from_range)

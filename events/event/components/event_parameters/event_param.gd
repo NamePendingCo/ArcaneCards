@@ -1,8 +1,6 @@
 @abstract
 class_name EventParam extends Node
 
-signal selection_requested ## sent when asking actor to make a choice.
-
 ## Whether a selection is made by the player.
 var is_chosen: bool
 
@@ -20,10 +18,8 @@ func _set_base_vals(my_actor: Actor, my_card: Card, chosen: bool):
 	parent_card = my_card
 	is_chosen = chosen
 
-## Asks the actor to make the choices for its parameters.
-func request_selection():
-	if is_chosen:
-		selection_requested.emit(self)
+## Updates the value of the parameter. Will create a decision if needed.
+@abstract func update_value() -> void;
 
 ## Disables the parameter to ensure no further use.
 func disable():
