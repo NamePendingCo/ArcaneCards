@@ -4,11 +4,11 @@ import csv
 import zipfile
 
 cardlist_file = "cardlist.csv"
-components_file = "component_list.csv"
+#components_file = "component_list.csv"
 outpath = "current_cards/"
 zipped_fn = "current_cards"
 
-assets_fpath = "..assets/"
+assets_fpath = "../assets/"
 
 cardbase_fpath = assets_fpath + "card_bases/"
 
@@ -28,7 +28,9 @@ instant_fpath = icons_fpath + "instant.png"
 enchantment_fpath = icons_fpath + "enchantment.png"
 curse_fpath = icons_fpath + "curse.png"
 ward_fpath = icons_fpath + "ward.png"
-component_fpath = icons_fpath + "knife.png"
+knife_fpath = icons_fpath + "knife.png"
+summoning_fpath = icons_fpath + "summoning.png"
+reaction_fpath = icons_fpath + "reaction.png"
 
 fonts_fpath = assets_fpath + "fonts/"
 
@@ -66,7 +68,9 @@ instant_img: Image.Image = None
 enchantment_img: Image.Image = None
 curse_img: Image.Image = None
 ward_img: Image.Image = None
-component_img: Image.Image = None
+knife_img: Image.Image = None
+summoning_img: Image.Image = None
+reaction_img: Image.Image = None
 
 def zipdir(path, ziph):
     # ziph is zipfile handle
@@ -154,7 +158,15 @@ def generate_card(name, color, subdomain, spell_type, tier, activation_cost, upk
                 case 'Ward':
                     icon = ward_img
                 case 'Component':
-                    icon = component_img
+                    icon = knife_img
+                case 'Item':
+                    icon = knife_img
+                case 'Bank':
+                    icon = summoning_img
+                case 'Charm':
+                    icon = reaction_img
+                case _:
+                    print(f"Value {spell_type} not mapped")
 
             out_img: Image.Image = img.copy()
             out_draw: ImageDraw = ImageDraw.Draw(out_img)
@@ -202,7 +214,9 @@ if __name__ == "__main__":
     enchantment_img = Image.open(enchantment_fpath).resize(icon_size)
     curse_img = Image.open(curse_fpath).resize(icon_size)
     ward_img = Image.open(ward_fpath).resize(icon_size)
-    component_img = Image.open(component_fpath).resize(icon_size)
+    knife_img = Image.open(knife_fpath).resize(icon_size)
+    summoning_img = Image.open(summoning_fpath).resize(icon_size)
+    reaction_img = Image.open(reaction_fpath).resize(icon_size)
 
     if not os.path.exists(outpath):
         os.makedirs(outpath)
@@ -230,22 +244,22 @@ if __name__ == "__main__":
 
             generate_card(name, color, subdomain, spell_type, tier, activation_cost, upkeep, keywords, effect)
 
-    with open(components_file, newline='') as f:
-        cards = csv.reader(f)
-        next(cards, None)
+    # with open(components_file, newline='') as f:
+    #     cards = csv.reader(f)
+    #     next(cards, None)
 
-        for card in cards:
-            name = card[0]
-            color = ''
-            subdomain = ''
-            spell_type = card[1]
-            tier = ''
-            activation_cost = ''
-            upkeep = ''
-            keywords = card[2]
-            effect = card[3]
+    #     for card in cards:
+    #         name = card[0]
+    #         color = ''
+    #         subdomain = ''
+    #         spell_type = card[1]
+    #         tier = ''
+    #         activation_cost = ''
+    #         upkeep = ''
+    #         keywords = card[2]
+    #         effect = card[3]
 
-            generate_card(name, color, subdomain, spell_type, tier, activation_cost, upkeep, keywords, effect)
+    #         generate_card(name, color, subdomain, spell_type, tier, activation_cost, upkeep, keywords, effect)
 
 
     with zipfile.ZipFile(zipped_fn + ".zip", 'w', zipfile.ZIP_DEFLATED) as zipf:
